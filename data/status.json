@@ -1,0 +1,13 @@
+{
+ "wiki": {
+  "error": "2026-10-22T23:38+09:00 GET失敗 https://kadenkaitori.tokyo/category/: HTTP Error 403: "
+ },
+ "shouten": {
+  "count": 2662,
+  "updated": "2026-10-23T00:31+09:00",
+  "error": ""
+ },
+ "morimori": {
+  "error": "2026-10-23T00:50+09:00 0件（ページ構造が変わった可能性）"
+ }
+}
