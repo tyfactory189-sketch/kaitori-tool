@@ -1,13 +1,13 @@
 {
  "wiki": {
-  "error": "2026-10-23T01:12+09:00 GET失敗 https://kadenkaitori.tokyo/category/: HTTP Error 403: "
+  "error": "2026-10-23T06:28+09:00 GET失敗 https://kadenkaitori.tokyo/category/: HTTP Error 403: "
  },
  "shouten": {
   "count": 2659,
-  "updated": "2026-10-23T02:05+09:00",
+  "updated": "2026-10-23T07:22+09:00",
   "error": ""
  },
  "morimori": {
-  "error": "2026-10-23T02:26+09:00 0件（ページ構造が変わった可能性）"
+  "error": "2026-10-23T07:24+09:00 GET失敗 https://www.morimori-kaitori.jp/: Failed to perform, curl: (28) Connection timed out after 30001 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details."
  }
 }
