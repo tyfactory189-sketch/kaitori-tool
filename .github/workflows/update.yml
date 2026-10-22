@@ -1,0 +1,54 @@
+name: 価格データ更新
+
+on:
+  schedule:
+    # 日本時間 6:07 / 14:07 / 22:07（UTCで書く）
+    - cron: "7 21,5,13 * * *"
+  workflow_dispatch:
+    inputs:
+      skip_buyback:
+        description: "買取サイトの取得を飛ばす（Yahooだけ更新）"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 340
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: 取得と集計
+        env:
+          YAHOO_APPID: ${{ secrets.YAHOO_APPID }}
+          MIN_BUY: ${{ vars.MIN_BUY || '3000' }}
+          YAHOO_BUDGET_MIN: ${{ vars.YAHOO_BUDGET_MIN || '240' }}
+        run: |
+          if [ "${{ inputs.skip_buyback }}" = "true" ]; then
+            python run.py --skip-buyback
+          else
+            python run.py
+          fi
+
+      - name: 結果をコミット
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data docs/data.json
+          git diff --cached --quiet || git commit -m "価格データ更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M')"
+          git push
