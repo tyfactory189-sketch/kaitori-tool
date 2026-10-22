@@ -3259,6 +3259,15 @@
  },
  {
   "source": "shouten",
+  "jan": "4986773261342",
+  "name": "Galaxy Z Fold8 SM-F971Q 1TB+16G SIMフリー [グラファイト]",
+  "price": 285000,
+  "category": "スマホ",
+  "url": "https://www.kaitorishouten-co.jp/products/detail/26764",
+  "note": ""
+ },
+ {
+  "source": "shouten",
   "jan": "4986773261359",
   "name": "Galaxy Z Fold8 SM-F971Q 1TB+16G SIMフリー [ラベンダー]",
   "price": 285000,
@@ -3270,7 +3279,7 @@
   "source": "shouten",
   "jan": "4986773261274",
   "name": "Galaxy Z Fold8 SM-F971Q 256G+12G SIMフリー [グラファイト]",
-  "price": 205000,
+  "price": 200000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26758",
   "note": ""
@@ -3279,7 +3288,7 @@
   "source": "shouten",
   "jan": "4986773261281",
   "name": "Galaxy Z Fold8 SM-F971Q 256G+12G SIMフリー [クリーム]",
-  "price": 205000,
+  "price": 200000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26757",
   "note": ""
@@ -3288,7 +3297,7 @@
   "source": "shouten",
   "jan": "4986773261304",
   "name": "Galaxy Z Fold8 SM-F971Q 256G+12G SIMフリー [ピスタチオ]",
-  "price": 200000,
+  "price": 195000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26760",
   "note": ""
@@ -3297,7 +3306,7 @@
   "source": "shouten",
   "jan": "4986773261298",
   "name": "Galaxy Z Fold8 SM-F971Q 256G+12G SIMフリー [ラベンダー]",
-  "price": 205000,
+  "price": 200000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26759",
   "note": ""
@@ -7059,7 +7068,7 @@
   "source": "shouten",
   "jan": "4902370554205",
   "name": "Nintendo Switch 2 Joy-Con 2 (L) ブルー/(R) ライトイエロー",
-  "price": 7600,
+  "price": 7800,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26633",
   "note": ""
@@ -7122,7 +7131,7 @@
   "source": "shouten",
   "jan": "4902370553024",
   "name": "Nintendo Switch 2 日本語・国内専用",
-  "price": 51800,
+  "price": 52200,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/23170",
   "note": ""
@@ -7689,7 +7698,7 @@
   "source": "shouten",
   "jan": "4948872416139",
   "name": "PS5 ワイヤレスコントローラー  コバルト ブルー CFI-ZCT1J09",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/18594",
   "note": ""
@@ -7698,7 +7707,7 @@
   "source": "shouten",
   "jan": "4948872850292",
   "name": "PS5 ワイヤレスコントローラー ”DEATH STRANDING 2: ON THE BEACH”リミテッドエディション",
-  "price": 11600,
+  "price": 11000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/23838",
   "note": ""
@@ -7707,7 +7716,7 @@
   "source": "shouten",
   "jan": "4948872416801",
   "name": "PS5 ワイヤレスコントローラー “Ghost of Yotei“ ゴールド リミテッドエディション CFI-ZCT1JZ7",
-  "price": 9700,
+  "price": 10000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24563",
   "note": ""
@@ -7716,7 +7725,7 @@
   "source": "shouten",
   "jan": "4948872416788",
   "name": "PS5 ワイヤレスコントローラー “Ghost of Yotei“ ブラック リミテッドエディション CFI-ZCT1JZ8",
-  "price": 9800,
+  "price": 10000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24564",
   "note": ""
@@ -7734,7 +7743,7 @@
   "source": "shouten",
   "jan": "4948872417167",
   "name": "PS5 ワイヤレスコントローラー “Marathon“ リミテッドエディション CFI-ZCT1JZD",
-  "price": 8950,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25626",
   "note": ""
@@ -7752,7 +7761,7 @@
   "source": "shouten",
   "jan": "4948872417051",
   "name": "PS5 ワイヤレスコントローラー “アストロボット” ジョイフル リミテッドエディション",
-  "price": 9450,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25065",
   "note": ""
@@ -7788,7 +7797,7 @@
   "source": "shouten",
   "jan": "4948872416726",
   "name": "PS5 ワイヤレスコントローラー “モンスターハンターワイルズ“ リミテッドエディション CFI-ZCT1JZ5",
-  "price": 9550,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/21319",
   "note": ""
@@ -7824,7 +7833,7 @@
   "source": "shouten",
   "jan": "4948872414975",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J ホワイト",
-  "price": 9200,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/4769",
   "note": ""
@@ -7833,7 +7842,7 @@
   "source": "shouten",
   "jan": "4948872415163",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J01 ブラック",
-  "price": 9150,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/8772",
   "note": ""
@@ -7842,7 +7851,7 @@
   "source": "shouten",
   "jan": "4948872415187",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J02 レッド",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/8771",
   "note": ""
@@ -7851,7 +7860,7 @@
   "source": "shouten",
   "jan": "4948872415293",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J03 ピンク",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/12384",
   "note": ""
@@ -7860,7 +7869,7 @@
   "source": "shouten",
   "jan": "4948872415279",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J04 パープル",
-  "price": 9250,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/12382",
   "note": ""
@@ -7869,7 +7878,7 @@
   "source": "shouten",
   "jan": "4948872415286",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J05 ブルー",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/12383",
   "note": ""
@@ -7878,7 +7887,7 @@
   "source": "shouten",
   "jan": "4948872415682",
   "name": "PS5 ワイヤレスコントローラー CFI-ZCT1J06 グレー カモフラージュ",
-  "price": 9400,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/15224",
   "note": ""
@@ -7923,7 +7932,7 @@
   "source": "shouten",
   "jan": "4948872415668",
   "name": "PS5 ワイヤレスコントローラー ヴォルカニック レッド CFI-ZCT1J07",
-  "price": 9250,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/18592",
   "note": ""
@@ -7932,7 +7941,7 @@
   "source": "shouten",
   "jan": "4948872417280",
   "name": "PS5 ワイヤレスコントローラー ギャラクティック パープル 2025版",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25390",
   "note": ""
@@ -7941,7 +7950,7 @@
   "source": "shouten",
   "jan": "4948872417402",
   "name": "PS5 ワイヤレスコントローラー グレー カモフラージュ 2025版",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25388",
   "note": ""
@@ -7950,7 +7959,7 @@
   "source": "shouten",
   "jan": "4948872417365",
   "name": "PS5 ワイヤレスコントローラー クロマ インディゴ 2025版",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25386",
   "note": ""
@@ -7959,7 +7968,7 @@
   "source": "shouten",
   "jan": "4948872416399",
   "name": "PS5 ワイヤレスコントローラー クロマ インディゴ CFI-ZCT1J11",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/21131",
   "note": ""
@@ -7968,7 +7977,7 @@
   "source": "shouten",
   "jan": "4948872417389",
   "name": "PS5 ワイヤレスコントローラー クロマ グリーン 2025版",
-  "price": 9200,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25389",
   "note": ""
@@ -7977,7 +7986,7 @@
   "source": "shouten",
   "jan": "4948872416412",
   "name": "PS5 ワイヤレスコントローラー クロマ グリーン CFI-ZCT1J10",
-  "price": 9250,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/21130",
   "note": ""
@@ -7986,7 +7995,7 @@
   "source": "shouten",
   "jan": "4948872417341",
   "name": "PS5 ワイヤレスコントローラー クロマ パール  2025版",
-  "price": 9550,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25393",
   "note": ""
@@ -7995,7 +8004,7 @@
   "source": "shouten",
   "jan": "4948872416375",
   "name": "PS5 ワイヤレスコントローラー クロマ パール CFI-ZCT1J12",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/21132",
   "note": ""
@@ -8004,7 +8013,7 @@
   "source": "shouten",
   "jan": "4948872417228",
   "name": "PS5 ワイヤレスコントローラー コズミック レッド 2025版",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25387",
   "note": ""
@@ -8013,7 +8022,7 @@
   "source": "shouten",
   "jan": "4948872417266",
   "name": "PS5 ワイヤレスコントローラー スターライト ブルー 2025版",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25384",
   "note": ""
@@ -8022,7 +8031,7 @@
   "source": "shouten",
   "jan": "4948872415644",
   "name": "PS5 ワイヤレスコントローラー スターリング シルバー CFI-ZCT1J08",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/18593",
   "note": ""
@@ -8031,7 +8040,7 @@
   "source": "shouten",
   "jan": "4948872417143",
   "name": "PS5 ワイヤレスコントローラー テクノ レッド[CFI-ZCT2J13]",
-  "price": 9200,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25563",
   "note": ""
@@ -8040,7 +8049,7 @@
   "source": "shouten",
   "jan": "4948872417204",
   "name": "PS5 ワイヤレスコントローラー ノヴァ ピンク 2025版",
-  "price": 9300,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25358",
   "note": ""
@@ -8049,7 +8058,7 @@
   "source": "shouten",
   "jan": "4948872417303",
   "name": "PS5 ワイヤレスコントローラー ホワイト 2025版",
-  "price": 9250,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25392",
   "note": ""
@@ -8058,7 +8067,7 @@
   "source": "shouten",
   "jan": "4948872850704",
   "name": "PS5 ワイヤレスコントローラー ミッドナイト ブラック + USBケーブル for PC CFIJ15502",
-  "price": 9000,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25778",
   "note": ""
@@ -8085,7 +8094,7 @@
   "source": "shouten",
   "jan": "4948872417105",
   "name": "PS5 ワイヤレスコントローラー リズム ブルー[CFI-ZCT2J15]",
-  "price": 9200,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25565",
   "note": ""
@@ -8094,7 +8103,7 @@
   "source": "shouten",
   "jan": "4948872417129",
   "name": "PS5 ワイヤレスコントローラー リミックス グリーン[CFI-ZCT2J14]",
-  "price": 9200,
+  "price": 8500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25564",
   "note": ""
@@ -8193,7 +8202,7 @@
   "source": "shouten",
   "jan": "4948872417419",
   "name": "プレイステーション5 デジタル・エディション 日本語専用 CFI-2200B01",
-  "price": 52100,
+  "price": 52300,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25239",
   "note": ""
@@ -8958,25 +8967,16 @@
   "source": "shouten",
   "jan": "4595057030378",
   "name": "Lies of P: Complete Edition Switch 2 専用",
-  "price": 6900,
+  "price": 6000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27289",
   "note": ""
  },
  {
   "source": "shouten",
-  "jan": "4549576299433",
-  "name": "Minecraft Dungeons II Switch 2 専用",
-  "price": 3700,
-  "category": "家電",
-  "url": "https://www.kaitorishouten-co.jp/products/detail/27312",
-  "note": ""
- },
- {
-  "source": "shouten",
   "jan": "4902370554892",
   "name": "Nintendo Switch Sports Resort/Switch 2",
-  "price": 5500,
+  "price": 5300,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26634",
   "note": ""
@@ -9037,15 +9037,6 @@
  },
  {
   "source": "shouten",
-  "jan": "4902370554410",
-  "name": "ゼノブレイド2 Nintendo Switch 2 専用",
-  "price": 8000,
-  "category": "家電",
-  "url": "https://www.kaitorishouten-co.jp/products/detail/27275",
-  "note": ""
- },
- {
-  "source": "shouten",
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
   "price": 7800,
@@ -9082,15 +9073,6 @@
  },
  {
   "source": "shouten",
-  "jan": "4976219140690",
-  "name": "ドラゴンズドグマ 2 ダークアリズン Switch2",
-  "price": 4900,
-  "category": "家電",
-  "url": "https://www.kaitorishouten-co.jp/products/detail/27342",
-  "note": ""
- },
- {
-  "source": "shouten",
   "jan": "4573608199743",
   "name": "ドラゴンボール Sparking! ZERO/Switch 2",
   "price": 4100,
@@ -9105,15 +9087,6 @@
   "price": 3600,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25093",
-  "note": ""
- },
- {
-  "source": "shouten",
-  "jan": "4902370554472",
-  "name": "ファイアーエムブレム 万紫千紅 Nintendo Switch 2 専用",
-  "price": 8300,
-  "category": "家電",
-  "url": "https://www.kaitorishouten-co.jp/products/detail/26637",
   "note": ""
  },
  {
@@ -9172,11 +9145,11 @@
  },
  {
   "source": "shouten",
-  "jan": "4976219139946",
-  "name": "鬼武者 Way of the Sword/Switch 2",
-  "price": 6200,
+  "jan": "4976219137744",
+  "name": "モンスターハンターストーリーズ3　〜運命の双竜〜/Switch 2",
+  "price": 3000,
   "category": "家電",
-  "url": "https://www.kaitorishouten-co.jp/products/detail/27017",
+  "url": "https://www.kaitorishouten-co.jp/products/detail/25545",
   "note": ""
  },
  {
@@ -10911,7 +10884,7 @@
   "source": "shouten",
   "jan": "4548736104266",
   "name": "デジタルカメラ サイバーショット DSC-RX0M2",
-  "price": 77600,
+  "price": 82800,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/3957",
   "note": ""
