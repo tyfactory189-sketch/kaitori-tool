@@ -41,7 +41,7 @@ jobs:
           if [ "${{ inputs.skip_buyback }}" = "true" ]; then
             python run.py --skip-buyback
           else
-            python run.py
+            python run.py --sources shouten
           fi
 
       - name: 結果をコミット
