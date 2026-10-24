@@ -204,6 +204,9 @@ def merged_buyback():
             if len(it.get("name", "")) > len(rec["name"]):
                 rec["name"] = it["name"]
             rec.setdefault("names", set()).add(it.get("name", ""))
+    # 扱わないジャンル（ポケモンカード）は商品ごと外す（Yahooの照合もしない）
+    for jan in [j for j, r in by_jan.items() if any(yahoo.SKIP_ITEM.search(n or "") for n in r.get("names", ()))]:
+        del by_jan[jan]
     apply_variants(by_jan)
     return by_jan
 
@@ -222,9 +225,9 @@ def load_watch():
 def trim_offers(offers, buy, watched=False):
     """利益の見込みがない出品を落とし、上位だけ残す（ウォッチ商品は価格に関係なく残す）。"""
     if watched or buy <= 0:
-        return [o for o in offers if not yahoo.EXCLUDE.search(o.get("n", ""))][:KEEP_OFFERS]
+        return [o for o in offers if not yahoo.EXCLUDE.search(o.get("n", "")) and not yahoo.SKIP_ITEM.search(o.get("n", ""))][:KEEP_OFFERS]
     keep = [o for o in offers
-            if o["p"] - o.get("pt", 0) <= buy * KEEP_RATIO and not yahoo.EXCLUDE.search(o.get("n", ""))]
+            if o["p"] - o.get("pt", 0) <= buy * KEEP_RATIO and not yahoo.EXCLUDE.search(o.get("n", "")) and not yahoo.SKIP_ITEM.search(o.get("n", ""))]
     return keep[:KEEP_OFFERS]
 
 
