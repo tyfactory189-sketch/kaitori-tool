@@ -2,11 +2,13 @@
 
 利用制限は 1クエリ/秒 なので、Client の delay を 1.1 秒にしている。
 """
+import os
 import re
 
 from scrapers.http import Client
 
 API = "https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch"
+USER_RANK = os.environ.get("YAHOO_USER_RANK", "gold")
 
 # 同じJANで出品されている部品・付属品・中古などを除外する
 EXCLUDE = re.compile(
@@ -44,6 +46,7 @@ def search_jan(client: Client, appid: str, jan: str, buy_price: int, keep: int =
         "in_stock": "true",
         "sort": "+price",
         "results": 30,
+        "user_rank": USER_RANK,  # 会員ランクに応じたポイント額で返してもらう
     }, as_json=True)
     offers = []
     for hit in data.get("hits", []):

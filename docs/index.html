@@ -93,6 +93,8 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 <aside class="panel" id="settings">
   <fieldset>
     <legend>ポイント還元（Yahoo!ショッピング）</legend>
+    <label><input type="checkbox" id="useUser"> あなたの会員条件のポイントを使う（自動取得）</label>
+    <div class="hint" id="userHint">拡張機能がログイン状態で商品ページを確認した出品は、実際の付与ポイント（プレミアム・ランク・PayPay・キャンペーン・上限）で計算します。下の％はそれ以外の出品に使います</div>
     <div class="row">PayPayステップ等 <input type="number" id="step" step="0.5" min="0"> %</div>
     <div class="row">キャンペーン上乗せ <input type="number" id="extra" step="0.5" min="0"> %</div>
     <div class="hint">5のつく日・ボーナスストア等の合計を入力。ストア独自ポイントは自動で加算</div>
@@ -147,18 +149,20 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 <script src="gh.js"></script>
 <script>
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
-const DEFAULTS={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
+const DEFAULTS={useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
 let S={...DEFAULTS,...store.get()};
+// プレミアム会員を前提に変更（以前保存した設定も一度だけ切り替える）
+if(!S.v2){S.premium=true;S.useUser=true;S.v2=1;store.set(S)}
 let DATA=null,shown=100,WATCH=new Map(),BYJAN={};
 const $=id=>document.getElementById(id);
 const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const NUMS=['step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','minProfit','minBuy'];
-const BOOLS=['premium','freeOnly','noProof','noMulti'];
+const BOOLS=['useUser','premium','freeOnly','noProof','noMulti'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
   $('cpType').value=S.cpType;$('q').value=S.q;
@@ -175,6 +179,13 @@ function readForm(){
 
 // 1つの出品について実質価格を計算
 function evalOffer(o){
+  if(S.useUser&&o.yu){ // ログイン状態で確認した価格・ポイント
+    const base=o.yu.p;let cp=0;
+    if(S.cpType!=='none'&&base>=S.cpMin){cp=S.cpType==='pct'?Math.floor(base*S.cpVal/100):S.cpVal;if(S.cpCap>0)cp=Math.min(cp,S.cpCap)}
+    const paid=base-cp,ship=o.sh===2?0:S.shipAdd;
+    const pts=Math.round(o.yu.pt*(base?paid/base:1))+Math.floor(paid/1.1*S.extra/100);
+    return {o,base,cp,paid,ship,storePt:0,userPt:pts,pts,eff:paid+ship-pts*S.ptval/100,user:true};
+  }
   const base=(S.premium&&o.pp>0)?o.pp:o.p;
   let cp=0;
   if(S.cpType!=='none'&&base>=S.cpMin){
@@ -256,7 +267,7 @@ function render(){
         <div class="chips">${chips}</div>
         ${o.pv||o.add?`<div class="chips">${o.pv?`<span class="chip warn" title="商品ページで色・容量などを選ぶと価格が変わる出品です。JANに一致する選択肢が分からないため、高い方の価格で計算しています">仕様で価格差 ${yen(o.pv[0])}〜${yen(o.pv[1])}（高い方で計算）</span>`:''}${o.add?`<span class="chip warn" title="全ての選択肢に料金がかかるオプションの最低額を加えています">必須オプション +${yen(o.add)} 込み</span>`:''}</div>`:''}
         <div class="offer">Yahoo最安(実質): <a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.s)}</a>${o.bs?' ★優良':''}${o.chk&&!o.pv&&!o.add?' <span title="商品ページで仕様選択・必須オプションを確認済み">✓</span>':''} ${yen(top.base)}${top.cp?` − クーポン${yen(top.cp)}`:''}${top.ship?` ＋送料${yen(top.ship)}`:''} − ${top.pts.toLocaleString()}P
-          <div class="calc">ストアP ${top.storePt.toLocaleString()} ＋ 還元 ${top.userPt.toLocaleString()} ／ Yahoo確認 ${esc(it.at.slice(5,16).replace('T',' '))}</div></div>
+          <div class="calc">${top.user?`<span title="ログイン状態で商品ページに表示された付与ポイント（${o.yu.capped&&o.yu.capped.length?'上限到達：'+esc(o.yu.capped.join('、')):'上限到達なし'}）">あなたの条件 ${o.yu.rate}%（${esc(o.yu.at.slice(5,16).replace('T',' '))}確認${o.yu.capped&&o.yu.capped.length?'・上限あり':''}）</span>`:`ストアP ${top.storePt.toLocaleString()} ＋ 還元 ${top.userPt.toLocaleString()}（設定の％で計算）`} ／ Yahoo確認 ${esc(it.at.slice(5,16).replace('T',' '))}</div></div>
       </div>
       <div class="profit">
         <div class="v ${pc}">${r.profit>=0?'+':''}${yen(r.profit)}</div>
@@ -282,6 +293,7 @@ function renderMeta(){
     else st=`${s.count?s.count.toLocaleString()+'件':'—'} <span class="err" title="${esc(s.error||'')}">⚠取得失敗</span>`;
     parts.push(`${esc(s.label)} ${st}`);
   }
+  if(DATA.yahoo_user)parts.push(`あなたの条件のポイント ${fmt(DATA.yahoo_user)}`);
   const y=DATA.yahoo;
   if(y&&y.stopped&&y.stopped.indexOf('時間切れ')<0) parts.push(`<span class="err" title="${esc(y.last_error||'')}">⚠Yahoo照合エラー（${y.done}/${y.targets}件のみ更新）</span>`);
   parts.push('<a href="bookmarklet.html">買取価格を取得 →</a>');

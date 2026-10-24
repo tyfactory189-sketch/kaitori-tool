@@ -192,6 +192,94 @@ const KTS = (() => {
     return dedupe(items);
   }
 
+  // ---------- Yahoo!ショッピング（ログイン中のあなたの条件でのポイント・価格） ----------
+  // 商品ページの埋め込みデータ（__NEXT_DATA__）には、ログイン中の会員（プレミアム・ランク・PayPay条件など）に
+  // 合わせた付与ポイントの内訳が入っている。付与上限に達したキャンペーンは実際には付かないので差し引く。
+  function parseYahooItem(html, jan) {
+    const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    if (!m) return null;
+    let pp;
+    try { pp = JSON.parse(m[1]).props.pageProps; } catch (e) { return null; }
+    const item = pp.item || {}, pt = pp.point || {};
+    const base = +item.applicablePrice || 0;
+    if (!base) return null;
+    // 仕様選択（JANに一致する選択肢の価格、無ければ最高値）
+    const prices = []; let jp = null;
+    const t1 = item.stockTableOneAxis, t2 = item.stockTableTwoAxis;
+    const choices = [];
+    if (t1) ((t1.firstOption || {}).choiceList || []).forEach(c => choices.push(c));
+    if (t2) ((t2.firstOption || {}).choiceList || []).forEach(f => (((f.secondOption || {}).choiceList) || []).forEach(c => choices.push(c)));
+    choices.forEach(c => { const p = c.price ? +c.price : base; prices.push(p); const sku = String(c.skuId || ''); if (sku && (sku === jan || sku.endsWith(jan))) jp = p; });
+    let price = jp != null ? jp : (prices.length ? Math.max(...prices) : base);
+    let add = 0;
+    (item.selectOptionList || []).forEach(o => { const ch = (o.choiceList || []).filter(c => c.isSelectable !== false).map(c => +c.charge || 0); if (ch.length && Math.min(...ch) > 0) add += Math.min(...ch); });
+    price += add;
+    // ポイント（表示は基本価格に対する値なので、価格が変わったら比例させる）
+    const parts = (pt.currentCampaignList || []).flatMap(c => c.partsCampaignList || []);
+    const total = +pt.totalPoint || 0;
+    // isReachedLimit の項目は、表示ポイント自体がすでに上限まで減らされた値（残り枠ぶん）なのでそのまま合計を使う
+    const ratio = base ? price / base : 1;
+    return {
+      p: price, base, add: add || undefined,
+      pv: jp == null && prices.length && Math.min(...prices) !== Math.max(...prices) ? [Math.min(...prices), Math.max(...prices)] : undefined,
+      pt: Math.round(total * ratio),
+      rate: +pt.totalPointRatio || 0,
+      capped: parts.filter(x => x.isReachedLimit).map(x => x.title.slice(0, 30)),
+      at: jstNow(),
+    };
+  }
+  // ログイン状態だけを見る（個人情報は読み取らない・保存しない）
+  function loginState(html) {
+    const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
+    try {
+      const u = JSON.parse(m[1]).props.pageProps.user;
+      return { login: !!(u && 'isWalletUser' in u), premium: !!(u && u.isPremiumUser) };
+    } catch (e) { return { login: false, premium: false }; }
+  }
+
+  // 一覧データから「利益が出そうな出品」を選ぶ（還元を多めの12%と見て、損が3,000円以内）
+  function pickCandidates(data, watch, limit) {
+    const out = [];
+    for (const it of data.items || []) {
+      const buys = Object.values(it.buys || {}).filter(b => !b.m).map(b => b.p);
+      const best = buys.length ? Math.max(...buys) : 0;
+      const watched = watch.has(it.jan);
+      (it.offers || []).slice(0, 2).forEach((o, i) => {
+        if (!/store\.shopping\.yahoo\.co\.jp/.test(o.u || '')) return;
+        const eff = o.p - o.p / 1.1 * 0.12 - (o.pt || 0);
+        const score = best - eff;
+        if (watched || (best && score > -3000)) out.push({ jan: it.jan, url: o.u.split('?')[0], score: watched ? 1e9 - i : score });
+      });
+    }
+    out.sort((a, b) => b.score - a.score);
+    const seen = new Set();
+    return out.filter(c => !seen.has(c.url) && seen.add(c.url)).slice(0, limit);
+  }
+
+  async function grabYahooUser(g, pagesUrl, limit = 400) {
+    const data = await fetch(pagesUrl + 'data.json', { cache: 'no-store' }).then(r => r.json());
+    const wl = await g.readJson('docs/watchlist.json').catch(() => null);
+    const watch = new Set(((wl && wl.items) || []).map(w => String(w.jan)));
+    const cands = pickCandidates(data, watch, limit);
+    const offers = {};
+    let done = 0, ok = 0, loginChecked = false, premiumWarn = false;
+    for (const c of cands) {
+      progress(`Yahoo（ログイン条件のポイント）${++done}/${cands.length}`, done / cands.length * 100);
+      const h = await getHtml(c.url, { waits: [5, 30] });
+      await sleep(800);
+      if (!h) continue;
+      if (!loginChecked) {
+        loginChecked = true;
+        const st = loginState(h);
+        if (!st.login) throw new Error('この Chrome で Yahoo! JAPAN にログインしていないため、会員条件のポイントを取得できません');
+        if (!st.premium) premiumWarn = true;
+      }
+      const r = parseYahooItem(h, c.jan);
+      if (r) { offers[c.url] = r; ok++; }
+    }
+    return { updated: jstNow(), offers, stats: { candidates: cands.length, ok, premium: !premiumWarn } };
+  }
+
   // ---------- GitHub ----------
   function gh(settings) {
     const api = (path, opt = {}) => fetch('https://api.github.com/repos/' + settings.repo + path, {
@@ -260,6 +348,15 @@ const KTS = (() => {
         notes.push(`森森買取 ${items.length.toLocaleString()}件`); saved++;
       } catch (e) { notes.push('森森買取 失敗：' + e.message); }
     }
+    if (sites.yahooUser) {
+      try {
+        progress('Yahoo のポイントを確認中…', 0);
+        const [u, r] = settings.repo.split('/');
+        const y = await grabYahooUser(g, `https://${u}.github.io/${r}/`);
+        await g.write('data/yahoo_user.json', y, `Yahoo ログイン条件のポイントを更新（${y.stats.ok}件）`);
+        notes.push(`Yahooポイント ${y.stats.ok}件` + (y.stats.premium ? '' : '（LYPプレミアム会員としてログインしていません）')); saved++;
+      } catch (e) { notes.push('Yahooポイント 失敗：' + e.message); }
+    }
     if (saved && settings.startYahoo) {
       progress('Yahoo照合を起動中…', 98);
       notes.push((await g.startYahoo().catch(() => false)) ? 'Yahoo照合を開始' : 'Yahoo照合は次の定期実行で');
@@ -267,7 +364,7 @@ const KTS = (() => {
     return { ok: saved > 0 && !notes.some(n => n.includes('失敗')), summary: notes.join(' ／ ') || '取得対象がありません' };
   }
 
-  return { run, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants };
+  return { run, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
 })();
 
 // オフスクリーン文書として読み込まれたときだけ、バックグラウンドからの指示を待つ

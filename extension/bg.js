@@ -3,7 +3,7 @@ const DEFAULT_SETTINGS = {
   token: '',
   repo: 'tyfactory189-sketch/kaitori-tool',
   times: ['11:00', '14:00', '20:00'],
-  sites: { wiki: true, variants: true, morimori: true },
+  sites: { wiki: true, variants: true, morimori: true, yahooUser: true },
   startYahoo: true,
 };
 const STALE_MS = 3 * 60 * 60e3; // 3時間以上「実行中」のままなら止まったとみなす

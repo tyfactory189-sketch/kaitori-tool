@@ -72,11 +72,13 @@ tr.dup td:first-child::after{content:"登録済み";display:inline-block;margin-
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
-let S={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,shipAdd:800,sendCost:0};
+let S={step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,shipAdd:800,sendCost:0};
 try{Object.assign(S,JSON.parse(localStorage.getItem('kts')||'{}'))}catch(e){}
 let WATCH=[],BY={},SOURCES={};
 
 function evalOffer(o){
+  if(S.useUser!==false&&o.yu){const base=o.yu.p;let cp=0;if(S.cpType!=='none'&&base>=S.cpMin){cp=S.cpType==='pct'?Math.floor(base*S.cpVal/100):S.cpVal;if(S.cpCap>0)cp=Math.min(cp,S.cpCap)}
+    const paid=base-cp,ship=o.sh===2?0:S.shipAdd,pts=Math.round(o.yu.pt*(base?paid/base:1))+Math.floor(paid/1.1*S.extra/100);return {o,eff:paid+ship-pts*S.ptval/100}}
   const base=(S.premium&&o.pp>0)?o.pp:o.p;let cp=0;
   if(S.cpType!=='none'&&base>=S.cpMin){cp=S.cpType==='pct'?Math.floor(base*S.cpVal/100):S.cpVal;if(S.cpCap>0)cp=Math.min(cp,S.cpCap)}
   const paid=base-cp,ship=o.sh===2?0:S.shipAdd,pts=((S.premium&&o.ptp>0)?o.ptp:o.pt)+Math.floor(paid/1.1*(S.step+S.extra)/100);

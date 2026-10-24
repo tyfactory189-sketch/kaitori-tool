@@ -306,7 +306,22 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     return cache
 
 
+def load_yahoo_user():
+    """Chrome拡張がログイン状態で確認した「あなたの条件での価格・ポイント」。36時間より古いものは使わない。"""
+    raw = load(DATA / "yahoo_user.json", {})
+    out = {}
+    for url, v in (raw.get("offers") or {}).items():
+        try:
+            age = datetime.now(JST) - datetime.fromisoformat(v["at"])
+        except (KeyError, ValueError):
+            continue
+        if age < timedelta(hours=36):
+            out[url.split("?")[0]] = {k: v[k] for k in ("p", "pt", "rate", "capped", "at", "pv", "add") if v.get(k) not in (None, [], "")}
+    return out, raw.get("updated")
+
+
 def build(by_jan, cache, watch):
+    yu, yu_updated = load_yahoo_user()
     yahoo_names = {j: [o.get("n", "") for o in (c.get("o") or [])] for j, c in cache.items()}
     RUN_LOG["variants_fixed"] = apply_variants(by_jan, yahoo_names)
     items = []
@@ -318,11 +333,15 @@ def build(by_jan, cache, watch):
         if not offers and not watched:
             continue
         name = rec["name"] or watch.get(jan, {}).get("memo") or (offers[0]["n"] if offers else "")
+        for o in offers:
+            u = yu.get((o.get("u") or "").split("?")[0])
+            if u:
+                o["yu"] = u
         item = {"jan": jan, "name": name, "buys": rec["buys"], "offers": offers, "at": y.get("at", "")}
         if watched:
             item["w"] = 1
         items.append(item)
-    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo")}
+    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated}
     save(DOCS / "data.json", out, compact=True)
     log(f"[build] {len(items)}件を docs/data.json に出力")
     RUN_LOG.update({"finished": now_iso(), "items": len(items)})

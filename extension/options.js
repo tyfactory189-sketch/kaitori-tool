@@ -1,11 +1,11 @@
 const $ = id => document.getElementById(id);
-const DEF = { token: '', repo: 'tyfactory189-sketch/kaitori-tool', times: ['11:00', '14:00', '20:00'], sites: { wiki: true, variants: true, morimori: true }, startYahoo: true };
+const DEF = { token: '', repo: 'tyfactory189-sketch/kaitori-tool', times: ['11:00', '14:00', '20:00'], sites: { wiki: true, variants: true, morimori: true, yahooUser: true }, startYahoo: true };
 
 (async () => {
   const { settings } = await chrome.storage.local.get('settings');
   const s = { ...DEF, ...(settings || {}), sites: { ...DEF.sites, ...((settings || {}).sites || {}) } };
   $('token').value = s.token; $('repo').value = s.repo; $('times').value = s.times.join(', ');
-  $('s_wiki').checked = s.sites.wiki; $('s_variants').checked = s.sites.variants; $('s_morimori').checked = s.sites.morimori;
+  $('s_wiki').checked = s.sites.wiki; $('s_variants').checked = s.sites.variants; $('s_morimori').checked = s.sites.morimori; $('s_yahoo').checked = s.sites.yahooUser;
   $('startYahoo').checked = s.startYahoo;
 })();
 
@@ -19,7 +19,7 @@ $('save').onclick = async () => {
   const repo = $('repo').value.trim();
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) return msg('リポジトリは「ユーザー名/リポジトリ名」の形で入力してください', false);
   const token = $('token').value.trim();
-  const settings = { token, repo, times: [...new Set(times)].sort(), sites: { wiki: $('s_wiki').checked, variants: $('s_variants').checked, morimori: $('s_morimori').checked }, startYahoo: $('startYahoo').checked };
+  const settings = { token, repo, times: [...new Set(times)].sort(), sites: { wiki: $('s_wiki').checked, variants: $('s_variants').checked, morimori: $('s_morimori').checked, yahooUser: $('s_yahoo').checked }, startYahoo: $('startYahoo').checked };
   await chrome.storage.local.set({ settings });
   $('times').value = settings.times.join(', ');
   if (!token) return msg('保存しました（合鍵が空なので自動取得は動きません）', false);
