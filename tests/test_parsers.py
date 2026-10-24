@@ -87,3 +87,45 @@ if __name__ == "__main__":
         if name.startswith("test_"):
             fn()
             print("ok", name)
+
+
+def _page(item):
+    import json
+    return '<script id="__NEXT_DATA__" type="application/json">' + json.dumps({"props": {"pageProps": {"item": item}}}) + "</script>"
+
+
+def test_item_page_variants():
+    two_axis = {"applicablePrice": 25850, "stockTableTwoAxis": {"firstOption": {"choiceList": [
+        {"choiceName": "150P/右", "secondOption": {"choiceList": [{"choiceName": "220g", "price": None, "skuId": "4550133120602"}]}},
+        {"choiceName": "150PL/左", "secondOption": {"choiceList": [{"choiceName": "220g", "price": 27000, "skuId": "4550133120619"}]}},
+    ]}}, "selectOptionList": [{"name": "コーティング", "choiceList": [{"charge": None}, {"charge": 3190}]}]}
+    # JAN一致の選択肢の価格。任意オプション（無料の選択肢あり）は加算しない
+    assert yahoo.parse_item_page(_page(two_axis), "4550133120619") == {"base": 25850, "jp": 27000, "min": 25850, "max": 27000, "add": 0}
+
+    one_axis = {"applicablePrice": 30000, "stockTableOneAxis": {"firstOption": {"choiceList": [
+        {"choiceName": "128GB", "price": None, "skuId": "a"}, {"choiceName": "256GB", "price": 38000, "skuId": "b"}]}},
+        "selectOptionList": [{"name": "保証", "choiceList": [{"charge": 500}, {"charge": 1500}]}]}
+    info = yahoo.parse_item_page(_page(one_axis), "4900000000000")
+    assert info["jp"] is None and info["min"] == 30000 and info["max"] == 38000 and info["add"] == 500
+
+    # check_offer: 一致なし → 高い方＋必須オプション。ポイントも比例して補正
+    class C:
+        def get(self, url):
+            return _page(one_axis)
+    o = {"p": 30000, "pp": 30000, "pt": 300, "ptp": 300, "u": "https://store.shopping.yahoo.co.jp/x/1.html"}
+    assert yahoo.check_offer(C(), o, "4900000000000")
+    assert o["p"] == 38500 and o["pv"] == [30000, 38000] and o["add"] == 500 and o["pt"] == 385
+
+    # 仕様選択なし・必須オプションなし → 変更なし
+    plain = {"applicablePrice": 30000, "selectOptionList": [{"name": "同意", "choiceList": [{"charge": None}]}]}
+    class P:
+        def get(self, url):
+            return _page(plain)
+    o2 = {"p": 30000, "pt": 300, "u": "https://store.shopping.yahoo.co.jp/x/2.html"}
+    assert not yahoo.check_offer(P(), o2, "1") and o2["p"] == 30000
+    assert yahoo.parse_item_page("<html></html>", "1") is None
+
+
+if __name__ == "__main__":
+    test_item_page_variants()
+    print("ok test_item_page_variants")

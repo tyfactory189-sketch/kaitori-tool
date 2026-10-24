@@ -147,6 +147,26 @@ def trim_offers(offers, buy, watched=False):
     return keep[:KEEP_OFFERS]
 
 
+def check_variants(client, offers, jan, buy, watched, chk):
+    """利益が出そうな出品だけ商品ページを開き、仕様選択・必須オプションによる価格差を反映する。"""
+    # 還元を最大20%と見ても利益が出ない出品は確認しない（時間節約）
+    cands = [o for o in offers if watched or o["p"] - o["pt"] - o["p"] / 1.1 * 0.20 <= buy][:2]
+    for o in cands:
+        try:
+            if yahoo.check_offer(client, o, jan):
+                chk["changed"] += 1
+            chk["checked"] += 1
+        except Exception as e:  # noqa: BLE001
+            chk["failed"] += 1
+            chk["last_error"] = str(e)[:200]
+            # 最初から失敗続きなら（アクセス拒否など）、この実行では確認をやめる
+            if chk["failed"] >= 10 and chk["checked"] == 0:
+                chk["disabled"] = True
+                log(f"[yahoo] 商品ページを開けないため確認を中止: {chk['last_error']}")
+                return
+    offers.sort(key=lambda o: o["p"] - o["pt"])
+
+
 def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     """ウォッチ商品を毎回最初に照合し、その後は照合が古いもの（未照合が最優先）から順に。
     時間切れなら残りは次回へ。"""
@@ -161,6 +181,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     targets.sort()
     targets = [(t[1], t[2], t[3], t[4]) for t in targets]
     client = Client(delay=1.1, retries=2, backoff=5)
+    page_client = Client(delay=0.8, retries=1, backoff=3)
+    chk = {"checked": 0, "changed": 0, "failed": 0, "last_error": "", "disabled": False}
     deadline = time.time() + budget_min * 60
     done = fails = streak = 0
     errors: dict[str, int] = {}
@@ -186,6 +208,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
                 break
             continue
         streak = 0
+        if not chk["disabled"]:
+            check_variants(page_client, offers, jan, top, jan in watch, chk)
         cache[jan] = {"at": now_iso(), "o": trim_offers(offers, top, jan in watch)}
         done += 1
         if done % 500 == 0:
@@ -196,6 +220,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     log(f"[yahoo] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped}")
     RUN_LOG["yahoo"] = {"targets": len(targets), "done": done, "failed": fails,
                         "errors": errors, "last_error": last_error, "stopped": stopped}
+    RUN_LOG["item_check"] = chk
+    log(f"[yahoo] 商品ページ確認 {chk['checked']}件 / 価格補正 {chk['changed']}件 / 失敗 {chk['failed']}件")
     return cache
 
 

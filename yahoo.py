@@ -60,3 +60,89 @@ def search_jan(client: Client, appid: str, jan: str, buy_price: int, keep: int =
         offers.append(o)
     offers.sort(key=lambda o: o["p"] - o["pt"])
     return offers[:keep]
+
+
+# ---------- 商品ページで「仕様選択」による価格差を確認 ----------
+# 検索APIの価格は、色・容量などの選択肢のうち一番安いものになっていることがある。
+# 商品ページの埋め込みデータ（__NEXT_DATA__）から選択肢ごとの価格と必須オプション料金を読む。
+RE_NEXT = re.compile(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.S)
+
+
+def _choices(item: dict):
+    """(選択肢名, 価格 or None, skuId) を列挙。価格 None は基本価格と同じ。"""
+    t1, t2 = item.get("stockTableOneAxis"), item.get("stockTableTwoAxis")
+    if t1:
+        for c in (t1.get("firstOption") or {}).get("choiceList") or []:
+            yield c.get("choiceName", ""), c.get("price"), str(c.get("skuId") or "")
+    if t2:
+        for f in (t2.get("firstOption") or {}).get("choiceList") or []:
+            for c in ((f.get("secondOption") or {}).get("choiceList") or []):
+                yield f"{f.get('choiceName', '')} {c.get('choiceName', '')}", c.get("price"), str(c.get("skuId") or "")
+
+
+def parse_item_page(html: str, jan: str):
+    """商品ページから、そのJANを買うときの価格情報を返す。読めなければ None。
+
+    戻り値: {"base": 基本価格, "jp": JANに一致した選択肢の価格 or None,
+             "min": 選択肢の最安, "max": 選択肢の最高, "add": 必須オプションの最低料金}
+    """
+    import json
+    m = RE_NEXT.search(html)
+    if not m:
+        return None
+    try:
+        item = json.loads(m.group(1))["props"]["pageProps"]["item"]
+    except (KeyError, ValueError, TypeError):
+        return None
+    base = int(item.get("applicablePrice") or 0)
+    if base <= 0:
+        return None
+    prices, jp = [], None
+    for _name, price, sku in _choices(item):
+        p = int(price) if price else base
+        prices.append(p)
+        if sku and (sku == jan or sku.endswith(jan)):
+            jp = p
+    # 全ての選択肢に料金がかかるオプション（保証・付属品の有無など）は必ず上乗せされる
+    add = 0
+    for opt in item.get("selectOptionList") or []:
+        charges = [c.get("charge") or 0 for c in opt.get("choiceList") or [] if c.get("isSelectable", True)]
+        if charges and min(charges) > 0:
+            add += min(charges)
+    return {"base": base, "jp": jp, "min": min(prices) if prices else base,
+            "max": max(prices) if prices else base, "add": add}
+
+
+def check_offer(client: Client, offer: dict, jan: str):
+    """出品の価格を商品ページの情報で補正する（変更があれば offer を書き換えて True）。
+
+    - 選択肢の中にJANが一致するものがあれば、その価格を使う
+    - 一致がなく選択肢で価格が違う場合は、高い方の価格で計算し、範囲を "pv" に残す
+    - 必須オプション料金は加算して "add" に残す
+    """
+    url = offer.get("u", "")
+    if "store.shopping.yahoo.co.jp" not in url:
+        return False  # LOHACO 等はページ構造が違うので対象外
+    info = parse_item_page(client.get(url), jan)
+    offer["chk"] = 1
+    if not info:
+        return False
+    old = offer["p"]
+    if info["jp"] is not None:
+        price = info["jp"]
+    elif info["max"] != info["min"]:
+        price = info["max"]
+        offer["pv"] = [info["min"], info["max"]]
+    else:
+        price = old
+    price += info["add"]
+    if info["add"]:
+        offer["add"] = info["add"]
+    if price == old:
+        return False
+    ratio = price / old if old else 1
+    offer["p"] = price
+    offer["pp"] = round(offer["pp"] * ratio) if offer.get("pp") else price
+    offer["pt"] = round(offer.get("pt", 0) * ratio)
+    offer["ptp"] = round(offer.get("ptp", 0) * ratio)
+    return True
