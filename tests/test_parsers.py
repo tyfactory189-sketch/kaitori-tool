@@ -100,7 +100,7 @@ def test_item_page_variants():
         {"choiceName": "150PL/左", "secondOption": {"choiceList": [{"choiceName": "220g", "price": 27000, "skuId": "4550133120619"}]}},
     ]}}, "selectOptionList": [{"name": "コーティング", "choiceList": [{"charge": None}, {"charge": 3190}]}]}
     # JAN一致の選択肢の価格。任意オプション（無料の選択肢あり）は加算しない
-    assert yahoo.parse_item_page(_page(two_axis), "4550133120619") == {"base": 25850, "jp": 27000, "min": 25850, "max": 27000, "add": 0}
+    assert yahoo.parse_item_page(_page(two_axis), "4550133120619") == {"base": 25850, "jp": 27000, "min": 25850, "max": 27000, "add": 0, "ng": ""}
 
     one_axis = {"applicablePrice": 30000, "stockTableOneAxis": {"firstOption": {"choiceList": [
         {"choiceName": "128GB", "price": None, "skuId": "a"}, {"choiceName": "256GB", "price": 38000, "skuId": "b"}]}},
@@ -154,3 +154,20 @@ def test_resolve_variant():
 if __name__ == "__main__":
     test_resolve_variant()
     print("ok test_resolve_variant")
+
+
+def test_item_page_stock():
+    page = _page({"applicablePrice": 1000, "stock": {"isAvailable": False}})
+    assert yahoo.parse_item_page(page, "1")["ng"] == "在庫なし"
+    assert yahoo.parse_item_page(_page({"applicablePrice": 1000, "isUsed": True}), "1")["ng"] == "中古"
+    assert yahoo.parse_item_page(_page({"applicablePrice": 1000, "stock": {"isAvailable": True}, "preOrderType": "None"}), "1")["ng"] == ""
+    class C:
+        def get(self, url):
+            return page
+    o = {"p": 1000, "pt": 10, "u": "https://store.shopping.yahoo.co.jp/x/1.html"}
+    assert yahoo.check_offer(C(), o, "1") and o["ng"] == "在庫なし"
+
+
+if __name__ == "__main__":
+    test_item_page_stock()
+    print("ok test_item_page_stock")

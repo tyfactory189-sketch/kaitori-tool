@@ -245,6 +245,7 @@ def check_variants(client, offers, jan, buy, watched, chk):
                 chk["disabled"] = True
                 log(f"[yahoo] 商品ページを開けないため確認を中止: {chk['last_error']}")
                 return
+    offers[:] = [o for o in offers if not o.get("ng")]  # 在庫なし・中古・予約などは除外
     offers.sort(key=lambda o: o["p"] - o["pt"])
 
 
@@ -316,7 +317,7 @@ def load_yahoo_user():
         except (KeyError, ValueError):
             continue
         if age < timedelta(hours=36):
-            out[url.split("?")[0]] = {k: v[k] for k in ("p", "pt", "rate", "capped", "at", "pv", "add") if v.get(k) not in (None, [], "")}
+            out[url.split("?")[0]] = {k: v[k] for k in ("p", "pt", "rate", "capped", "at", "pv", "add", "ng") if v.get(k) not in (None, [], "")}
     return out, raw.get("updated")
 
 
@@ -337,6 +338,9 @@ def build(by_jan, cache, watch):
             u = yu.get((o.get("u") or "").split("?")[0])
             if u:
                 o["yu"] = u
+        offers = [o for o in offers if not (o.get("yu") or {}).get("ng")]
+        if not offers and not watched:
+            continue
         item = {"jan": jan, "name": name, "buys": rec["buys"], "offers": offers, "at": y.get("at", "")}
         if watched:
             item["w"] = 1

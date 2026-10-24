@@ -219,7 +219,17 @@ const KTS = (() => {
     const total = +pt.totalPoint || 0;
     // isReachedLimit の項目は、表示ポイント自体がすでに上限まで減らされた値（残り枠ぶん）なのでそのまま合計を使う
     const ratio = base ? price / base : 1;
+    // 在庫・販売状態（中古・予約・販売期間外・在庫なしは対象外にする）
+    const st = item.stock || {};
+    let ng;
+    if (item.isUsed) ng = '中古';
+    else if (item.isPreOrder || (item.preOrderType && item.preOrderType !== 'None')) ng = '予約商品';
+    else if (item.isOnSale === false || item.isBeforeSalePeriod || item.isAfterSalePeriod) ng = '販売期間外';
+    else if (st.isAvailable === false) ng = '在庫なし';
+    const hit = choices.find(c => { const sku = String(c.skuId || ''); return sku && (sku === jan || sku.endsWith(jan)); });
+    if (!ng && hit && hit.stock && hit.stock.isAvailable === false) ng = '在庫なし';
     return {
+      ng,
       p: price, base, add: add || undefined,
       pv: jp == null && prices.length && Math.min(...prices) !== Math.max(...prices) ? [Math.min(...prices), Math.max(...prices)] : undefined,
       pt: Math.round(total * ratio),

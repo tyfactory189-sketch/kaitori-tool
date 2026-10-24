@@ -11,11 +11,17 @@ API = "https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch"
 USER_RANK = os.environ.get("YAHOO_USER_RANK", "gold")
 
 # 同じJANで出品されている部品・付属品・中古などを除外する
+# 「未開封」は新品の意味なので除外しない（(?<!未)開封）
 EXCLUDE = re.compile(
     r"パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|"
-    r"中古|訳あり|わけあり|アウトレット|展示品|開封品|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|"
-    r"再生品|整備品|リファービッシュ|海外版|並行輸入|"
-    r"左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ"
+    r"中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|"
+    r"外箱傷|箱傷|箱つぶれ|箱潰れ|"
+    r"再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|"
+    r"海外版|並行輸入|"
+    r"オリジナルセット|独自セット|"
+    r"在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|"
+    r"左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ",
+    re.I,
 )
 
 
@@ -112,8 +118,18 @@ def parse_item_page(html: str, jan: str):
         charges = [c.get("charge") or 0 for c in opt.get("choiceList") or [] if c.get("isSelectable", True)]
         if charges and min(charges) > 0:
             add += min(charges)
+    stock = item.get("stock") or {}
+    ng = ""
+    if item.get("isUsed"):
+        ng = "中古"
+    elif item.get("isPreOrder") or (item.get("preOrderType") or "None") != "None":
+        ng = "予約商品"
+    elif item.get("isOnSale") is False or item.get("isBeforeSalePeriod") or item.get("isAfterSalePeriod"):
+        ng = "販売期間外"
+    elif stock.get("isAvailable") is False:
+        ng = "在庫なし"
     return {"base": base, "jp": jp, "min": min(prices) if prices else base,
-            "max": max(prices) if prices else base, "add": add}
+            "max": max(prices) if prices else base, "add": add, "ng": ng}
 
 
 def check_offer(client: Client, offer: dict, jan: str):
@@ -130,6 +146,9 @@ def check_offer(client: Client, offer: dict, jan: str):
     offer["chk"] = 1
     if not info:
         return False
+    if info.get("ng"):
+        offer["ng"] = info["ng"]  # 呼び出し側で出品ごと除外する
+        return True
     old = offer["p"]
     if info["jp"] is not None:
         price = info["jp"]
