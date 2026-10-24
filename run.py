@@ -249,19 +249,45 @@ def check_variants(client, offers, jan, buy, watched, chk):
     offers.sort(key=lambda o: o["p"] - o["pt"])
 
 
+def due_hours(entry):
+    """前回の照合結果から、次に照合するまでの間隔（時間）を決める。
+    Yahoo API は1日の利用回数に上限があるので、利益の見込みが薄い商品はたまにしか調べない。"""
+    r = entry.get("r")
+    if r is None:
+        return 24
+    if r <= 1.15:   # 実質価格が買取価格の1.15倍以内：毎回
+        return 4
+    if r <= 1.4:
+        return 24
+    return 72       # 見込みが薄い・Yahooに出品なし
+
+
 def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
-    """ウォッチ商品を毎回最初に照合し、その後は照合が古いもの（未照合が最優先）から順に。
-    時間切れなら残りは次回へ。"""
+    """ウォッチ商品を毎回最初に照合し、その後は「照合の時期が来た」商品を見込みの高い順に。
+    1回あたりの問い合わせ数は YAHOO_MAX_REQ（既定 9000）まで。時間切れ・上限なら残りは次回へ。"""
+    max_req = int(os.environ.get("YAHOO_MAX_REQ", "9000"))
+    now = datetime.now(JST)
     targets = []
     for jan in watch:  # ウォッチ商品は買取価格に関係なく毎回
         top = top_buy(by_jan[jan]) if jan in by_jan else 0
-        targets.append((0, "", -top, jan, top))
+        targets.append((0, 0, "", jan, top))
+    skipped = 0
     for jan, rec in by_jan.items():
         top = top_buy(rec)
-        if top >= min_buy and jan not in watch:
-            targets.append((1, cache.get(jan, {}).get("at", ""), -top, jan, top))
+        if top < min_buy or jan in watch:
+            continue
+        e = cache.get(jan, {})
+        try:
+            age = (now - datetime.fromisoformat(e["at"])).total_seconds() / 3600
+        except (KeyError, ValueError):
+            age = 1e9  # 未照合
+        if age < due_hours(e):
+            skipped += 1
+            continue
+        targets.append((1, e.get("r", 0.0) if e else -1, e.get("at", ""), jan, top))
     targets.sort()
-    targets = [(t[1], t[2], t[3], t[4]) for t in targets]
+    targets = [(t[2], 0, t[3], t[4]) for t in targets][:max_req]
+    log(f"[yahoo] 今回の照合対象 {len(targets)}件（時期が来ていない {skipped}件は省略）")
     client = Client(delay=1.1, retries=2, backoff=5)
     page_client = Client(delay=0.8, retries=1, backoff=3)
     chk = {"checked": 0, "changed": 0, "failed": 0, "last_error": "", "disabled": False}
@@ -269,6 +295,7 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     done = fails = streak = 0
     errors: dict[str, int] = {}
     last_error = ""
+    first_400 = ""
     stopped = ""
     for _, _, jan, top in targets:
         if time.time() > deadline:
@@ -284,6 +311,15 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
             key = f"HTTP {m.group(1)}" if m else type(e).__name__
             errors[key] = errors.get(key, 0) + 1
             log(f"[yahoo] {jan} 失敗: {last_error}")
+            if "limit count" in last_error:
+                stopped = "Yahoo API の1日の利用上限に達したため中断（翌日に再開）"
+                log(f"[yahoo] {stopped}")
+                break
+            if key == "HTTP 400":  # その商品だけの問題（JANの形式など）。連続失敗には数えない
+                streak -= 1
+                first_400 = first_400 or f"{jan}: {last_error}"
+                cache[jan] = {"at": now_iso(), "o": [], "r": 9.9}
+                continue
             if streak >= 15:
                 stopped = "Yahoo APIが連続で失敗したため中断"
                 log(f"[yahoo] {stopped}: {last_error}")
@@ -292,7 +328,9 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
         streak = 0
         if not chk["disabled"]:
             check_variants(page_client, offers, jan, top, jan in watch, chk)
-        cache[jan] = {"at": now_iso(), "o": trim_offers(offers, top, jan in watch)}
+        kept = trim_offers(offers, top, jan in watch)
+        best = min((o["p"] - o.get("pt", 0) for o in offers), default=None)
+        cache[jan] = {"at": now_iso(), "o": kept, "r": round(best / top, 3) if best and top else 9.9}
         done += 1
         if done % 500 == 0:
             log(f"[yahoo] {done}/{len(targets)}")
@@ -301,7 +339,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     save(DATA / "yahoo_cache.json", cache, compact=True)
     log(f"[yahoo] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped}")
     RUN_LOG["yahoo"] = {"targets": len(targets), "done": done, "failed": fails,
-                        "errors": errors, "last_error": last_error, "stopped": stopped}
+                        "errors": errors, "last_error": last_error, "first_400": first_400[:300],
+                        "stopped": stopped, "skipped_not_due": skipped}
     RUN_LOG["item_check"] = chk
     log(f"[yahoo] 商品ページ確認 {chk['checked']}件 / 価格補正 {chk['changed']}件 / 失敗 {chk['failed']}件")
     return cache
