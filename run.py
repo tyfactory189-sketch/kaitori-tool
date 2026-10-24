@@ -360,7 +360,7 @@ def load_yahoo_user():
         except (KeyError, ValueError):
             continue
         if age < timedelta(hours=36):
-            out[url.split("?")[0]] = {k: v[k] for k in ("p", "pt", "rate", "capped", "at", "pv", "add", "ng") if v.get(k) not in (None, [], "")}
+            out[url.split("?")[0]] = {k: v[k] for k in ("p", "pt", "rate", "capped", "at", "pv", "add", "ng", "sf", "sfc", "pref") if v.get(k) not in (None, [], "")}
     return out, raw.get("updated")
 
 

@@ -215,3 +215,24 @@ def test_bara():
 if __name__ == "__main__":
     test_bara()
     print("ok test_bara")
+
+
+def test_postage():
+    import json
+    def page(pg):
+        return '<script id="__NEXT_DATA__" type="application/json">' + json.dumps({"props": {"pageProps": {"item": {"applicablePrice": 7898}, "postage": pg}}}) + "</script>"
+    i = yahoo.parse_item_page(page({"fee": 660, "prefecture": "愛知県", "conditionFreeText": "同一ストア15,000円以上で", "isPostageFree": False}), "1")
+    assert i["sf"] == 660 and i["sfc"] == 15000
+    i = yahoo.parse_item_page(page({"fee": 0, "isPostageFree": True, "conditionFreeText": ""}), "1")
+    assert i["sf"] == 0 and "sfc" not in i
+    class C:
+        def get(self, url):
+            return page({"fee": 1400, "conditionFreeText": ""})
+    o = {"p": 7898, "pt": 0, "u": "https://store.shopping.yahoo.co.jp/x/1.html"}
+    yahoo.check_offer(C(), o, "1")
+    assert o["sf"] == 1400
+
+
+if __name__ == "__main__":
+    test_postage()
+    print("ok test_postage")

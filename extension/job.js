@@ -246,8 +246,17 @@ const KTS = (() => {
     if (!ng && optNg) ng = '在庫なし';
     // セット品をばらした単品・外箱なし（商品説明で判定）
     if (!ng && /バラ売り|ばら売り|(?<!す)ばらし|バラし|バラシ|分けて(?:単体|単品|販売)|(?:左|右)または(?:右|左)|左右どちらか|片方のみ|外箱(?:は|が)?(?:付属(?:でき|しませ|なし|無し)|なし|無し|ありません)|本体同梱品|同梱品(?:を|の)(?:ばら|バラ|単品)|セット(?:品)?(?:から|を)(?:取り出|ばら|バラ|分解)/.test(String((item.caption || '') + ' ' + (item.information || '')).replace(/<[^>]+>/g, ''))) ng = 'ばら売り';
+    // 送料（ログイン中の住所＝お届け先の都道府県あて）と条件付き無料の金額
+    const pg = pp.postage || {};
+    let sf, sfc, pref;
+    if (pg.isPostageFree) sf = 0;
+    else if (pg.fee != null) {
+      sf = +pg.fee || 0; pref = pg.prefecture || undefined;
+      const cm = String(pg.conditionFreeText || '').normalize('NFKC').match(/([\d,]+)\s*円以上/);
+      if (cm && sf) sfc = +cm[1].replace(/,/g, '');
+    }
     return {
-      ng,
+      ng, sf, sfc, pref,
       p: price, base, add: add || undefined,
       pv: jp == null && prices.length && Math.min(...prices) !== Math.max(...prices) ? [Math.min(...prices), Math.max(...prices)] : undefined,
       pt: Math.round(total * ratio),

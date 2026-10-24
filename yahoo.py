@@ -126,7 +126,8 @@ def parse_item_page(html: str, jan: str, names=()):
     if not m:
         return None
     try:
-        item = json.loads(m.group(1))["props"]["pageProps"]["item"]
+        props = json.loads(m.group(1))["props"]["pageProps"]
+        item = props["item"]
     except (KeyError, ValueError, TypeError):
         return None
     base = int(item.get("applicablePrice") or 0)
@@ -174,8 +175,22 @@ def parse_item_page(html: str, jan: str, names=()):
         ng = "在庫なし"  # 選択肢がある場合は、そのJANの色・容量の在庫で判断
     elif RE_BARA.search(re.sub(r"<[^>]+>", "", (item.get("caption") or "") + " " + (item.get("information") or ""))):
         ng = "ばら売り"  # セット品をばらした単品・外箱なし（商品説明で判定）
-    return {"base": base, "jp": jp, "min": min(prices) if prices else base,
-            "max": max(prices) if prices else base, "add": add, "ng": ng}
+    out = {"base": base, "jp": jp, "min": min(prices) if prices else base,
+           "max": max(prices) if prices else base, "add": add, "ng": ng}
+    out.update(_postage(props.get("postage")))
+    return out
+
+
+def _postage(pg):
+    """商品ページの送料（お届け先の都道府県あて）と、条件付き無料の金額。"""
+    if not isinstance(pg, dict) or pg.get("fee") is None and not pg.get("isPostageFree"):
+        return {}
+    import unicodedata
+    out = {"sf": 0 if pg.get("isPostageFree") else int(pg.get("fee") or 0)}
+    m = re.search(r"([\d,]+)\s*円以上", unicodedata.normalize("NFKC", pg.get("conditionFreeText") or ""))
+    if m and out["sf"]:
+        out["sfc"] = int(m.group(1).replace(",", ""))
+    return out
 
 
 def check_offer(client: Client, offer: dict, jan: str, names=()):
@@ -195,6 +210,9 @@ def check_offer(client: Client, offer: dict, jan: str, names=()):
     if info.get("ng"):
         offer["ng"] = info["ng"]  # 呼び出し側で出品ごと除外する
         return True
+    for k in ("sf", "sfc"):  # 実際の送料（ページに出る都道府県あて）
+        if k in info:
+            offer[k] = info[k]
     old = offer["p"]
     if info["jp"] is not None:
         price = info["jp"]
