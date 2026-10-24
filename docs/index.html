@@ -117,6 +117,9 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
     <div class="row">大型の発送費 <input type="number" id="sendCostL" min="0" step="100"> 円</div>
     <div class="hint">大型とみなす言葉（｜区切り・商品名で判定）</div>
     <input type="text" id="largeWords">
+    <div class="row" style="margin-top:6px">電動工具の発送費 <input type="number" id="sendCostT" min="0" step="100"> 円</div>
+    <div class="hint">電動工具とみなす言葉（メーカー名・工具名）</div>
+    <input type="text" id="toolWords">
   </fieldset>
   <fieldset>
     <legend>買取店</legend>
@@ -140,7 +143,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
       <button data-sort="profit" class="on">お得額順</button>
       <button data-sort="rate">お得率順</button>
       <button data-sort="buy">買取価格順</button>
-      <span class="btns" id="sizeBtns"><button data-size="all">全部</button><button data-size="normal">通常</button><button data-size="large">大型</button></span>
+      <span class="btns" id="sizeBtns"><button data-size="all">全部</button><button data-size="normal">通常</button><button data-size="large">大型</button><button data-size="tool">電動工具</button></span>
       <button class="wbtn" id="watchOnly" title="ウォッチリストの商品だけ表示（差益がマイナスでも表示）">★ ウォッチのみ</button>
       <a href="watch.html" style="align-self:center;font-size:13px">ウォッチリスト管理</a>
     </div>
@@ -156,7 +159,7 @@ const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 // 新品以外・別物の出品を除外（yahoo.py の EXCLUDE と同じ。データ更新前でもすぐ効くように画面側でも適用）
 const EXCLUDE=/簡易箱|簡易パッケージ|簡易パック|白箱|バルク|キットばらし|キットバラシ|キットばらし品|キット分解|キットから|ばらし品|バラし品|福袋|オリパ|(?<!レビュー)くじ|ガチャ|中身ランダム|ランダム発送|ランダム封入|PSA\s?\d+|鑑定品|延長申込|延長申し込み|延長料金|延長プラン|無制限プラン|料金プラン|専用ページ|\d+\s*(?:日|日間|ヶ月|ケ月|カ月|か月|ヵ月)(?:間)?(?:レンタル|プラン|延長|利用)|貸出|貸し出し|サブスク|保証開始|箱不良|箱痛み|箱傷み|箱ダメージ|シュリンク破れ|保証期間開始|印付|印あり|印有り?|捺印|押印済|[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|美品|良品|使用感|傷あり|キズあり|難あり|パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|箱潰れ|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|海外版|並行輸入|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ/i;
 const DEFAULTS={useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
-  shipAdd:800,sendCost:0,sendCostL:0,largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,sort:'profit',srcOff:[]};
+  shipAdd:800,sendCost:0,sendCostL:0,sendCostT:0,toolWords:'マキタ|makita|HiKOKI|ハイコーキ|日立工機|BOSCH|ボッシュ|Milwaukee|ミルウォーキー|DEWALT|デウォルト|京セラ インダストリアル|RYOBI|リョービ|インパクトドライバ|インパクトレンチ|ドリルドライバ|振動ドリル|ハンマドリル|ハンマードリル|丸ノコ|丸のこ|マルノコ|グラインダ|サンダ|ジグソー|レシプロソー|チェーンソー|チェンソー|草刈機|刈払機|ヘッジトリマ|ブロワ|マルチツール|高圧洗浄機|工進|KOSHIN|高儀|プロ用',largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
 let S={...DEFAULTS,...store.get()};
@@ -167,15 +170,19 @@ const $=id=>document.getElementById(id);
 const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-const NUMS=['step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','sendCostL','minProfit','minBuy'];
-let LARGE_RE=null;
-function largeRe(){try{LARGE_RE=S.largeWords.trim()?new RegExp(S.largeWords.trim().replace(/[｜,、]/g,'|').replace(/\|+$/,''),'i'):null}catch(e){LARGE_RE=null}}
-const isLarge=it=>!!(LARGE_RE&&(LARGE_RE.test(it.name)||(it.offers[0]&&LARGE_RE.test(it.offers[0].n||''))));
-const sendCostOf=it=>isLarge(it)?S.sendCostL:S.sendCost;
+const NUMS=['step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','sendCostL','sendCostT','minProfit','minBuy'];
+let LARGE_RE=null,TOOL_RE=null;
+const mkRe=w=>{try{return w&&w.trim()?new RegExp(w.trim().replace(/[｜,、]/g,'|').replace(/^\|+|\|+$/g,''),'i'):null}catch(e){return null}};
+function largeRe(){LARGE_RE=mkRe(S.largeWords);TOOL_RE=mkRe(S.toolWords)}
+const hit=(re,it)=>!!(re&&(re.test(it.name)||(it.offers[0]&&re.test(it.offers[0].n||''))));
+// 種類：電動工具 → 大型 → 通常 の順に判定
+const kindOf=it=>hit(TOOL_RE,it)?'tool':hit(LARGE_RE,it)?'large':'normal';
+const isLarge=it=>kindOf(it)==='large';
+const sendCostOf=it=>({tool:S.sendCostT,large:S.sendCostL,normal:S.sendCost})[kindOf(it)];
 const BOOLS=['useUser','premium','freeOnly','noProof','noMulti'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
-  $('cpType').value=S.cpType;$('q').value=S.q;$('largeWords').value=S.largeWords;largeRe();
+  $('cpType').value=S.cpType;$('q').value=S.q;$('largeWords').value=S.largeWords;$('toolWords').value=S.toolWords;largeRe();
   document.querySelectorAll('#sizeBtns button').forEach(b=>b.classList.toggle('on',b.dataset.size===S.size));
   document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
   $('watchOnly').classList.toggle('on',!!S.watchOnly);
@@ -183,7 +190,7 @@ function syncForm(){
 }
 function readForm(){
   NUMS.forEach(k=>S[k]=parseFloat($(k).value)||0);BOOLS.forEach(k=>S[k]=$(k).checked);
-  S.cpType=$('cpType').value;S.q=$('q').value.trim();S.largeWords=$('largeWords').value;largeRe();
+  S.cpType=$('cpType').value;S.q=$('q').value.trim();S.largeWords=$('largeWords').value;S.toolWords=$('toolWords').value;largeRe();
   S.srcOff=[...document.querySelectorAll('#srcBoxes input')].filter(c=>!c.checked).map(c=>c.value);
   store.set(S);shown=100;render();
 }
@@ -237,9 +244,9 @@ function compute(){
     if(!offers.length)continue;
     offers.sort((a,b)=>a.eff-b.eff);
     const top=offers[0];
-    const lg=isLarge(it);
-    if(S.size==='large'&&!lg||S.size==='normal'&&lg)continue;
-    const profit=best.p-top.eff-(lg?S.sendCostL:S.sendCost);
+    const kind=kindOf(it),lg=kind;
+    if(S.size!=='all'&&S.size!==kind)continue;
+    const profit=best.p-top.eff-sendCostOf(it);
     if(!W&&profit<S.minProfit)continue;
     if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)||offers.some(e=>e.o.s.toLowerCase().includes(q)||e.o.n.toLowerCase().includes(q))))continue;
     rows.push({it,buys,best,offers,top,profit,rate:profit/(top.paid+top.ship),multi,lg});
@@ -275,7 +282,7 @@ function render(){
     return `<article class="item">
       ${o.img?`<img src="${esc(o.img)}" alt="" loading="lazy">`:'<div></div>'}
       <div>
-        <div class="name">${star}${r.lg?'<span class="chip warn" style="margin-right:6px" title="大型商品（発送費は「大型の発送費」で計算）">大型</span>':''}${esc(it.name)}</div>
+        <div class="name">${star}${r.lg==='large'?'<span class="chip warn" style="margin-right:6px" title="大型商品（発送費は「大型の発送費」で計算）">大型</span>':r.lg==='tool'?'<span class="chip warn" style="margin-right:6px" title="電動工具（発送費は「電動工具の発送費」で計算）">工具</span>':''}${esc(it.name)}</div>
         <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
         <div class="chips">${chips}</div>
         ${o.pv||o.add?`<div class="chips">${o.pv?`<span class="chip warn" title="商品ページで色・容量などを選ぶと価格が変わる出品です。JANに一致する選択肢が分からないため、高い方の価格で計算しています">仕様で価格差 ${yen(o.pv[0])}〜${yen(o.pv[1])}（高い方で計算）</span>`:''}${o.add?`<span class="chip warn" title="全ての選択肢に料金がかかるオプションの最低額を加えています">必須オプション +${yen(o.add)} 込み</span>`:''}</div>`:''}
