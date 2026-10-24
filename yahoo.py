@@ -80,18 +80,25 @@ RE_NEXT = re.compile(r'<script id="__NEXT_DATA__"[^>]*>(.*?)</script>', re.S)
 
 
 def _choices(item: dict):
-    """(選択肢名, 価格 or None, skuId) を列挙。価格 None は基本価格と同じ。"""
+    """(選択肢名, 価格 or None, skuId, 在庫あり?) を列挙。価格 None は基本価格と同じ。"""
+    def avail(c):
+        return (c.get("stock") or {}).get("isAvailable") is not False
     t1, t2 = item.get("stockTableOneAxis"), item.get("stockTableTwoAxis")
     if t1:
         for c in (t1.get("firstOption") or {}).get("choiceList") or []:
-            yield c.get("choiceName", ""), c.get("price"), str(c.get("skuId") or "")
+            yield c.get("choiceName", ""), c.get("price"), str(c.get("skuId") or ""), avail(c)
     if t2:
         for f in (t2.get("firstOption") or {}).get("choiceList") or []:
             for c in ((f.get("secondOption") or {}).get("choiceList") or []):
-                yield f"{f.get('choiceName', '')} {c.get('choiceName', '')}", c.get("price"), str(c.get("skuId") or "")
+                yield f"{f.get('choiceName', '')} {c.get('choiceName', '')}", c.get("price"), str(c.get("skuId") or ""), avail(c)
 
 
-def parse_item_page(html: str, jan: str):
+def _nz(s):
+    import unicodedata
+    return re.sub(r"\s+", "", unicodedata.normalize("NFKC", s or "")).lower()
+
+
+def parse_item_page(html: str, jan: str, names=()):
     """商品ページから、そのJANを買うときの価格情報を返す。読めなければ None。
 
     戻り値: {"base": 基本価格, "jp": JANに一致した選択肢の価格 or None,
@@ -108,12 +115,20 @@ def parse_item_page(html: str, jan: str):
     base = int(item.get("applicablePrice") or 0)
     if base <= 0:
         return None
-    prices, jp = [], None
-    for _name, price, sku in _choices(item):
+    prices, jp, jstock = [], None, None
+    choices = list(_choices(item))
+    for _name, price, sku, ok in choices:
         p = int(price) if price else base
         prices.append(p)
         if sku and (sku == jan or sku.endswith(jan)):
-            jp = p
+            jp, jstock = p, ok
+    # 管理番号がJANでない場合は、選択肢の名前（ブラック／256GB 等）が商品名に含まれるもので特定する
+    if jp is None and choices and names:
+        text = _nz(" ".join(names))
+        hit = [c for c in choices if all(_nz(w) in text for w in c[0].split() if w)]
+        if len(hit) == 1:
+            jp = int(hit[0][1]) if hit[0][1] else base
+            jstock = hit[0][3]
     # 全ての選択肢に料金がかかるオプション（保証・付属品の有無など）は必ず上乗せされる
     add = 0
     for opt in item.get("selectOptionList") or []:
@@ -128,13 +143,13 @@ def parse_item_page(html: str, jan: str):
         ng = "予約商品"
     elif item.get("isOnSale") is False or item.get("isBeforeSalePeriod") or item.get("isAfterSalePeriod"):
         ng = "販売期間外"
-    elif stock.get("isAvailable") is False:
-        ng = "在庫なし"
+    elif stock.get("isAvailable") is False or jstock is False:
+        ng = "在庫なし"  # 選択肢がある場合は、そのJANの色・容量の在庫で判断
     return {"base": base, "jp": jp, "min": min(prices) if prices else base,
             "max": max(prices) if prices else base, "add": add, "ng": ng}
 
 
-def check_offer(client: Client, offer: dict, jan: str):
+def check_offer(client: Client, offer: dict, jan: str, names=()):
     """出品の価格を商品ページの情報で補正する（変更があれば offer を書き換えて True）。
 
     - 選択肢の中にJANが一致するものがあれば、その価格を使う
@@ -144,7 +159,7 @@ def check_offer(client: Client, offer: dict, jan: str):
     url = offer.get("u", "")
     if "store.shopping.yahoo.co.jp" not in url:
         return False  # LOHACO 等はページ構造が違うので対象外
-    info = parse_item_page(client.get(url), jan)
+    info = parse_item_page(client.get(url), jan, names)
     offer["chk"] = 1
     if not info:
         return False

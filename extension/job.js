@@ -195,7 +195,7 @@ const KTS = (() => {
   // ---------- Yahoo!ショッピング（ログイン中のあなたの条件でのポイント・価格） ----------
   // 商品ページの埋め込みデータ（__NEXT_DATA__）には、ログイン中の会員（プレミアム・ランク・PayPay条件など）に
   // 合わせた付与ポイントの内訳が入っている。付与上限に達したキャンペーンは実際には付かないので差し引く。
-  function parseYahooItem(html, jan) {
+  function parseYahooItem(html, jan, names = []) {
     const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
     if (!m) return null;
     let pp;
@@ -208,8 +208,16 @@ const KTS = (() => {
     const t1 = item.stockTableOneAxis, t2 = item.stockTableTwoAxis;
     const choices = [];
     if (t1) ((t1.firstOption || {}).choiceList || []).forEach(c => choices.push(c));
-    if (t2) ((t2.firstOption || {}).choiceList || []).forEach(f => (((f.secondOption || {}).choiceList) || []).forEach(c => choices.push(c)));
+    if (t2) ((t2.firstOption || {}).choiceList || []).forEach(f => (((f.secondOption || {}).choiceList) || []).forEach(c => choices.push({ ...c, choiceName: (f.choiceName || '') + ' ' + (c.choiceName || '') })));
     choices.forEach(c => { const p = c.price ? +c.price : base; prices.push(p); const sku = String(c.skuId || ''); if (sku && (sku === jan || sku.endsWith(jan))) jp = p; });
+    // 管理番号がJANでない場合は、選択肢の名前（ブラック／256GB 等）が商品名に含まれるもので特定
+    const nz = x => String(x || '').normalize('NFKC').replace(/\s+/g, '').toLowerCase();
+    let byName = null;
+    if (jp == null && choices.length && names.length) {
+      const txt = nz(names.join(' '));
+      const hit = choices.filter(c => String(c.choiceName || '').split(/\s+/).filter(Boolean).every(w => txt.includes(nz(w))));
+      if (hit.length === 1) { byName = hit[0]; jp = byName.price ? +byName.price : base; }
+    }
     let price = jp != null ? jp : (prices.length ? Math.max(...prices) : base);
     let add = 0;
     (item.selectOptionList || []).forEach(o => { const ch = (o.choiceList || []).filter(c => c.isSelectable !== false).map(c => +c.charge || 0); if (ch.length && Math.min(...ch) > 0) add += Math.min(...ch); });
@@ -226,7 +234,7 @@ const KTS = (() => {
     else if (item.isPreOrder || (item.preOrderType && item.preOrderType !== 'None')) ng = '予約商品';
     else if (item.isOnSale === false || item.isBeforeSalePeriod || item.isAfterSalePeriod) ng = '販売期間外';
     else if (st.isAvailable === false) ng = '在庫なし';
-    const hit = choices.find(c => { const sku = String(c.skuId || ''); return sku && (sku === jan || sku.endsWith(jan)); });
+    const hit = byName || choices.find(c => { const sku = String(c.skuId || ''); return sku && (sku === jan || sku.endsWith(jan)); });
     if (!ng && hit && hit.stock && hit.stock.isAvailable === false) ng = '在庫なし';
     return {
       ng,
@@ -258,7 +266,7 @@ const KTS = (() => {
         if (!/store\.shopping\.yahoo\.co\.jp/.test(o.u || '')) return;
         const eff = o.p - o.p / 1.1 * 0.12 - (o.pt || 0);
         const score = best - eff;
-        if (watched || (best && score > -3000)) out.push({ jan: it.jan, url: o.u.split('?')[0], score: watched ? 1e9 - i : score });
+        if (watched || (best && score > -3000)) out.push({ jan: it.jan, name: it.name, url: o.u.split('?')[0], score: watched ? 1e9 - i : score });
       });
     }
     out.sort((a, b) => b.score - a.score);
@@ -284,7 +292,7 @@ const KTS = (() => {
         if (!st.login) throw new Error('この Chrome で Yahoo! JAPAN にログインしていないため、会員条件のポイントを取得できません');
         if (!st.premium) premiumWarn = true;
       }
-      const r = parseYahooItem(h, c.jan);
+      const r = parseYahooItem(h, c.jan, [c.name]);
       if (r) { offers[c.url] = r; ok++; }
     }
     return { updated: jstNow(), offers, stats: { candidates: cands.length, ok, premium: !premiumWarn } };

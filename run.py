@@ -228,13 +228,13 @@ def trim_offers(offers, buy, watched=False):
     return keep[:KEEP_OFFERS]
 
 
-def check_variants(client, offers, jan, buy, watched, chk):
+def check_variants(client, offers, jan, buy, watched, chk, names=()):
     """利益が出そうな出品だけ商品ページを開き、仕様選択・必須オプションによる価格差を反映する。"""
     # 還元を最大20%と見ても利益が出ない出品は確認しない（時間節約）
     cands = [o for o in offers if watched or o["p"] - o["pt"] - o["p"] / 1.1 * 0.20 <= buy][:2]
     for o in cands:
         try:
-            if yahoo.check_offer(client, o, jan):
+            if yahoo.check_offer(client, o, jan, names):
                 chk["changed"] += 1
             chk["checked"] += 1
         except Exception as e:  # noqa: BLE001
@@ -327,7 +327,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
             continue
         streak = 0
         if not chk["disabled"]:
-            check_variants(page_client, offers, jan, top, jan in watch, chk)
+            check_variants(page_client, offers, jan, top, jan in watch, chk,
+                           list(by_jan.get(jan, {}).get("names", [])))
         kept = trim_offers(offers, top, jan in watch)
         best = min((o["p"] - o.get("pt", 0) for o in offers), default=None)
         cache[jan] = {"at": now_iso(), "o": kept, "r": round(best / top, 3) if best and top else 9.9}

@@ -171,3 +171,19 @@ def test_item_page_stock():
 if __name__ == "__main__":
     test_item_page_stock()
     print("ok test_item_page_stock")
+
+
+def test_choice_by_name():
+    item = {"applicablePrice": 178000, "stockTableOneAxis": {"firstOption": {"choiceList": [
+        {"choiceName": "ブラック", "price": None, "skuId": "3220-CAN-0019", "stock": {"isAvailable": False}},
+        {"choiceName": "シルバー", "price": None, "skuId": "3220-CAN-0020", "stock": {"isAvailable": True}}]}},
+        "stock": {"isAvailable": True}}
+    info = yahoo.parse_item_page(_page(item), "4549292137743", ["デジタルカメラ PowerShot G7 X Mark III [ブラック]"])
+    assert info["jp"] == 178000 and info["ng"] == "在庫なし"
+    info = yahoo.parse_item_page(_page(item), "4549292137804", ["PowerShot G7 X Mark III [シルバー]"])
+    assert info["ng"] == ""
+
+
+if __name__ == "__main__":
+    test_choice_by_name()
+    print("ok test_choice_by_name")
