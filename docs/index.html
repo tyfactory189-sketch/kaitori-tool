@@ -244,6 +244,8 @@ function renderMeta(){
     else st=`${s.count?s.count.toLocaleString()+'件':'—'} <span class="err" title="${esc(s.error||'')}">⚠取得失敗</span>`;
     parts.push(`${esc(s.label)} ${st}`);
   }
+  const y=DATA.yahoo;
+  if(y&&y.stopped&&y.stopped.indexOf('時間切れ')<0) parts.push(`<span class="err" title="${esc(y.last_error||'')}">⚠Yahoo照合エラー（${y.done}/${y.targets}件のみ更新）</span>`);
   parts.push('<a href="bookmarklet.html">買取価格を取得 →</a>');
   $('meta').innerHTML=parts.map(p=>`<span>${p}</span>`).join('');
   $('srcBoxes').innerHTML=Object.entries(DATA.sources).map(([k,s])=>`<label><input type="checkbox" value="${k}"> ${esc(s.label)}</label>`).join('');

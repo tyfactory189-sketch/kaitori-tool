@@ -65,7 +65,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm --cached -q --ignore-unmatch data/yahoo_cache.json
-          git add data/status.json data/buyback_shouten.json docs/data.json 2>/dev/null || true
+          git add data/status.json data/run_log.json data/buyback_shouten.json docs/data.json 2>/dev/null || true
           git diff --cached --quiet && exit 0
           git commit -q -m "価格データ更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M')"
           # 実行中にブックマークから買取データが保存されていても取り込んでから送る

@@ -17,6 +17,7 @@
 import argparse
 import json
 import os
+import re
 import sys
 import time
 from datetime import datetime, timezone, timedelta
@@ -35,6 +36,9 @@ JST = timezone(timedelta(hours=9))
 # 還元を最大まで積んでも利益が出ないので保存しない（データを軽くするため）
 KEEP_RATIO = 1.35
 KEEP_OFFERS = 3
+
+# 実行結果の記録（data/run_log.json に保存。Actionsのログを見なくても状況が分かるように）
+RUN_LOG: dict = {}
 
 
 def now_iso():
@@ -142,21 +146,32 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min):
         if top >= min_buy:
             targets.append((cache.get(jan, {}).get("at", ""), -top, jan, top))
     targets.sort()
-    client = Client(delay=1.1)
+    client = Client(delay=1.1, retries=2, backoff=5)
     deadline = time.time() + budget_min * 60
-    done = fails = 0
+    done = fails = streak = 0
+    errors: dict[str, int] = {}
+    last_error = ""
+    stopped = ""
     for _, _, jan, top in targets:
         if time.time() > deadline:
-            log(f"[yahoo] 時間切れ。{done}/{len(targets)}件を更新、残りは次回")
+            stopped = "時間切れ（残りは次回）"
             break
         try:
             offers = yahoo.search_jan(client, appid, jan, top, keep=10)
         except Exception as e:  # noqa: BLE001
             fails += 1
-            log(f"[yahoo] {jan} 失敗: {e}")
-            if fails >= 30 and done == 0:
-                raise RuntimeError("Yahoo APIが連続で失敗しました。YAHOO_APPID が正しいか確認してください") from e
+            streak += 1
+            last_error = str(e)[:300]
+            m = re.search(r"HTTP (\d{3})", last_error)
+            key = f"HTTP {m.group(1)}" if m else type(e).__name__
+            errors[key] = errors.get(key, 0) + 1
+            log(f"[yahoo] {jan} 失敗: {last_error}")
+            if streak >= 15:
+                stopped = "Yahoo APIが連続で失敗したため中断"
+                log(f"[yahoo] {stopped}: {last_error}")
+                break
             continue
+        streak = 0
         cache[jan] = {"at": now_iso(), "o": trim_offers(offers, top)}
         done += 1
         if done % 500 == 0:
@@ -164,7 +179,9 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min):
             save(DATA / "yahoo_cache.json", cache, compact=True)
     cache = {k: v for k, v in cache.items() if k in by_jan}
     save(DATA / "yahoo_cache.json", cache, compact=True)
-    log(f"[yahoo] 更新 {done}件 / 対象 {len(targets)}件")
+    log(f"[yahoo] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped}")
+    RUN_LOG["yahoo"] = {"targets": len(targets), "done": done, "failed": fails,
+                        "errors": errors, "last_error": last_error, "stopped": stopped}
     return cache
 
 
@@ -178,9 +195,11 @@ def build(by_jan, cache):
         if not offers:
             continue
         items.append({"jan": jan, "name": rec["name"], "buys": rec["buys"], "offers": offers, "at": y["at"]})
-    out = {"updated": now_iso(), "sources": source_status(), "items": items}
+    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo")}
     save(DOCS / "data.json", out, compact=True)
     log(f"[build] {len(items)}件を docs/data.json に出力")
+    RUN_LOG.update({"finished": now_iso(), "items": len(items)})
+    save(DATA / "run_log.json", RUN_LOG)
 
 
 def main():
@@ -189,6 +208,7 @@ def main():
     ap.add_argument("--skip-buyback", action="store_true")
     ap.add_argument("--skip-yahoo", action="store_true")
     args = ap.parse_args()
+    RUN_LOG["started"] = now_iso()
 
     if not args.skip_buyback:
         update_buyback([s for s in args.sources.split(",") if s in SCRAPERS])

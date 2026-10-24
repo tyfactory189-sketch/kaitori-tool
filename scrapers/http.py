@@ -26,9 +26,10 @@ HEADERS = {
 class Client:
     """サイトごとに1つ作る。delay 秒以上の間隔を空けてアクセスする。"""
 
-    def __init__(self, delay: float = 1.0, retries: int = 3):
+    def __init__(self, delay: float = 1.0, retries: int = 3, backoff: float = 10):
         self.delay = delay
         self.retries = retries
+        self.backoff = backoff
         self._last = 0.0
         self.session = _req.Session()
         self.session.headers.update(HEADERS)
@@ -46,11 +47,12 @@ class Client:
             self._wait()
             try:
                 r = self.session.get(url, params=params, timeout=30, **_IMPERSONATE)
-                if r.status_code in (429, 500, 502, 503, 504):
-                    last_err = f"HTTP {r.status_code}"
-                    time.sleep(10 * (attempt + 1))
-                    continue
-                r.raise_for_status()
+                if r.status_code >= 400:
+                    last_err = f"HTTP {r.status_code} {r.text[:200]!r}"
+                    if r.status_code in (429, 500, 502, 503, 504):
+                        time.sleep(self.backoff * (attempt + 1))
+                        continue
+                    break  # 4xx（429以外）は再試行しても同じ
                 return r.json() if as_json else r.text
             except Exception as e:  # noqa: BLE001
                 last_err = e
