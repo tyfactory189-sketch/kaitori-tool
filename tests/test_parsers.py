@@ -187,3 +187,18 @@ def test_choice_by_name():
 if __name__ == "__main__":
     test_choice_by_name()
     print("ok test_choice_by_name")
+
+
+def test_select_option_model():
+    item = {"applicablePrice": 32753, "stock": {"isAvailable": True}, "selectOptionList": [{"name": "種類を選べる", "choiceList": [
+        {"charge": None, "isSelectable": True, "name": "YJFD1N　ゴールド（4737）"},
+        {"charge": None, "isSelectable": False, "name": "SP　YJFD2L　ネイビー（4836）"}]}]}
+    info = yahoo.parse_item_page(_page(item), "4540790464836", ["YA-MAN ヤーマン 美顔器 EMS リフトロジーSP YJFD2L"])
+    assert info["ng"] == "在庫なし", info
+    info = yahoo.parse_item_page(_page(item), "x", ["YA-MAN リフトロジー YJFD1N ゴールド"])
+    assert info["ng"] == "" and info["add"] == 0
+
+
+if __name__ == "__main__":
+    test_select_option_model()
+    print("ok test_select_option_model")

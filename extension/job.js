@@ -219,8 +219,15 @@ const KTS = (() => {
       if (hit.length === 1) { byName = hit[0]; jp = byName.price ? +byName.price : base; }
     }
     let price = jp != null ? jp : (prices.length ? Math.max(...prices) : base);
-    let add = 0;
-    (item.selectOptionList || []).forEach(o => { const ch = (o.choiceList || []).filter(c => c.isSelectable !== false).map(c => +c.charge || 0); if (ch.length && Math.min(...ch) > 0) add += Math.min(...ch); });
+    let add = 0, optNg = false;
+    // 型番（英字＋数字5文字以上）で「種類を選べる」選択肢からこのJANのものを特定
+    const mt = new Set((String(names.join(' ')).normalize('NFKC').match(/[A-Za-z0-9][A-Za-z0-9\-]{3,}/g) || []).map(t => t.replace(/-/g, '').toUpperCase()).filter(n => n.length >= 5 && /[A-Z]/.test(n) && /\d/.test(n) && !/\d(GB|TB|MM|ML|W|V|MAH)$/.test(n)));
+    (item.selectOptionList || []).forEach(o => {
+      const chs = o.choiceList || [];
+      const mine = mt.size ? chs.filter(c => { const cn = String(c.name || '').normalize('NFKC').toUpperCase().replace(/[\s-]/g, ''); return [...mt].some(t => cn.includes(t)); }) : [];
+      if (mine.length === 1) { if (mine[0].isSelectable === false) optNg = true; add += +mine[0].charge || 0; return; }
+      const ch = chs.filter(c => c.isSelectable !== false).map(c => +c.charge || 0); if (ch.length && Math.min(...ch) > 0) add += Math.min(...ch);
+    });
     price += add;
     // ポイント（表示は基本価格に対する値なので、価格が変わったら比例させる）
     const parts = (pt.currentCampaignList || []).flatMap(c => c.partsCampaignList || []);
@@ -236,6 +243,7 @@ const KTS = (() => {
     else if (st.isAvailable === false) ng = '在庫なし';
     const hit = byName || choices.find(c => { const sku = String(c.skuId || ''); return sku && (sku === jan || sku.endsWith(jan)); });
     if (!ng && hit && hit.stock && hit.stock.isAvailable === false) ng = '在庫なし';
+    if (!ng && optNg) ng = '在庫なし';
     return {
       ng,
       p: price, base, add: add || undefined,

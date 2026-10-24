@@ -93,6 +93,17 @@ def _choices(item: dict):
                 yield f"{f.get('choiceName', '')} {c.get('choiceName', '')}", c.get("price"), str(c.get("skuId") or ""), avail(c)
 
 
+def _model_tokens(names):
+    """商品名から型番らしい語（英字と数字を含む5文字以上）を取り出す。"""
+    import unicodedata
+    out = set()
+    for t in re.findall(r"[A-Za-z0-9][A-Za-z0-9\-]{3,}", unicodedata.normalize("NFKC", " ".join(names or []))):
+        n = t.replace("-", "").upper()
+        if len(n) >= 5 and re.search(r"[A-Z]", n) and re.search(r"\d", n) and not re.search(r"\d(GB|TB|MM|ML|W|V|MAH)$", n):
+            out.add(n)
+    return out
+
+
 def _nz(s):
     import unicodedata
     return re.sub(r"\s+", "", unicodedata.normalize("NFKC", s or "")).lower()
@@ -130,9 +141,19 @@ def parse_item_page(html: str, jan: str, names=()):
             jp = int(hit[0][1]) if hit[0][1] else base
             jstock = hit[0][3]
     # 全ての選択肢に料金がかかるオプション（保証・付属品の有無など）は必ず上乗せされる
+    # ただし「種類を選べる」型の選択肢で、型番からこのJANの選択肢が分かる場合はその選択肢で判断する
     add = 0
+    opt_ng = False
+    mt = _model_tokens(names)
     for opt in item.get("selectOptionList") or []:
-        charges = [c.get("charge") or 0 for c in opt.get("choiceList") or [] if c.get("isSelectable", True)]
+        chs = opt.get("choiceList") or []
+        mine = [c for c in chs if mt and any(t in _nz(c.get("name", "")).upper().replace("-", "") for t in mt)]
+        if len(mine) == 1:
+            if mine[0].get("isSelectable") is False:
+                opt_ng = True  # そのJANの種類が選べない（売り切れ）
+            add += mine[0].get("charge") or 0
+            continue
+        charges = [c.get("charge") or 0 for c in chs if c.get("isSelectable", True)]
         if charges and min(charges) > 0:
             add += min(charges)
     stock = item.get("stock") or {}
@@ -143,7 +164,7 @@ def parse_item_page(html: str, jan: str, names=()):
         ng = "予約商品"
     elif item.get("isOnSale") is False or item.get("isBeforeSalePeriod") or item.get("isAfterSalePeriod"):
         ng = "販売期間外"
-    elif stock.get("isAvailable") is False or jstock is False:
+    elif stock.get("isAvailable") is False or jstock is False or opt_ng:
         ng = "在庫なし"  # 選択肢がある場合は、そのJANの色・容量の在庫で判断
     return {"base": base, "jp": jp, "min": min(prices) if prices else base,
             "max": max(prices) if prices else base, "add": add, "ng": ng}
