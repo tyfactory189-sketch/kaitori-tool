@@ -374,7 +374,7 @@ $('theme').onclick=()=>{const r=document.documentElement;const cur=r.dataset.the
 $('list').addEventListener('click',e=>{const st=e.target.closest('.star');if(st){toggleStar(st.dataset.star);return}const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
 
 KTS_GH.loadWatch().then(w=>{WATCH=new Map(w.items.map(x=>[x.jan,x]));if(DATA)render()});
-const SKIP_ITEM=/ポケモンカード|ポケカ|pok[eé]mone?\s*cards?|ポケモン.{0,30}(?:拡張パック|ハイクラスパック|スターターデッキ|スタートデッキ|デッキビルド|プレミアムトレーナー|スペシャルBOX|カードセット|\bBOX\b)|\bsv\d+[a-z]?\s*box\b/i;
+const SKIP_ITEM=/ポケモンカード|ポケカ|pok[eé]mone?\s*cards?|ポケモン.{0,30}(?:拡張パック|ハイクラスパック|スターターデッキ|スタートデッキ|デッキビルド|プレミアムトレーナー|スペシャルBOX|カードセット|\bBOX\b)|\bsv\d+[a-z]?\s*box\b|カードゲーム|トレーディングカード|トレカ|\bTCG\b|ブースターパック|プレミアムブースター|エクストラブースター|ブースター\s*(?:BOX|ボックス)|アドバンスパック|スタートデッキ|構築済みデッキ|ONE\s*PIECE\s*CARD|ワンピースカード|遊戯王|デュエル・?マスターズ|デュエマ|ヴァイス・?シュヴァルツ|ユニオンアリーナ|UNION\s*ARENA|ドラゴンボール.{0,20}(?:ダイバーズ|ヒーローズ|フュージョンワールド|カード)|バトルスピリッツ|バトスピ|シャドウバース\s*エボルヴ|ビルディバイド|マジック[：:・]?\s*ザ[・ ]?ギャザリング|ロルカナ|ラッシュデュエル/i;
 fetch('data.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{d.items=d.items.filter(it=>!SKIP_ITEM.test(it.name||'')&&!(it.offers||[]).some(o=>SKIP_ITEM.test(o.n||'')));d.items.forEach(it=>it.offers=(it.offers||[]).filter(o=>!EXCLUDE.test(o.n||'')&&!(o.yu&&o.yu.ng)&&!o.ng));DATA=d;d.items.forEach(it=>BYJAN[it.jan]=it);renderMeta();syncForm();render()})
   .catch(()=>{$('meta').textContent='data.json を読み込めませんでした';});
 </script>
