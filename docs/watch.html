@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>ウォッチリスト</title>
+<style>
+:root{--bg:#f6f5f2;--panel:#fff;--ink:#1d1d1b;--sub:#6b6a66;--line:#e4e2dc;--accent:#d6362c;--accent-ink:#fff;--plus:#0f8a4b;--minus:#b42318;--chip:#f0eee9;--star:#e0a000}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--panel:#1e1e1c;--ink:#ecebe7;--sub:#9d9b95;--line:#33322f;--accent:#ff5a4e;--accent-ink:#141413;--plus:#4cd38a;--minus:#ff7b6e;--chip:#2a2a27;--star:#ffc53d}}
+:root[data-theme="dark"]{--bg:#141413;--panel:#1e1e1c;--ink:#ecebe7;--sub:#9d9b95;--line:#33322f;--accent:#ff5a4e;--accent-ink:#141413;--plus:#4cd38a;--minus:#ff7b6e;--chip:#2a2a27;--star:#ffc53d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 "Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif}
+main{max-width:1000px;margin:0 auto;padding:18px 16px 60px}
+a{color:inherit}
+h1{font-size:20px;margin:4px 0}
+h1 span{color:var(--star)}
+.sub{color:var(--sub);font-size:13px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px;margin:12px 0}
+textarea,input[type=text]{width:100%;font:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:8px}
+textarea{min-height:120px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:6px 12px;cursor:pointer}
+button.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent);font-weight:700}
+button:disabled{opacity:.5;cursor:default}
+.msg{font-size:13px}
+.msg.err{color:var(--minus)}.msg.ok{color:var(--plus)}
+.tablewrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:7px 6px;border-top:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:12px;color:var(--sub);font-weight:600;white-space:nowrap}
+td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+.plus{color:var(--plus);font-weight:700}.minus{color:var(--minus)}
+.jan{font-size:12px;color:var(--sub);white-space:nowrap}
+.memo{font-size:12px;color:var(--sub)}
+.del{border:0;background:none;color:var(--sub);padding:2px 6px}
+.del:hover{color:var(--minus)}
+.chip{display:inline-block;background:var(--chip);border-radius:999px;padding:0 8px;font-size:12px;margin:1px 2px 1px 0;white-space:nowrap}
+@media(max-width:640px){.hide-sm{display:none}}
+</style>
+</head>
+<body>
+<main>
+  <a class="sub" href="./">← 一覧に戻る</a>
+  <h1><span>★</span> ウォッチリスト</h1>
+  <p class="sub" style="margin:0">過去に買った商品などを登録しておくと、Yahoo照合のたびに<strong>最優先で</strong>価格を調べます（買取価格が低い商品や、買取サイトに載っていない商品も対象）。</p>
+
+  <div class="panel">
+    <strong>JANを追加</strong>
+    <div class="sub">1行に1商品。JANのあとにメモ（購入日・購入価格など）を書けます。注文履歴やExcelからの貼り付けもOK（13桁の数字を自動で拾います）。</div>
+    <textarea id="input" placeholder="4549995635232 AirPods Pro3 10/20購入 33,000円&#10;4948872417419&#10;4902370550733 Switch2"></textarea>
+    <div class="row">
+      <button class="primary" id="add">追加して保存</button>
+      <label class="sub"><input type="checkbox" id="startNow" checked> 保存後すぐにYahoo照合を始める</label>
+      <span class="msg" id="msg"></span>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="row" style="margin-top:0;justify-content:space-between">
+      <strong id="count">読み込み中…</strong>
+      <input type="text" id="q" placeholder="JAN・商品名・メモで絞り込み" style="max-width:280px">
+    </div>
+    <div class="sub" style="margin-top:4px">差益は一覧画面の還元率・クーポン設定で計算しています。Yahoo照合後に数字が入ります。</div>
+    <div class="tablewrap"><table id="tbl"></table></div>
+  </div>
+</main>
+<script src="gh.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
+let S={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,shipAdd:800,sendCost:0};
+try{Object.assign(S,JSON.parse(localStorage.getItem('kts')||'{}'))}catch(e){}
+let WATCH=[],BY={},SOURCES={};
+
+function evalOffer(o){
+  const base=(S.premium&&o.pp>0)?o.pp:o.p;let cp=0;
+  if(S.cpType!=='none'&&base>=S.cpMin){cp=S.cpType==='pct'?Math.floor(base*S.cpVal/100):S.cpVal;if(S.cpCap>0)cp=Math.min(cp,S.cpCap)}
+  const paid=base-cp,ship=o.sh===2?0:S.shipAdd,pts=((S.premium&&o.ptp>0)?o.ptp:o.pt)+Math.floor(paid/1.1*(S.step+S.extra)/100);
+  return {o,eff:paid+ship-pts*S.ptval/100};
+}
+function info(jan){
+  const it=BY[jan];if(!it)return {};
+  const buys=Object.entries(it.buys||{}).map(([k,b])=>({k,...b})).sort((a,b)=>b.p-a.p);
+  const offers=(it.offers||[]).map(evalOffer).sort((a,b)=>a.eff-b.eff);
+  const best=buys[0],top=offers[0];
+  return {it,buys,best,top,profit:best&&top?best.p-top.eff-S.sendCost:null};
+}
+function render(){
+  const q=$('q').value.trim().toLowerCase();
+  const rows=WATCH.map(w=>({w,...info(w.jan)})).filter(r=>!q||r.w.jan.includes(q)||(r.w.memo||'').toLowerCase().includes(q)||(r.it&&r.it.name.toLowerCase().includes(q)));
+  $('count').textContent=`${WATCH.length.toLocaleString()}件 登録中${q?`（${rows.length}件表示）`:''}`;
+  $('tbl').innerHTML='<tr><th>商品</th><th class="hide-sm">登録日</th><th>最高買取</th><th>Yahoo実質</th><th>差益</th><th></th></tr>'+
+    (rows.length?rows.map(r=>`<tr>
+      <td><div>${esc(r.it?r.it.name:(r.w.memo||'（まだ照合されていません）'))}</div>
+        <div class="jan">JAN ${esc(r.w.jan)}</div>${r.w.memo&&r.it?`<div class="memo">${esc(r.w.memo)}</div>`:''}</td>
+      <td class="hide-sm jan">${esc((r.w.added||'').slice(0,10))}</td>
+      <td class="num">${r.best?`${yen(r.best.p)}<div><a class="chip" href="${esc(r.best.u)}" target="_blank" rel="noopener">${esc((SOURCES[r.best.k]||{}).label||r.best.k)}</a></div>`:'<span class="jan">買取データなし</span>'}</td>
+      <td class="num">${r.top?`<a href="${esc(r.top.o.u)}" target="_blank" rel="noopener">${yen(r.top.eff)}</a><div class="jan">${esc(r.top.o.s)}</div>`:`<span class="jan">${r.it?'在庫なし':'未照合'}</span>`}</td>
+      <td class="num ${r.profit==null?'':r.profit>=0?'plus':'minus'}">${r.profit==null?'—':(r.profit>=0?'+':'')+yen(r.profit)}</td>
+      <td><button class="del" data-jan="${esc(r.w.jan)}" title="ウォッチリストから外す">✕</button></td>
+    </tr>`).join(''):'<tr><td colspan="6" class="sub">まだ登録がありません。上の欄にJANを貼り付けて「追加して保存」を押してください。</td></tr>');
+}
+function setMsg(t,cls){$('msg').textContent=t;$('msg').className='msg '+(cls||'')}
+
+async function save(mutate,doneText){
+  $('add').disabled=true;setMsg('保存中…');
+  try{
+    WATCH=await KTS_GH.saveWatch(WATCH,mutate);
+    render();
+    let t=doneText;
+    if($('startNow').checked){t+=(await KTS_GH.startYahoo().catch(()=>false))?' Yahoo照合を開始しました（30分〜で反映）。':' 次の定期更新で照合されます。'}
+    setMsg(t,'ok');return true;
+  }catch(e){setMsg(e.message||String(e),'err');return false}
+  finally{$('add').disabled=false}
+}
+
+$('add').onclick=async()=>{
+  const add=KTS_GH.parseInput($('input').value);
+  if(!add.length){setMsg('JAN（13桁または8桁の数字）が見つかりませんでした。','err');return}
+  const now=new Date(Date.now()+9*3600e3).toISOString().slice(0,16)+'+09:00';
+  let added=0,updated=0;
+  const mutate=list=>{
+    const m=new Map(list.map(w=>[w.jan,w]));added=0;updated=0;
+    for(const a of add){
+      const cur=m.get(a.jan);
+      if(!cur){m.set(a.jan,{jan:a.jan,memo:a.memo,added:now});added++}
+      else if(a.memo&&a.memo!==cur.memo){cur.memo=cur.memo?cur.memo+' / '+a.memo:a.memo;updated++}
+    }
+    return [...m.values()];
+  };
+  if(await save(mutate,'')){
+    setMsg(`${added}件を追加${updated?`、${updated}件のメモを更新`:''}しました。`+$('msg').textContent,'ok');
+    $('input').value='';
+  }
+};
+$('tbl').addEventListener('click',async e=>{
+  const b=e.target.closest('.del');if(!b)return;
+  const jan=b.dataset.jan;
+  if(!confirm(`JAN ${jan} をウォッチリストから外しますか？`))return;
+  const keepStart=$('startNow').checked;$('startNow').checked=false;
+  await save(list=>list.filter(w=>w.jan!==jan),'外しました。');
+  $('startNow').checked=keepStart;
+});
+$('q').addEventListener('input',render);
+
+(async()=>{
+  const [w,d]=await Promise.all([KTS_GH.loadWatch(),fetch('data.json',{cache:'no-store'}).then(r=>r.json()).catch(()=>({items:[],sources:{}}))]);
+  WATCH=w.items;SOURCES=d.sources||{};d.items.forEach(it=>BY[it.jan]=it);
+  render();
+})();
+</script>
+</body>
+</html>

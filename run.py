@@ -128,24 +128,38 @@ def merged_buyback():
 
 
 def top_buy(rec):
-    return max(b["p"] for b in rec["buys"].values())
+    return max((b["p"] for b in rec["buys"].values()), default=0)
 
 
-def trim_offers(offers, buy):
-    """利益の見込みがない出品を落とし、上位だけ残す。"""
+def load_watch():
+    """ウォッチリスト（過去に買った商品など）。画面から docs/watchlist.json に保存される。"""
+    raw = load(DOCS / "watchlist.json", {})
+    items = raw.get("items", []) if isinstance(raw, dict) else raw
+    return {str(w["jan"]): w for w in items if str(w.get("jan", "")).isdigit()}
+
+
+def trim_offers(offers, buy, watched=False):
+    """利益の見込みがない出品を落とし、上位だけ残す（ウォッチ商品は価格に関係なく残す）。"""
+    if watched or buy <= 0:
+        return [o for o in offers if not yahoo.EXCLUDE.search(o.get("n", ""))][:KEEP_OFFERS]
     keep = [o for o in offers
             if o["p"] - o.get("pt", 0) <= buy * KEEP_RATIO and not yahoo.EXCLUDE.search(o.get("n", ""))]
     return keep[:KEEP_OFFERS]
 
 
-def update_yahoo(by_jan, cache, appid, min_buy, budget_min):
-    """前回照合が古いもの（未照合が最優先）から順にYahooを検索。時間切れなら残りは次回へ。"""
+def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
+    """ウォッチ商品を毎回最初に照合し、その後は照合が古いもの（未照合が最優先）から順に。
+    時間切れなら残りは次回へ。"""
     targets = []
+    for jan in watch:  # ウォッチ商品は買取価格に関係なく毎回
+        top = top_buy(by_jan[jan]) if jan in by_jan else 0
+        targets.append((0, "", -top, jan, top))
     for jan, rec in by_jan.items():
         top = top_buy(rec)
-        if top >= min_buy:
-            targets.append((cache.get(jan, {}).get("at", ""), -top, jan, top))
+        if top >= min_buy and jan not in watch:
+            targets.append((1, cache.get(jan, {}).get("at", ""), -top, jan, top))
     targets.sort()
+    targets = [(t[1], t[2], t[3], t[4]) for t in targets]
     client = Client(delay=1.1, retries=2, backoff=5)
     deadline = time.time() + budget_min * 60
     done = fails = streak = 0
@@ -172,12 +186,12 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min):
                 break
             continue
         streak = 0
-        cache[jan] = {"at": now_iso(), "o": trim_offers(offers, top)}
+        cache[jan] = {"at": now_iso(), "o": trim_offers(offers, top, jan in watch)}
         done += 1
         if done % 500 == 0:
             log(f"[yahoo] {done}/{len(targets)}")
             save(DATA / "yahoo_cache.json", cache, compact=True)
-    cache = {k: v for k, v in cache.items() if k in by_jan}
+    cache = {k: v for k, v in cache.items() if k in by_jan or k in watch}
     save(DATA / "yahoo_cache.json", cache, compact=True)
     log(f"[yahoo] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped}")
     RUN_LOG["yahoo"] = {"targets": len(targets), "done": done, "failed": fails,
@@ -185,16 +199,20 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min):
     return cache
 
 
-def build(by_jan, cache):
+def build(by_jan, cache, watch):
     items = []
-    for jan, rec in by_jan.items():
-        y = cache.get(jan)
-        if not y:
+    for jan in list(by_jan) + [j for j in watch if j not in by_jan]:
+        rec = by_jan.get(jan, {"name": "", "buys": {}})
+        watched = jan in watch
+        y = cache.get(jan) or {}
+        offers = trim_offers(y.get("o", []), top_buy(rec), watched)
+        if not offers and not watched:
             continue
-        offers = trim_offers(y.get("o", []), top_buy(rec))
-        if not offers:
-            continue
-        items.append({"jan": jan, "name": rec["name"], "buys": rec["buys"], "offers": offers, "at": y["at"]})
+        name = rec["name"] or watch.get(jan, {}).get("memo") or (offers[0]["n"] if offers else "")
+        item = {"jan": jan, "name": name, "buys": rec["buys"], "offers": offers, "at": y.get("at", "")}
+        if watched:
+            item["w"] = 1
+        items.append(item)
     out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo")}
     save(DOCS / "data.json", out, compact=True)
     log(f"[build] {len(items)}件を docs/data.json に出力")
@@ -216,18 +234,21 @@ def main():
     log(f"買取データ {len(by_jan)} JAN")
 
     cache = load(DATA / "yahoo_cache.json", {})
+    watch = load_watch()
+    log(f"ウォッチリスト {len(watch)}件")
     if not args.skip_yahoo:
         appid = os.environ.get("YAHOO_APPID", "").strip()
         if not appid:
-            build(by_jan, cache)
+            build(by_jan, cache, watch)
             sys.exit("★エラー: YAHOO_APPID が設定されていません。"
                      "Settings → Secrets and variables → Actions に登録してください")
         cache = update_yahoo(
             by_jan, cache, appid,
             int(os.environ.get("MIN_BUY", "3000")),
             int(os.environ.get("YAHOO_BUDGET_MIN", "300")),
+            watch,
         )
-    build(by_jan, cache)
+    build(by_jan, cache, watch)
 
 
 if __name__ == "__main__":

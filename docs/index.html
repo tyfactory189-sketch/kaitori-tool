@@ -74,6 +74,11 @@ table{width:100%;border-collapse:collapse;font-size:12px;margin-top:6px}
 td,th{padding:4px 6px;border-top:1px solid var(--line);text-align:right;white-space:nowrap}
 td:first-child,th:first-child{text-align:left;white-space:normal}
 .more{margin:14px auto;display:block}
+.star{border:0;background:none;padding:0 4px 0 0;font-size:17px;line-height:1;color:var(--sub);cursor:pointer;vertical-align:-1px}
+.star.on{color:#e0a000;background:none;border:0}
+button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:8px 14px;border-radius:8px;font-size:13px;z-index:9;max-width:calc(100vw - 32px)}
+.nodata{color:var(--sub);font-size:13px}
 .more[hidden]{display:none}
 .empty{padding:40px;text-align:center;color:var(--sub)}
 .calc{font-size:11px;color:var(--sub)}
@@ -128,6 +133,8 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
       <button data-sort="profit" class="on">お得額順</button>
       <button data-sort="rate">お得率順</button>
       <button data-sort="buy">買取価格順</button>
+      <button class="wbtn" id="watchOnly" title="ウォッチリストの商品だけ表示（差益がマイナスでも表示）">★ ウォッチのみ</button>
+      <a href="watch.html" style="align-self:center;font-size:13px">ウォッチリスト管理</a>
     </div>
     <div class="count" id="count"></div>
   </div>
@@ -135,6 +142,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
   <button class="more" id="more" hidden>さらに表示</button>
 </section>
 </div></main>
+<script src="gh.js"></script>
 <script>
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 const DEFAULTS={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
@@ -142,7 +150,7 @@ const DEFAULTS={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpM
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
 let S={...DEFAULTS,...store.get()};
-let DATA=null,shown=100;
+let DATA=null,shown=100,WATCH=new Map(),BYJAN={};
 const $=id=>document.getElementById(id);
 const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -152,7 +160,8 @@ const BOOLS=['premium','freeOnly','noProof'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
   $('cpType').value=S.cpType;$('q').value=S.q;
-  document.querySelectorAll('#sortBtns button').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
+  document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
+  $('watchOnly').classList.toggle('on',!!S.watchOnly);
   document.querySelectorAll('#srcBoxes input').forEach(c=>c.checked=!S.srcOff.includes(c.value));
 }
 function readForm(){
@@ -183,24 +192,31 @@ function compute(){
   const srcs=Object.keys(DATA.sources).filter(k=>!S.srcOff.includes(k));
   const q=S.q.toLowerCase();
   const rows=[];
-  for(const it of DATA.items){
+  const W=!!S.watchOnly;
+  const pool0=W?[...WATCH.keys()].map(j=>BYJAN[j]||{jan:j,name:WATCH.get(j).memo||'（まだ照合されていません）',buys:{},offers:[],at:''}):DATA.items;
+  for(const it of pool0){
     const buys=srcs.map(k=>it.buys[k]&&{k,...it.buys[k]}).filter(Boolean);
+    if(W&&(!buys.length||!it.offers.length)){ // ウォッチ表示ではデータ不足でも出す
+      if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)))continue;
+      const offers=it.offers.map(evalOffer).sort((a,b)=>a.eff-b.eff);
+      rows.push({it,buys,best:buys.sort((a,b)=>b.p-a.p)[0],offers,top:offers[0],profit:-Infinity,rate:-Infinity,partial:true});continue;
+    }
     if(!buys.length)continue;
     if(S.noProof&&buys.every(b=>b.note))continue;
     const pool=S.noProof?buys.filter(b=>!b.note):buys;
     const best=pool.reduce((a,b)=>b.p>a.p?b:a);
-    if(best.p<S.minBuy)continue;
+    if(!W&&best.p<S.minBuy)continue;
     let offers=it.offers.map(evalOffer);
     if(S.freeOnly)offers=offers.filter(e=>e.o.sh===2);
     if(!offers.length)continue;
     offers.sort((a,b)=>a.eff-b.eff);
     const top=offers[0];
     const profit=best.p-top.eff-S.sendCost;
-    if(profit<S.minProfit)continue;
+    if(!W&&profit<S.minProfit)continue;
     if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)||offers.some(e=>e.o.s.toLowerCase().includes(q)||e.o.n.toLowerCase().includes(q))))continue;
     rows.push({it,buys,best,offers,top,profit,rate:profit/(top.paid+top.ship)});
   }
-  const key={profit:r=>-r.profit,rate:r=>-r.rate,buy:r=>-r.best.p}[S.sort];
+  const key={profit:r=>-r.profit,rate:r=>-r.rate,buy:r=>-(r.best?r.best.p:0)}[S.sort]||(r=>-r.profit);
   rows.sort((a,b)=>key(a)-key(b));
   return rows;
 }
@@ -211,14 +227,26 @@ function render(){
   $('count').textContent=`${rows.length.toLocaleString()}件 / 全${DATA.items.length.toLocaleString()}件`;
   const L=DATA.sources;
   $('list').innerHTML=rows.length?rows.slice(0,shown).map(r=>{
-    const {it,top,best}=r,o=top.o;
+    const {it,top,best}=r;
+    const star=`<button class="star ${WATCH.has(it.jan)?'on':''}" data-star="${it.jan}" title="ウォッチリストに登録／解除">${WATCH.has(it.jan)?'★':'☆'}</button>`;
+    if(r.partial){
+      const w=WATCH.get(it.jan)||{};
+      return `<article class="item"><div></div><div>
+        <div class="name">${star}${esc(it.name)}</div>
+        <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
+        ${w.memo&&w.memo!==it.name?`<div class="calc">${esc(w.memo)}</div>`:''}
+        <div class="nodata">${best?`${esc(L[best.k].label)} ${yen(best.p)}`:'買取データなし'} ／ ${top?`Yahoo実質 ${yen(top.eff)}（<a href="${esc(top.o.u)}" target="_blank" rel="noopener">${esc(top.o.s)}</a>）`:it.at?'Yahooに在庫なし':'Yahoo未照合（次の照合で最優先に調べます）'}</div>
+      </div><div class="profit"><div class="r">差益 —</div>
+        <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}">買取スキャナー</a></div></div></article>`;
+    }
+    const o=top.o;
     const chips=r.buys.sort((a,b)=>b.p-a.p).map(b=>`<a class="chip ${b===best?'best':''}" href="${esc(b.u)}" target="_blank" rel="noopener">${esc(L[b.k].label)} ${yen(b.p)}</a>${b.note?`<span class="chip warn">${esc(b.note)}</span>`:''}`).join('');
     const others=r.offers.map(e=>`<tr><td><a href="${esc(e.o.u)}" target="_blank" rel="noopener">${esc(e.o.s)}</a>${e.o.bs?' ★':''}</td><td>${yen(e.base)}</td><td>${e.cp?'-'+yen(e.cp):'—'}</td><td>${e.o.sh===2?'無料':'+'+yen(e.ship)}</td><td>${e.pts.toLocaleString()}P</td><td><b>${yen(e.eff)}</b></td><td class="${best.p-e.eff-S.sendCost>=0?'plus':'minus'}">${yen(best.p-e.eff-S.sendCost)}</td></tr>`).join('');
     const pc=r.profit>=0?'plus':'minus';
     return `<article class="item">
       ${o.img?`<img src="${esc(o.img)}" alt="" loading="lazy">`:'<div></div>'}
       <div>
-        <div class="name">${esc(it.name)}</div>
+        <div class="name">${star}${esc(it.name)}</div>
         <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
         <div class="chips">${chips}</div>
         <div class="offer">Yahoo最安(実質): <a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.s)}</a>${o.bs?' ★優良':''} ${yen(top.base)}${top.cp?` − クーポン${yen(top.cp)}`:''}${top.ship?` ＋送料${yen(top.ship)}`:''} − ${top.pts.toLocaleString()}P
@@ -233,7 +261,7 @@ function render(){
       <details><summary>出品${r.offers.length}件を比較</summary>
         <table><tr><th>ストア</th><th>価格</th><th>クーポン</th><th>送料</th><th>ポイント</th><th>実質</th><th>差額</th></tr>${others}</table>
       </details>
-    </article>`}).join(''):'<div class="empty panel">条件に合う商品がありません。還元率や絞り込みを見直してください。</div>';
+    </article>`}).join(''):(S.watchOnly?'<div class="empty panel">ウォッチリストが空です。商品の☆を押すか、<a href="watch.html">ウォッチリスト管理</a>でJANを登録してください。</div>':'<div class="empty panel">条件に合う商品がありません。還元率や絞り込みを見直してください。</div>');
   $('more').hidden=rows.length<=shown;
 }
 
@@ -258,13 +286,27 @@ function renderMeta(){
 
 document.addEventListener('input',e=>{if(e.target.closest('#settings'))readForm()});
 document.addEventListener('change',e=>{if(e.target.closest('#settings'))readForm()});
-$('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;S.sort=b.dataset.sort;store.set(S);syncForm();shown=100;render()});
+$('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-sort]');if(!b)return;S.sort=b.dataset.sort;store.set(S);syncForm();shown=100;render()});
 $('more').onclick=()=>{shown+=100;render()};
+$('watchOnly').onclick=()=>{S.watchOnly=!S.watchOnly;store.set(S);syncForm();shown=100;render()};
+function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
+async function toggleStar(jan){
+  const on=!WATCH.has(jan);
+  const now=new Date(Date.now()+9*3600e3).toISOString().slice(0,16)+'+09:00';
+  const prev=WATCH.get(jan);
+  if(on)WATCH.set(jan,{jan,memo:'',added:now});else WATCH.delete(jan);render();
+  try{
+    const list=await KTS_GH.saveWatch(null,l=>on?(l.some(w=>w.jan===jan)?l:[...l,{jan,memo:'',added:now}]):l.filter(w=>w.jan!==jan));
+    WATCH=new Map(list.map(w=>[w.jan,w]));render();
+    toast(on?'ウォッチリストに登録しました（次の照合から最優先で調べます）':'ウォッチリストから外しました');
+  }catch(e){if(on)WATCH.delete(jan);else WATCH.set(jan,prev);render();toast(e.message||String(e))}
+}
 $('reset').onclick=()=>{S={...DEFAULTS};store.set(S);syncForm();render()};
 $('theme').onclick=()=>{const r=document.documentElement;const cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark'};
-$('list').addEventListener('click',e=>{const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
+$('list').addEventListener('click',e=>{const st=e.target.closest('.star');if(st){toggleStar(st.dataset.star);return}const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
 
-fetch('data.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{DATA=d;renderMeta();syncForm();render()})
+KTS_GH.loadWatch().then(w=>{WATCH=new Map(w.items.map(x=>[x.jan,x]));if(DATA)render()});
+fetch('data.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{DATA=d;d.items.forEach(it=>BYJAN[it.jan]=it);renderMeta();syncForm();render()})
   .catch(()=>{$('meta').textContent='data.json を読み込めませんでした';});
 </script>
 </body>
