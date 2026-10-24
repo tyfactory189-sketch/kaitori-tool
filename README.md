@@ -1,21 +1,29 @@
 # 買取差益チェッカー
 
 買取wiki・買取商店・森森買取の新品買取価格と、Yahoo!ショッピングの新品最安値（ポイント込みの実質価格）を JAN で突き合わせ、
-差益の大きい順に一覧表示する自分用ツールです。GitHub Actions が 1日3回自動で更新し、GitHub Pages で見られます。
+差益の大きい順に一覧表示する自分用ツールです。GitHub Actions が 1日4回自動で更新し、GitHub Pages で見られます。
+
+- 買取商店：GitHub Actions が自動で取得
+- 買取wiki・森森買取：GitHub のサーバーからの取得を拒否するため、ブラウザのブックマーク「買取価格を取得」で取得
+  （手順は公開ページの `bookmarklet.html`、一覧画面上部の「買取価格を取得 →」から）
 
 ## しくみ
 
 ```
-GitHub Actions（6:07 / 14:07 / 22:07）
+ブラウザのブックマーク（docs/grab.js）
+  └ 買取wiki・森森買取を取得 → data/buyback_wiki.json / buyback_morimori.json に保存 → Actions を起動
+
+GitHub Actions（3:07 / 9:07 / 15:07 / 21:07）
   └ run.py
-     ├ scrapers/  買取3サイトから JAN・商品名・新品買取価格を取得 → data/buyback_*.json
-     ├ yahoo.py   JANごとに Yahoo商品検索API(v3) で新品・在庫ありの出品を取得 → data/yahoo_cache.json
+     ├ scrapers/  買取商店から JAN・商品名・新品買取価格を取得 → data/buyback_shouten.json
+     ├ yahoo.py   JANごとに Yahoo商品検索API(v3) で新品・在庫ありの出品を取得
+     │            → data/yahoo_cache.json（Actions のキャッシュに保存。リポジトリには入れない）
      └ docs/data.json を出力してコミット
 GitHub Pages
   └ docs/index.html が data.json を読み、ブラウザ側で還元率・クーポンを反映して計算
 ```
 
-- Yahoo API は 1秒1件の制限があるため、1回の実行で照合するのは最大 240 分ぶん（約1.3万件）。照合が古いものから順に更新するので、件数が多くても数回で一巡します。
+- Yahoo API は 1秒1件の制限があるため、1回の実行で照合するのは最大 300 分ぶん（約1.6万件）。未照合・照合が古いものから順に更新するので、件数が多くても数回で一巡します。
 - 同じJANで出品されている部品・付属品・中古・箱傷み品は除外しています（`yahoo.py` の `EXCLUDE`）。
 - 買取サイトの取得に失敗したときは前回のデータを使い、画面上部に「⚠取得失敗」を出します。
 
@@ -46,7 +54,7 @@ Settings → Secrets and variables → Actions → Variables に追加すると�
 | 変数 | 既定値 | 内容 |
 |---|---|---|
 | `MIN_BUY` | 3000 | Yahooで照合する最低買取価格 |
-| `YAHOO_BUDGET_MIN` | 240 | 1回の実行でYahoo照合に使う最大分数 |
+| `YAHOO_BUDGET_MIN` | 300 | 1回の実行でYahoo照合に使う最大分数 |
 
 画面左の還元率・クーポン・送料の設定はブラウザに保存されます。
 

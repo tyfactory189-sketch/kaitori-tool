@@ -30,13 +30,14 @@ def parse_list(html: str, cat: str = ""):
         name = name_el.get_text(" ", strip=True) if name_el else ""
         name = re.sub(r"\s*\d{13}\s*$", "", name)
         link = box.select_one("a[href]")
+        href = link["href"] if link else "/"
         items.append({
             "source": SOURCE,
             "jan": jan.group(1),
             "name": name,
             "price": int(price.group(1).replace(",", "")),
             "category": cat,
-            "url": (BASE + link["href"]) if link and link["href"].startswith("/") else BASE + "/category/" + cat + "/",
+            "url": href if href.startswith("http") else BASE + href,
             "note": "購入証明必要" if "購入証明" in text else "",
         })
     count_m = RE_COUNT.search(soup.get_text(" ", strip=True))
@@ -55,15 +56,15 @@ def list_categories(client: Client):
 
 
 def scrape(client: Client | None = None, log=print):
+    """全カテゴリ（スマホ・ゲーム機・カメラ等を含む）を /search/<page> でたどる。"""
     client = client or Client(delay=1.0)
-    out = []
-    for slug in list_categories(client):
-        url = f"{BASE}/category/{quote(slug)}/"
-        items, count, per = parse_list(client.get(url), slug)
-        out += items
-        pages = -(-count // per) if per else 1
-        for p in range(2, pages + 1):
-            more, _, _ = parse_list(client.get(f"{url}{p}"), slug)
-            out += more
-        log(f"[wiki] {slug}: {count}件 / {pages}ページ")
+    items, count, per = parse_list(client.get(f"{BASE}/search/1"))
+    out = list(items)
+    pages = -(-count // per) if per else 1
+    for p in range(2, pages + 1):
+        more, _, _ = parse_list(client.get(f"{BASE}/search/{p}"))
+        out += more
+        if p % 50 == 0:
+            log(f"[wiki] {p}/{pages}ページ")
+    log(f"[wiki] {count}件 / {pages}ページ")
     return out

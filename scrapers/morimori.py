@@ -36,14 +36,16 @@ def parse_list(html: str, cat: str = ""):
         meta = row.select_one(".mm1551-prow__meta")
         meta_text = meta.get_text(" ", strip=True) if meta else ""
         jan = RE_JAN.search(meta_text)
-        if not jan or "新品" not in meta_text:
+        # 状態の表記が無い商品は新品扱い。中古だけ除外する
+        if not jan or "中古" in meta_text:
             continue
-        price_el = row.select_one(".mm1551-prow__cur-val") or row.select_one(".mm1551-prow__price")
+        # 「現在価格」欄（価格が「ASK」の商品は数字が無いので飛ばす）
+        price_el = row.select_one(".mm1551-prow__cur")
         m = RE_YEN.search(price_el.get_text(" ", strip=True)) if price_el else None
         if not m:
             continue
         name_el = row.select_one(".mm1551-prow__name")
-        link = row.select_one("a[href*='/product'], a[href*='/item'], a[href]")
+        link = row.select_one(".mm1551-prow__name a[href]") or row.select_one("a[href*='/product/']")
         href = link["href"] if link else f"/category/{cat}"
         items.append({
             "source": SOURCE,

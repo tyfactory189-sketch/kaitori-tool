@@ -234,10 +234,17 @@ function render(){
 }
 
 function renderMeta(){
-  const parts=[`更新 ${DATA.updated.replace('T',' ').slice(0,16)}`];
+  const fmt=t=>t?t.slice(5,16).replace('-','/').replace('T',' '):'';
+  const parts=[`Yahoo照合 ${fmt(DATA.updated)}`];
   for(const [k,s] of Object.entries(DATA.sources)){
-    parts.push(`${esc(s.label)} ${s.count?s.count.toLocaleString()+'件':'—'}${s.error?` <span class="err" title="${esc(s.error)}">⚠取得失敗</span>`:''}`);
+    const age=s.updated?(Date.now()-Date.parse(s.updated))/36e5:Infinity;
+    let st;
+    if(s.count&&!s.error) st=`${s.count.toLocaleString()}件 <span class="${age>24?'err':''}" title="買取価格の取得日時">${fmt(s.updated)}${age>24?' (古い)':''}</span>`;
+    else if(!s.count&&(s.manual||k!=='shouten')) st=`<a href="bookmarklet.html">未取得</a>`;
+    else st=`${s.count?s.count.toLocaleString()+'件':'—'} <span class="err" title="${esc(s.error||'')}">⚠取得失敗</span>`;
+    parts.push(`${esc(s.label)} ${st}`);
   }
+  parts.push('<a href="bookmarklet.html">買取価格を取得 →</a>');
   $('meta').innerHTML=parts.map(p=>`<span>${p}</span>`).join('');
   $('srcBoxes').innerHTML=Object.entries(DATA.sources).map(([k,s])=>`<label><input type="checkbox" value="${k}"> ${esc(s.label)}</label>`).join('');
 }
