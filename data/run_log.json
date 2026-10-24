@@ -1,24 +1,24 @@
 {
- "started": "2026-10-24T20:45+09:00",
+ "started": "2026-10-24T21:30+09:00",
  "yahoo": {
   "targets": 16579,
-  "done": 20,
-  "failed": 18,
+  "done": 18,
+  "failed": 15,
   "errors": {
-   "HTTP 400": 14,
-   "HTTP 429": 4
+   "HTTP 400": 12,
+   "HTTP 429": 3
   },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 429 '{ \"Status\": 429, \"Message\":\"The AppID is denied: total count of AppID reached the URL\\'s limit count.\" }'",
   "stopped": "Yahoo APIが連続で失敗したため中断"
  },
  "item_check": {
-  "checked": 38,
+  "checked": 36,
   "changed": 0,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-24T20:47+09:00",
+ "finished": "2026-10-24T22:25+09:00",
  "items": 3662
 }
