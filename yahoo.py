@@ -32,7 +32,7 @@ def _offer(hit: dict) -> dict:
     seller = hit.get("seller") or {}
     img = (hit.get("image") or {}).get("small") or ""
     return {
-        "n": (hit.get("name") or "")[:90],
+        "n": (hit.get("name") or "")[:200],  # 末尾の「：良品」なども判定できるよう長めに残す
         "p": int(hit.get("price") or 0),
         "pp": int(hit.get("premiumPrice") or 0),
         "pt": int(pt.get("lyLimitedBonusAmount") or 0),
