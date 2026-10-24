@@ -64,6 +64,8 @@ button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--ac
 .profit .v{font-size:22px;font-weight:800;font-variant-numeric:tabular-nums}
 .plus{color:var(--plus)}.minus{color:var(--minus)}
 .profit .r{font-size:12px;color:var(--sub)}
+.profit .scan{display:inline-block;margin-top:4px;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:4px 10px;text-decoration:none;font-size:12px}
+.profit .scan:hover{border-color:var(--ink)}
 .profit .buy{display:inline-block;margin-top:4px;background:var(--accent);color:var(--accent-ink);border-radius:6px;padding:5px 10px;text-decoration:none;font-weight:700;font-size:12px}
 details{grid-column:2/-1}
 @media(max-width:600px){details{grid-column:1/-1}}
@@ -134,6 +136,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 </section>
 </div></main>
 <script>
+const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 const DEFAULTS={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
@@ -225,6 +228,7 @@ function render(){
         <div class="v ${pc}">${r.profit>=0?'+':''}${yen(r.profit)}</div>
         <div class="r">実質 ${yen(top.eff)} ・ ${(r.rate*100).toFixed(1)}%</div>
         <div><a class="buy" href="${esc(o.u)}" target="_blank" rel="noopener">Yahooで見る</a></div>
+        <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}" title="JANをコピーして買取スキャナーを開きます（検索欄に貼り付け）">買取スキャナー</a></div>
       </div>
       <details><summary>出品${r.offers.length}件を比較</summary>
         <table><tr><th>ストア</th><th>価格</th><th>クーポン</th><th>送料</th><th>ポイント</th><th>実質</th><th>差額</th></tr>${others}</table>
@@ -247,6 +251,7 @@ function renderMeta(){
   const y=DATA.yahoo;
   if(y&&y.stopped&&y.stopped.indexOf('時間切れ')<0) parts.push(`<span class="err" title="${esc(y.last_error||'')}">⚠Yahoo照合エラー（${y.done}/${y.targets}件のみ更新）</span>`);
   parts.push('<a href="bookmarklet.html">買取価格を取得 →</a>');
+  parts.push(`<a href="${SCANNER}" target="_blank" rel="noopener">買取スキャナー ↗</a>`);
   $('meta').innerHTML=parts.map(p=>`<span>${p}</span>`).join('');
   $('srcBoxes').innerHTML=Object.entries(DATA.sources).map(([k,s])=>`<label><input type="checkbox" value="${k}"> ${esc(s.label)}</label>`).join('');
 }
@@ -257,7 +262,7 @@ $('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button');if
 $('more').onclick=()=>{shown+=100;render()};
 $('reset').onclick=()=>{S={...DEFAULTS};store.set(S);syncForm();render()};
 $('theme').onclick=()=>{const r=document.documentElement;const cur=r.dataset.theme||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark'};
-$('list').addEventListener('click',e=>{const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
+$('list').addEventListener('click',e=>{const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
 
 fetch('data.json',{cache:'no-store'}).then(r=>r.json()).then(d=>{DATA=d;renderMeta();syncForm();render()})
   .catch(()=>{$('meta').textContent='data.json を読み込めませんでした';});
