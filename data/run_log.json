@@ -1,24 +1,24 @@
 {
- "started": "2026-10-24T20:12+09:00",
+ "started": "2026-10-24T20:45+09:00",
  "yahoo": {
-  "targets": 16576,
-  "done": 70,
-  "failed": 79,
+  "targets": 16579,
+  "done": 20,
+  "failed": 18,
   "errors": {
-   "HTTP 400": 63,
-   "HTTP 429": 16
+   "HTTP 400": 14,
+   "HTTP 429": 4
   },
   "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
   "stopped": "Yahoo APIが連続で失敗したため中断"
  },
  "item_check": {
-  "checked": 55,
+  "checked": 38,
   "changed": 0,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-24T20:19+09:00",
- "items": 3657
+ "finished": "2026-10-24T20:47+09:00",
+ "items": 3662
 }
