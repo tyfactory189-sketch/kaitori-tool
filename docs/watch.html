@@ -176,7 +176,7 @@ $('q').addEventListener('input',render);
 
 (async()=>{
   const [w,d]=await Promise.all([KTS_GH.loadWatch(),fetch('data.json',{cache:'no-store'}).then(r=>r.json()).catch(()=>({items:[],sources:{}}))]);
-  const EX=/中古|ユーズド|USED|訳あり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|Renewed|リサイクル|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|受注生産/i;
+  const EX=/[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|美品|良品|使用感|傷あり|キズあり|難あり|中古|ユーズド|USED|訳あり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|Renewed|リサイクル|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|受注生産/i;
   WATCH=w.items;SOURCES=d.sources||{};d.items.forEach(it=>{it.offers=(it.offers||[]).filter(o=>!EX.test(o.n||''));BY[it.jan]=it});
   render();
 })();
