@@ -34,7 +34,14 @@ window.KTS_GH = (() => {
   const b64enc = s => new Promise(res => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.readAsDataURL(new Blob([s])); });
   const b64dec = b => new TextDecoder().decode(Uint8Array.from(atob(b.replace(/\n/g, '')), c => c.charCodeAt(0)));
 
-  const normalize = raw => (Array.isArray(raw) ? raw : (raw && raw.items) || []).filter(w => w && /^\d{8,14}$/.test(String(w.jan)));
+  // JANの形式チェックと重複除去（同じJANが複数あれば最初の1件だけ残す）
+  const normalize = raw => {
+    const seen = new Set();
+    return (Array.isArray(raw) ? raw : (raw && raw.items) || []).filter(w => {
+      if (!w || !/^\d{8,14}$/.test(String(w.jan)) || seen.has(String(w.jan))) return false;
+      seen.add(String(w.jan)); return true;
+    });
+  };
 
   // ウォッチリストを読む：合鍵があれば GitHub から最新を、なければ公開ページのファイルを読む
   async function loadWatch() {
@@ -67,6 +74,7 @@ window.KTS_GH = (() => {
         const j = await cur.json(); sha = j.sha;
         if (mutate) base = mutate(normalize(JSON.parse(b64dec(j.content))));
       } else if (mutate) base = mutate([]);
+      base = normalize(base);
       base.sort((a, b) => (b.added || '').localeCompare(a.added || ''));
       const body = JSON.stringify({ updated: new Date().toISOString(), items: base }, null, 1);
       const r = await api('/contents/' + WATCH_PATH, {
@@ -94,14 +102,21 @@ window.KTS_GH = (() => {
   }
 
   // 「4549995635232 メモ」の形の行から JAN とメモを取り出す（JANだけの行や、表からの貼り付けにも対応）
+  // 入力内で同じJANが複数回出てきたら1件にまとめる（戻り値の dupInInput に重複した件数）
   function parseInput(text) {
     const out = [];
+    const byJan = new Map();
+    let dup = 0;
     for (const line of String(text).split(/\r?\n/)) {
       const m = line.match(/(?:^|\D)(\d{13}|\d{8})(?!\d)/);
       if (!m) continue;
       const memo = line.replace(m[1], '').replace(/^[\s,\t:：、|]+|[\s,\t|]+$/g, '').slice(0, 80);
-      out.push({ jan: m[1], memo });
+      const cur = byJan.get(m[1]);
+      if (cur) { dup++; if (memo && !cur.memo.includes(memo)) cur.memo = cur.memo ? cur.memo + ' / ' + memo : memo; continue; }
+      const it = { jan: m[1], memo };
+      byJan.set(m[1], it); out.push(it);
     }
+    out.dupInInput = dup;
     return out;
   }
 

@@ -35,6 +35,8 @@ td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 .memo{font-size:12px;color:var(--sub)}
 .del{border:0;background:none;color:var(--sub);padding:2px 6px}
 .del:hover{color:var(--minus)}
+tr.dup td{background:rgba(224,160,0,.14)}
+tr.dup td:first-child::after{content:"登録済み";display:inline-block;margin-left:6px;font-size:11px;color:#a06c00}
 .chip{display:inline-block;background:var(--chip);border-radius:999px;padding:0 8px;font-size:12px;margin:1px 2px 1px 0;white-space:nowrap}
 @media(max-width:640px){.hide-sm{display:none}}
 </style>
@@ -47,7 +49,7 @@ td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
 
   <div class="panel">
     <strong>JANを追加</strong>
-    <div class="sub">1行に1商品。JANのあとにメモ（購入日・購入価格など）を書けます。注文履歴やExcelからの貼り付けもOK（13桁の数字を自動で拾います）。</div>
+    <div class="sub">1行に1商品。JANのあとにメモ（購入日・購入価格など）を書けます。登録済みのJANは追加されません（新しいメモだけ追記）。注文履歴やExcelからの貼り付けもOK（13桁の数字を自動で拾います）。</div>
     <textarea id="input" placeholder="4549995635232 AirPods Pro3 10/20購入 33,000円&#10;4948872417419&#10;4902370550733 Switch2"></textarea>
     <div class="row">
       <button class="primary" id="add">追加して保存</button>
@@ -120,21 +122,45 @@ $('add').onclick=async()=>{
   const add=KTS_GH.parseInput($('input').value);
   if(!add.length){setMsg('JAN（13桁または8桁の数字）が見つかりませんでした。','err');return}
   const now=new Date(Date.now()+9*3600e3).toISOString().slice(0,16)+'+09:00';
-  let added=0,updated=0;
-  const mutate=list=>{
-    const m=new Map(list.map(w=>[w.jan,w]));added=0;updated=0;
+  // 登録済みのJANは追加しない（メモが新しく書かれていればメモだけ追記）
+  const plan=list=>{
+    const m=new Map(list.map(w=>[w.jan,w]));const r={added:[],skipped:[],memo:[]};
     for(const a of add){
       const cur=m.get(a.jan);
-      if(!cur){m.set(a.jan,{jan:a.jan,memo:a.memo,added:now});added++}
-      else if(a.memo&&a.memo!==cur.memo){cur.memo=cur.memo?cur.memo+' / '+a.memo:a.memo;updated++}
+      if(!cur){m.set(a.jan,{jan:a.jan,memo:a.memo,added:now});r.added.push(a.jan)}
+      else if(a.memo&&!(cur.memo||'').includes(a.memo)){cur.memo=cur.memo?cur.memo+' / '+a.memo:a.memo;r.memo.push(a.jan)}
+      else r.skipped.push(a.jan);
     }
-    return [...m.values()];
+    return {list:[...m.values()],r};
   };
-  if(await save(mutate,'')){
-    setMsg(`${added}件を追加${updated?`、${updated}件のメモを更新`:''}しました。`+$('msg').textContent,'ok');
+  const pre=plan(WATCH.map(w=>({...w}))).r;
+  const dupText=r=>[
+    r.skipped.length?`登録済みのため${r.skipped.length}件はスキップ`:'',
+    add.dupInInput?`入力内の重複${add.dupInInput}件をまとめました`:''
+  ].filter(Boolean).join('、');
+  if(!pre.added.length&&!pre.memo.length){
+    setMsg(`すべて登録済みでした（${dupText(pre)}）。保存はしていません。`,'err');
+    showSkipped(pre.skipped);return;
+  }
+  let res=pre;
+  const ok=await save(list=>{const p=plan(list);res=p.r;return p.list},'');
+  if(ok){
+    const extra=[];
+    if(res.memo.length)extra.push(`${res.memo.length}件はメモだけ追記`);
+    const d=dupText(res);if(d)extra.push(d);
+    setMsg(`${res.added.length}件を追加しました${extra.length?`（${extra.join('、')}）`:''}。`+$('msg').textContent,'ok');
+    showSkipped(res.skipped);
     $('input').value='';
   }
 };
+// スキップしたJANを一覧で目立たせる
+function showSkipped(jans){
+  document.querySelectorAll('#tbl tr.dup').forEach(tr=>tr.classList.remove('dup'));
+  if(!jans.length)return;
+  const set=new Set(jans);
+  document.querySelectorAll('#tbl .del').forEach(b=>{if(set.has(b.dataset.jan))b.closest('tr').classList.add('dup')});
+  const first=document.querySelector('#tbl tr.dup');if(first)first.scrollIntoView({block:'nearest',behavior:'smooth'});
+}
 $('tbl').addEventListener('click',async e=>{
   const b=e.target.closest('.del');if(!b)return;
   const jan=b.dataset.jan;
