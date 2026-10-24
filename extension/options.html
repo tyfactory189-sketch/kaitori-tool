@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>買取差益チェッカー 自動取得の設定</title>
+<style>
+:root{--bg:#f6f5f2;--panel:#fff;--ink:#1d1d1b;--sub:#6b6a66;--line:#e4e2dc;--accent:#d6362c;--ok:#0f8a4b;--ng:#b42318}
+@media (prefers-color-scheme:dark){:root{--bg:#141413;--panel:#1e1e1c;--ink:#ecebe7;--sub:#9d9b95;--line:#33322f;--accent:#ff5a4e;--ok:#4cd38a;--ng:#ff7b6e}}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.7 "Yu Gothic UI","Meiryo",sans-serif}
+main{max-width:640px;margin:0 auto;padding:24px 16px}
+h1{font-size:20px;margin:0 0 12px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+label.block{display:block;font-weight:700;margin:10px 0 4px}
+input[type=text],input[type=password]{width:100%;box-sizing:border-box;font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+.sub{color:var(--sub);font-size:12px}
+button{font:inherit;border:0;border-radius:6px;padding:8px 18px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer}
+.ok{color:var(--ok)}.ng{color:var(--ng)}
+.chk{display:block;margin:4px 0}
+</style>
+</head>
+<body>
+<main>
+  <h1>自動取得の設定</h1>
+  <div class="card">
+    <label class="block" for="token">GitHub の合鍵（トークン）</label>
+    <input type="password" id="token" placeholder="github_pat_…">
+    <div class="sub">「買取価格を取得」ボタン用に作ったものと同じで大丈夫です（権限：Contents と Actions の Read and write）。この PC の Chrome の中だけに保存されます。</div>
+    <label class="block" for="repo">リポジトリ</label>
+    <input type="text" id="repo" placeholder="ユーザー名/リポジトリ名">
+  </div>
+  <div class="card">
+    <label class="block" for="times">自動取得する時刻（カンマ区切り・24時間表記）</label>
+    <input type="text" id="times" placeholder="11:00, 14:00, 20:00">
+    <div class="sub">森森買取はサイトの制限を避けるためゆっくり取るので、1回30分ほどかかります。間隔は2時間以上あけてください。</div>
+    <label class="block">取得するもの</label>
+    <label class="chk"><input type="checkbox" id="s_wiki"> 買取wiki（全商品）</label>
+    <label class="chk"><input type="checkbox" id="s_variants"> 買取wiki 専用サイトの容量・色ごとの価格（iPhone・iPad・Mac 等）</label>
+    <label class="chk"><input type="checkbox" id="s_morimori"> 森森買取（全商品）</label>
+    <label class="chk"><input type="checkbox" id="startYahoo"> 取得後すぐに Yahoo照合を始める</label>
+  </div>
+  <button id="save">保存</button> <span id="msg"></span>
+</main>
+<script src="options.js"></script>
+</body>
+</html>

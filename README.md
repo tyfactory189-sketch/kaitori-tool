@@ -4,8 +4,10 @@
 差益の大きい順に一覧表示する自分用ツールです。GitHub Actions が 1日4回自動で更新し、GitHub Pages で見られます。
 
 - 買取商店：GitHub Actions が自動で取得
-- 買取wiki・森森買取：GitHub のサーバーからの取得を拒否するため、ブラウザのブックマーク「買取価格を取得」で取得
-  （手順は公開ページの `bookmarklet.html`、一覧画面上部の「買取価格を取得 →」から）
+- 買取wiki・森森買取：GitHub のサーバーからの取得を拒否するため、ブラウザで取得
+  - 自動：Chrome 拡張機能（`extension/`、手順は公開ページの `extension.html`）が 11時・14時・20時に取得。
+    買取wiki の専用サイトから iPhone・iPad・Mac 等の容量・色ごとの価格も取り、`data/wiki_variants.json` に保存
+  - 手動：ブックマーク「買取価格を取得」（`bookmarklet.html`）
 
 ## しくみ
 

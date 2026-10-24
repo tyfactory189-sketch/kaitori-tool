@@ -118,10 +118,72 @@ RE_CAPACITY = re.compile(r"\d+\s*(GB|TB|G)\b|\d+G\+\d+G|\d+GB?/\d+", re.I)
 MULTI_SITES = ("iphonekaitori.tokyo", "ipadkaitori.jp", "pckaitori.tokyo", "gamekaitori.jp")
 
 
+# 「MHFA4J/A」のような型番が入っていれば仕様は1つに決まっている
+RE_MODEL_NO = re.compile(r"\b[A-Z0-9]{4,6}\d?[A-Z]{0,2}/A\b")
+
+
 def is_multi_spec(key, it):
     name, url = it.get("name", ""), it.get("url", "")
     return (key == "wiki" and any(d in url for d in MULTI_SITES)
-            and bool(RE_MULTI_FAMILY.search(name)) and not RE_CAPACITY.search(name))
+            and bool(RE_MULTI_FAMILY.search(name)) and not RE_CAPACITY.search(name)
+            and not RE_MODEL_NO.search(name))
+
+
+def norm(s):
+    """表記ゆれを吸収（全角→半角、空白除去、小文字）。"""
+    import unicodedata
+    return re.sub(r"\s+", "", unicodedata.normalize("NFKC", s or "")).lower()
+
+
+def resolve_variant(goods, names):
+    """容量・色ごとの買取価格（Chrome拡張が専用サイトから取得）から、このJANの仕様を商品名で特定する。
+
+    goods: {"variants": [{"sel": {"color": "シルバー", "gb": "256GB"}, "p": 168500}, ...]}
+    names: このJANの各店・Yahooの商品名
+    戻り値: (価格, 仕様ラベル) か None
+    """
+    text = norm(" ".join(names))
+    vs = [v for v in goods.get("variants", []) if v.get("p")]
+    if not vs:
+        return None
+    hit = [v for v in vs if all(norm(lbl) in text for lbl in v["sel"].values() if lbl)]
+    if not hit:
+        # 容量だけ分かる場合、その容量の価格が全色同じなら確定
+        caps = [v for v in vs if v["sel"].get("gb") and norm(v["sel"]["gb"]) in text]
+        if caps and len({v["p"] for v in caps}) == 1:
+            return caps[0]["p"], caps[0]["sel"]["gb"]
+    if hit and len({v["p"] for v in hit}) == 1:
+        v = hit[0]
+        return v["p"], " ".join(x for x in v["sel"].values() if x)
+    return None
+
+
+def apply_variants(by_jan, extra_names=None):
+    """data/wiki_variants.json を使って、買取wikiの「仕様で変わる」価格を確定させる。"""
+    data = load(DATA / "wiki_variants.json", {})
+    goods_by_jan = data.get("goods", {}) if isinstance(data, dict) else {}
+    fixed = 0
+    for jan, rec in by_jan.items():
+        b = rec["buys"].get("wiki")
+        g = goods_by_jan.get(jan)
+        if not b or not g:
+            continue
+        if g.get("single"):
+            b.pop("m", None)
+            continue
+        vs = [v["p"] for v in g.get("variants", []) if v.get("p")]
+        if not vs:
+            continue
+        names = list(rec.get("names", [])) + list((extra_names or {}).get(jan, []))
+        r = resolve_variant(g, names)
+        if r:
+            b["p"], b["v"] = r
+            b.pop("m", None)
+            fixed += 1
+        else:
+            b["m"] = 1
+            b["r"] = [min(vs), max(vs)]
+    return fixed
 
 
 def merged_buyback():
@@ -141,6 +203,8 @@ def merged_buyback():
                     rec["buys"][key]["m"] = 1
             if len(it.get("name", "")) > len(rec["name"]):
                 rec["name"] = it["name"]
+            rec.setdefault("names", set()).add(it.get("name", ""))
+    apply_variants(by_jan)
     return by_jan
 
 
@@ -243,6 +307,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
 
 
 def build(by_jan, cache, watch):
+    yahoo_names = {j: [o.get("n", "") for o in (c.get("o") or [])] for j, c in cache.items()}
+    RUN_LOG["variants_fixed"] = apply_variants(by_jan, yahoo_names)
     items = []
     for jan in list(by_jan) + [j for j in watch if j not in by_jan]:
         rec = by_jan.get(jan, {"name": "", "buys": {}})

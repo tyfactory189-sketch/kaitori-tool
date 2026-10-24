@@ -244,7 +244,7 @@ function render(){
         <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}">買取スキャナー</a></div></div></article>`;
     }
     const o=top.o;
-    const chips=r.buys.sort((a,b)=>b.p-a.p).map(b=>`<a class="chip ${b===best?'best':''}" href="${esc(b.u)}" target="_blank" rel="noopener">${esc(L[b.k].label)} ${yen(b.p)}</a>${b.note?`<span class="chip warn">${esc(b.note)}</span>`:''}${b.m?`<span class="chip warn" title="買取wikiでは容量・色を選ぶ1商品として載っていて、この金額は一番高い仕様の買取価格の可能性があります。リンク先で仕様を選んで確認してください">容量・色で変動（最高額の可能性）</span>`:''}`).join('')
+    const chips=r.buys.sort((a,b)=>b.p-a.p).map(b=>`<a class="chip ${b===best?'best':''}" href="${esc(b.u)}" target="_blank" rel="noopener">${esc(L[b.k].label)} ${yen(b.p)}</a>${b.note?`<span class="chip warn">${esc(b.note)}</span>`:''}${b.m?`<span class="chip warn" title="買取wikiでは容量・色を選ぶ1商品として載っていて、この金額は一番高い仕様の買取価格の可能性があります。リンク先で仕様を選んで確認してください">容量・色で変動${b.r?`（${yen(b.r[0])}〜${yen(b.r[1])}）`:'（最高額の可能性）'}</span>`:''}${b.v?`<span class="chip" title="専用サイトで容量・色を選んだときの買取価格です">${esc(b.v)}の価格</span>`:''}`).join('')
       +((S.noMulti&&r.multi&&r.multi.length)?r.multi.map(b=>`<a class="chip" style="opacity:.55;text-decoration:line-through" href="${esc(b.u)}" target="_blank" rel="noopener" title="容量・色で価格が変わるため計算から除外中（左の絞り込みで切替）">${esc(L[b.k].label)} ${yen(b.p)}</a>`).join(''):'');
     const others=r.offers.map(e=>`<tr><td><a href="${esc(e.o.u)}" target="_blank" rel="noopener">${esc(e.o.s)}</a>${e.o.bs?' ★':''}${e.o.pv?' <span class="chip warn">仕様で価格差</span>':''}${e.o.add?' <span class="chip warn">必須OP込</span>':''}</td><td>${yen(e.base)}</td><td>${e.cp?'-'+yen(e.cp):'—'}</td><td>${e.o.sh===2?'無料':'+'+yen(e.ship)}</td><td>${e.pts.toLocaleString()}P</td><td><b>${yen(e.eff)}</b></td><td class="${best.p-e.eff-S.sendCost>=0?'plus':'minus'}">${yen(best.p-e.eff-S.sendCost)}</td></tr>`).join('');
     const pc=r.profit>=0?'plus':'minus';
@@ -285,6 +285,7 @@ function renderMeta(){
   const y=DATA.yahoo;
   if(y&&y.stopped&&y.stopped.indexOf('時間切れ')<0) parts.push(`<span class="err" title="${esc(y.last_error||'')}">⚠Yahoo照合エラー（${y.done}/${y.targets}件のみ更新）</span>`);
   parts.push('<a href="bookmarklet.html">買取価格を取得 →</a>');
+  parts.push('<a href="extension.html">自動取得の設定</a>');
   parts.push(`<a href="${SCANNER}" target="_blank" rel="noopener">買取スキャナー ↗</a>`);
   $('meta').innerHTML=parts.map(p=>`<span>${p}</span>`).join('');
   $('srcBoxes').innerHTML=Object.entries(DATA.sources).map(([k,s])=>`<label><input type="checkbox" value="${k}"> ${esc(s.label)}</label>`).join('');

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>自動取得の拡張機能</title>
+<style>
+:root{--bg:#f6f5f2;--panel:#fff;--ink:#1d1d1b;--sub:#6b6a66;--line:#e4e2dc;--accent:#d6362c;--accent-ink:#fff;--code:#f0eee9}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--panel:#1e1e1c;--ink:#ecebe7;--sub:#9d9b95;--line:#33322f;--accent:#ff5a4e;--accent-ink:#141413;--code:#2a2a27}}
+:root[data-theme="dark"]{--bg:#141413;--panel:#1e1e1c;--ink:#ecebe7;--sub:#9d9b95;--line:#33322f;--accent:#ff5a4e;--accent-ink:#141413;--code:#2a2a27}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.75 "Yu Gothic UI","Meiryo","Hiragino Sans",sans-serif}
+main{max-width:760px;margin:0 auto;padding:20px 16px 60px}
+h1{font-size:21px;margin:4px 0}
+h2{font-size:17px;margin:28px 0 8px}
+a{color:inherit}
+.sub{color:var(--sub);font-size:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px;margin:12px 0}
+ol{padding-left:1.4em;margin:6px 0}li{margin:6px 0}
+code,kbd{background:var(--code);border-radius:4px;padding:1px 6px;font-size:13px;overflow-wrap:anywhere}
+.dl{display:inline-block;background:var(--accent);color:var(--accent-ink);font-weight:800;text-decoration:none;padding:10px 18px;border-radius:999px}
+</style>
+</head>
+<body>
+<main>
+  <a class="sub" href="./">← 一覧に戻る</a>
+  <h1>自動取得の拡張機能（Chrome）</h1>
+  <p class="sub">買取wiki（iPhone・iPad・Mac 等の容量・色ごとの価格を含む）と森森買取を、決まった時刻に自動で取得して GitHub に保存し、Yahoo照合を始めます。PC と Chrome が起動している間だけ動きます。</p>
+
+  <h2>① PC の準備（初回だけ）</h2>
+  <div class="card"><ol>
+    <li>スタート →「設定」→「システム」→「電源」で、<strong>スリープを「なし」</strong>にする。</li>
+    <li>Chrome の「︙」→「設定」→「システム」で、<strong>「Google Chrome を閉じた際にバックグラウンド アプリの処理を続行する」をオン</strong>にする。</li>
+    <li><kbd>Windows</kbd>＋<kbd>R</kbd> →「<code>shell:startup</code>」→ Enter。開いたフォルダに<strong>デスクトップの Chrome のショートカットをコピー</strong>（再起動後も Chrome が自動で立ち上がるように）。</li>
+  </ol></div>
+
+  <h2>② 拡張機能を入れる（初回だけ・5分）</h2>
+  <div class="card"><ol>
+    <li><a class="dl" href="kaitori-extension.zip" download>拡張機能をダウンロード</a></li>
+    <li>ダウンロードした <code>kaitori-extension.zip</code> を右クリック →「すべて展開」。<strong>展開したフォルダは消したり移動したりしない場所</strong>（例：ドキュメント）に置きます。</li>
+    <li>Chrome のアドレス欄に <code>chrome://extensions</code> と入力して Enter。</li>
+    <li>右上の<strong>「デベロッパー モード」をオン</strong>。</li>
+    <li>左上の<strong>「パッケージ化されていない拡張機能を読み込む」</strong>を押し、展開したフォルダ（中に <code>manifest.json</code> があるフォルダ）を選ぶ。</li>
+    <li>「買取差益チェッカー 自動取得」が表示されたら成功。アドレス欄右のパズルのアイコン → 📌 でツールバーに固定しておくと便利です。</li>
+  </ol></div>
+
+  <h2>③ 設定する（初回だけ）</h2>
+  <div class="card"><ol>
+    <li>ツールバーの拡張機能アイコン →「設定（合鍵・時刻）」を開く。</li>
+    <li>「GitHub の合鍵」に、<a href="bookmarklet.html">買取価格を取得ボタン</a>用に作った <code>github_pat_…</code> を貼り付け。</li>
+    <li>時刻は最初から <code>11:00, 14:00, 20:00</code> になっています。変えたいときはここで。</li>
+    <li>「保存」→「合鍵も確認できました ✓」と出れば完了。</li>
+    <li>試しに拡張機能アイコン →<strong>「今すぐ取得する」</strong>。30〜40分ほどで「前回は成功」と表示されます（その間 Chrome は閉じないでください）。</li>
+  </ol></div>
+
+  <h2>困ったとき</h2>
+  <div class="card sub">
+    <p style="margin-top:0">・<strong>「合鍵が無効」</strong>：合鍵の期限切れなど。新しく作って設定画面で入れ直してください。</p>
+    <p>・<strong>「取得できないページが続きました」</strong>：サイト側の一時的な制限です。次の時刻に自動でやり直します。</p>
+    <p>・<strong>拡張機能を更新したいとき</strong>：新しい zip で展開したフォルダを置き換え、<code>chrome://extensions</code> の拡張機能の「⟳（再読み込み）」を押します。設定は残ります。</p>
+    <p style="margin-bottom:0">・手動のブックマーク「買取価格を取得」も、これまでどおり使えます。</p>
+  </div>
+</main>
+</body>
+</html>

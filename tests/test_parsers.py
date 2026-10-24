@@ -129,3 +129,28 @@ def test_item_page_variants():
 if __name__ == "__main__":
     test_item_page_variants()
     print("ok test_item_page_variants")
+
+
+def test_resolve_variant():
+    import run
+    g = {"variants": [
+        {"sel": {"color": "スペースブラック", "gb": "256GB"}, "p": 168500},
+        {"sel": {"color": "シルバー", "gb": "256GB"}, "p": 168500},
+        {"sel": {"color": "シルバー", "gb": "512GB"}, "p": 205000},
+        {"sel": {"color": "シルバー", "gb": "2TB"}, "p": 268000},
+    ]}
+    names = ["Apple iPad Pro 11インチ Wi-Fi 256GB 2025年秋モデル MDWL4J/A [シルバー]"]
+    assert run.resolve_variant(g, names) == (168500, "シルバー 256GB")
+    # 色が名前に無くても、その容量が全色同じ価格なら確定
+    assert run.resolve_variant(g, ["iPad Pro 11 256GB"]) == (168500, "256GB")
+    # 容量が分からなければ確定しない
+    assert run.resolve_variant(g, ["iPad Pro 11インチ"]) is None
+    # 全角表記ゆれ
+    assert run.resolve_variant(g, ["ｉＰａｄ　Ｐｒｏ　５１２ＧＢ　シルバー"]) == (205000, "シルバー 512GB")
+    assert run.is_multi_spec("wiki", {"name": "iPad Pro 11インチ (M5) Wi-Fi 2025年秋モデル", "url": "https://ipadkaitori.jp/x"})
+    assert not run.is_multi_spec("wiki", {"name": "MacBook Neo 13インチ MHFA4J/A シルバー", "url": "https://pckaitori.tokyo/x"})
+
+
+if __name__ == "__main__":
+    test_resolve_variant()
+    print("ok test_resolve_variant")

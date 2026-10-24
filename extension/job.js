@@ -1,0 +1,282 @@
+// 買取差益チェッカー 自動取得：取得ジョブ本体（オフスクリーン文書で動く。DOMParser が使える）
+// 1. 買取wiki の全商品（kadenkaitori.tokyo/search/N）
+// 2. 買取wiki 専用サイト（iPad・iPhone・PC 等）で「容量・色を選ぶ商品」の仕様ごとの価格
+// 3. 森森買取の全商品（ゆっくり取得）
+// 4. GitHub に保存し、Yahoo照合（Actions）を起動
+
+const KTS = (() => {
+  const parser = new DOMParser();
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+  const num = s => parseInt(String(s).replace(/[^\d]/g, ''), 10);
+  const text = el => (el ? el.textContent : '').replace(/\s+/g, ' ').trim();
+  const jstNow = () => new Date(Date.now() + 9 * 3600e3).toISOString().slice(0, 16) + '+09:00';
+
+  let progress = () => {};
+  const setProgress = fn => { progress = fn; };
+
+  // 制限（403/429）や通信エラーは待って再試行。取れなければ null
+  async function getHtml(url, { waits = [5, 30, 60, 120], init } = {}) {
+    for (let i = 0; i <= waits.length; i++) {
+      try {
+        const r = await fetch(url, { credentials: 'include', ...(init || {}) });
+        if (r.ok) return await r.text();
+        if (r.status === 404) return null;
+      } catch (e) { /* 再試行 */ }
+      if (i < waits.length) await sleep(waits[i] * 1000);
+    }
+    return null;
+  }
+  const getDoc = async (url, opt) => { const h = await getHtml(url, opt); return h ? parser.parseFromString(h, 'text/html') : null; };
+
+  async function pool(urls, conc, gap, fn, onEach, stopWhen) {
+    let i = 0, done = 0;
+    const worker = async () => {
+      while (i < urls.length && !(stopWhen && stopWhen())) {
+        const u = urls[i++];
+        await fn(u);
+        onEach(++done);
+        await sleep(gap);
+      }
+    };
+    await Promise.all(Array.from({ length: conc }, worker));
+  }
+
+  // ---------- 買取wiki 一覧 ----------
+  const WIKI = 'https://kadenkaitori.tokyo';
+  function parseWiki(d, items) {
+    d.querySelectorAll('.pro_list').forEach(b => {
+      const t = text(b);
+      const jan = (t.match(/JAN[：:]\s*(\d{8,14})/) || [])[1];
+      const price = (t.match(/買取価格[：:]\s*([\d,]+)\s*円/) || [])[1];
+      if (!jan || !price) return;
+      const name = text(b.querySelector('.sub-pro-name')).replace(/\s*\d{13}\s*$/, '');
+      const a = b.querySelector('a[href]');
+      const url = a ? new URL(a.getAttribute('href'), WIKI).href : WIKI + '/';
+      items.push({ jan, name, price: num(price), url, note: /購入証明/.test(t) ? '購入証明必要' : '' });
+    });
+  }
+  async function grabWiki() {
+    const items = [];
+    let failed = 0;
+    const first = await getDoc(WIKI + '/search/1');
+    if (!first) throw new Error('買取wikiの1ページ目を開けませんでした');
+    const count = num((text(first.body).match(/([\d,]+)\s*件該当/) || [])[1] || 0);
+    const per = first.querySelectorAll('.pro_list').length || 44;
+    const pages = Math.ceil(count / per);
+    parseWiki(first, items);
+    const urls = []; for (let p = 2; p <= pages; p++) urls.push(WIKI + '/search/' + p);
+    await pool(urls, 3, 250, async u => { const d = await getDoc(u); d ? parseWiki(d, items) : failed++; },
+      n => progress(`買取wiki ${n + 1}/${pages}ページ（${items.length.toLocaleString()}件）`, (n + 1) / pages * 25),
+      () => failed > 10);
+    if (failed > 10) throw new Error(`買取wikiで取得できないページが続きました（${failed}件）`);
+    return dedupe(items);
+  }
+  function dedupe(items) {
+    const m = new Map();
+    items.forEach(it => { const c = m.get(it.jan); if (!c || it.price > c.price) m.set(it.jan, it); });
+    return [...m.values()];
+  }
+
+  // ---------- 買取wiki 専用サイトの容量・色ごとの価格 ----------
+  // run.py の is_multi_spec と同じ条件
+  const MULTI_SITES = ['iphonekaitori.tokyo', 'ipadkaitori.jp', 'pckaitori.tokyo', 'gamekaitori.jp'];
+  const RE_FAMILY = /iPad|iPhone|MacBook|iMac|Mac ?mini|Mac ?Studio|Mac ?Pro|Pixel ?\d|Galaxy ?[ASZ]\d|Surface|Steam ?Deck/;
+  const RE_CAP = /\d+\s*(GB|TB|G)\b|\d+G\+\d+G|\d+GB?\/\d+/i;
+  const RE_MODEL = /\b[A-Z0-9]{4,6}\d?[A-Z]{0,2}\/A\b/;
+  const isCandidate = it => MULTI_SITES.some(d => it.url.includes(d)) && RE_FAMILY.test(it.name) && !RE_CAP.test(it.name) && !RE_MODEL.test(it.name);
+  // 選択肢グループ名 → get_prices のパラメータ（item_a 等）
+  const GROUP_PARAM = { career: 'a', color: 'c', gb: 'g' };
+  const LETTERS = ['a', 'n', 'c', 'g', 'o', 'k'];
+
+  // 商品ページから goods_id と選択肢を読む
+  function parseOptions(d) {
+    const gid = d.querySelector('#goods_id, input[name=goods_id]');
+    const groups = {};
+    d.querySelectorAll('input[type=radio]').forEach(r => {
+      if (!r.name || r.name === 'rank') return;
+      const lab = r.id ? d.querySelector(`label[for="${r.id}"]`) : null;
+      (groups[r.name] = groups[r.name] || []).push({ id: r.dataset.value || r.value, label: text(lab) });
+    });
+    return { goodsId: gid ? gid.value : '', groups };
+  }
+  function combos(groups) {
+    let out = [{}];
+    for (const [name, opts] of Object.entries(groups)) {
+      const next = [];
+      for (const c of out) for (const o of opts) next.push({ ...c, [name]: o });
+      out = next;
+    }
+    return out;
+  }
+  async function getPrice(origin, goodsId, combo) {
+    const params = Object.fromEntries(LETTERS.map(l => ['item_' + l, 'true']));
+    for (const [name, o] of Object.entries(combo)) params['item_' + (GROUP_PARAM[name] || name[0])] = o.id;
+    params.goods_id = goodsId;
+    const h = await getHtml(origin + '/home/tool/get_prices', {
+      waits: [5, 30],
+      init: { method: 'POST', body: new URLSearchParams(params), headers: { 'X-Requested-With': 'XMLHttpRequest' } },
+    });
+    if (!h) return null;
+    try { return num(JSON.parse(h).data.n.price) || null; } catch (e) { return null; }
+  }
+  async function grabVariants(wikiItems, prev) {
+    const goods = {};
+    const now = Date.now();
+    const prevGoods = (prev && prev.goods) || {};
+    // 前回「選択肢なし」と分かった商品は7日間は調べ直さない
+    const targets = wikiItems.filter(it => {
+      if (!isCandidate(it) && !(prevGoods[it.jan] && !prevGoods[it.jan].single)) return false;
+      const p = prevGoods[it.jan];
+      if (p && p.single && now - Date.parse(p.checked) < 7 * 864e5) { goods[it.jan] = p; return false; }
+      return true;
+    });
+    let done = 0, withVariants = 0;
+    for (const it of targets) {
+      progress(`専用サイトの容量・色ごとの価格 ${++done}/${targets.length}`, 25 + done / Math.max(1, targets.length) * 15);
+      const d = await getDoc(it.url, { waits: [5, 30] });
+      await sleep(400);
+      if (!d) continue;
+      const { goodsId, groups } = parseOptions(d);
+      const unsupported = Object.keys(groups).filter(n => !GROUP_PARAM[n] && !LETTERS.includes(n[0]));
+      if (!goodsId || !Object.keys(groups).length) { goods[it.jan] = { url: it.url, name: it.name, single: true, checked: jstNow() }; continue; }
+      if (unsupported.length) { goods[it.jan] = { url: it.url, name: it.name, unsupported, checked: jstNow() }; continue; }
+      const origin = new URL(it.url).origin;
+      const variants = [];
+      for (const c of combos(groups).slice(0, 48)) {
+        const p = await getPrice(origin, goodsId, c);
+        // 選択肢の名前は run.py で商品名と突き合わせるため color / gb / その他 の順で残す
+        const sel = {};
+        for (const [name, o] of Object.entries(c)) sel[name] = o.label;
+        if (p) variants.push({ sel, p });
+        await sleep(400);
+      }
+      goods[it.jan] = { url: it.url, name: it.name, goodsId, variants, checked: jstNow() };
+      if (variants.length) withVariants++;
+    }
+    return { updated: jstNow(), goods, stats: { checked: targets.length, withVariants } };
+  }
+
+  // ---------- 森森買取 ----------
+  const MORI = 'https://www.morimori-kaitori.jp';
+  function parseMori(d, items) {
+    d.querySelectorAll('.mm1551-prow').forEach(r => {
+      const meta = text(r.querySelector('.mm1551-prow__meta'));
+      const jan = (meta.match(/JAN[：:]\s*(\d{8,14})/) || [])[1];
+      if (!jan || /中古/.test(meta)) return;
+      const price = (text(r.querySelector('.mm1551-prow__cur')).match(/([\d,]+)\s*円/) || [])[1];
+      if (!price) return;
+      const a = r.querySelector('.mm1551-prow__name a[href]') || r.querySelector('a[href*="/product/"]');
+      items.push({ jan, name: text(r.querySelector('.mm1551-prow__name')), price: num(price), url: a ? new URL(a.getAttribute('href'), MORI).href : MORI + '/', note: '' });
+    });
+  }
+  async function grabMorimori() {
+    const items = [];
+    let failed = 0;
+    const home = await getDoc(MORI + '/');
+    if (!home) throw new Error('森森買取のトップページを開けませんでした');
+    const tops = [...new Set([...home.querySelectorAll('a[href]')].map(a => new URL(a.getAttribute('href'), MORI).pathname).filter(p => /^\/category\/\d{2}$/.test(p)))];
+    const urls = [];
+    for (const t of tops) {
+      const d = await getDoc(MORI + t);
+      await sleep(1500);
+      if (!d) { failed++; continue; }
+      parseMori(d, items);
+      const count = num((text(d.body).match(/該当\s*([\d,]+)\s*件/) || [])[1] || 0);
+      const per = d.querySelectorAll('.mm1551-prow').length || 50;
+      for (let p = 2; p <= Math.ceil(count / per); p++) urls.push(MORI + t + '?page=' + p);
+    }
+    await pool(urls, 1, 1500, async u => { const d = await getDoc(u); d ? parseMori(d, items) : failed++; },
+      n => progress(`森森買取 ${n}/${urls.length}ページ（${items.length.toLocaleString()}件）`, 40 + n / Math.max(1, urls.length) * 55),
+      () => failed > 10);
+    if (failed > 10) throw new Error(`森森買取で取得できないページが続きました（${failed}件）。制限中の可能性があります`);
+    return dedupe(items);
+  }
+
+  // ---------- GitHub ----------
+  function gh(settings) {
+    const api = (path, opt = {}) => fetch('https://api.github.com/repos/' + settings.repo + path, {
+      ...opt,
+      headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + settings.token, 'X-GitHub-Api-Version': '2022-11-28', ...(opt.body ? { 'Content-Type': 'application/json' } : {}) },
+    });
+    const b64 = s => new Promise(res => { const fr = new FileReader(); fr.onload = () => res(String(fr.result).split(',')[1]); fr.readAsDataURL(new Blob([s])); });
+    return {
+      async readJson(path) {
+        const r = await api('/contents/' + path + '?ref=main');
+        if (!r.ok) return null;
+        const j = await r.json();
+        if (j.content) return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), c => c.charCodeAt(0))));
+        if (j.download_url) return fetch(j.download_url, { cache: 'no-store' }).then(x => x.json()).catch(() => null); // 1MB超
+        return null;
+      },
+      async write(path, obj, message) {
+        const content = await b64(JSON.stringify(obj));
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const cur = await api('/contents/' + path + '?ref=main');
+          if (cur.status === 401) throw new Error('合鍵（トークン）が無効です。設定画面で入れ直してください');
+          const sha = cur.ok ? (await cur.json()).sha : undefined;
+          const r = await api('/contents/' + path, { method: 'PUT', body: JSON.stringify({ message, content, sha, branch: 'main' }) });
+          if (r.ok) return;
+          if (r.status === 401 || r.status === 403 || r.status === 404) throw new Error(`保存する権限がありません（HTTP ${r.status}）。合鍵の権限とリポジトリ名を確認してください`);
+          await sleep(3000);
+        }
+        throw new Error(path + ' の保存に失敗しました');
+      },
+      async startYahoo() {
+        const r = await api('/actions/workflows/update.yml/dispatches', { method: 'POST', body: JSON.stringify({ ref: 'main', inputs: { skip_buyback: true } }) });
+        return r.status === 204;
+      },
+    };
+  }
+
+  // ---------- 全体 ----------
+  async function run(settings) {
+    const g = gh(settings);
+    const sites = settings.sites || {};
+    const notes = [];
+    let saved = 0;
+    const MIN_ITEMS = 1000;
+
+    if (sites.wiki) {
+      try {
+        progress('買取wiki を取得中…', 1);
+        const items = await grabWiki();
+        if (items.length < MIN_ITEMS) throw new Error(`買取wikiが ${items.length}件しか取れませんでした（保存せず）`);
+        await g.write('data/buyback_wiki.json', { updated: jstNow(), items }, `買取wiki 買取価格を更新（自動取得 ${items.length}件）`);
+        notes.push(`買取wiki ${items.length.toLocaleString()}件`); saved++;
+        if (sites.variants) {
+          const prev = await g.readJson('data/wiki_variants.json').catch(() => null);
+          const v = await grabVariants(items, prev);
+          await g.write('data/wiki_variants.json', v, `買取wiki 容量・色ごとの価格を更新（${v.stats.withVariants}商品）`);
+          notes.push(`仕様別 ${v.stats.withVariants}商品`); saved++;
+        }
+      } catch (e) { notes.push('買取wiki 失敗：' + e.message); }
+    }
+    if (sites.morimori) {
+      try {
+        progress('森森買取 を取得中…', 40);
+        const items = await grabMorimori();
+        if (items.length < MIN_ITEMS) throw new Error(`森森買取が ${items.length}件しか取れませんでした（保存せず）`);
+        await g.write('data/buyback_morimori.json', { updated: jstNow(), items }, `森森買取 買取価格を更新（自動取得 ${items.length}件）`);
+        notes.push(`森森買取 ${items.length.toLocaleString()}件`); saved++;
+      } catch (e) { notes.push('森森買取 失敗：' + e.message); }
+    }
+    if (saved && settings.startYahoo) {
+      progress('Yahoo照合を起動中…', 98);
+      notes.push((await g.startYahoo().catch(() => false)) ? 'Yahoo照合を開始' : 'Yahoo照合は次の定期実行で');
+    }
+    return { ok: saved > 0 && !notes.some(n => n.includes('失敗')), summary: notes.join(' ／ ') || '取得対象がありません' };
+  }
+
+  return { run, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants };
+})();
+
+// オフスクリーン文書として読み込まれたときだけ、バックグラウンドからの指示を待つ
+if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.onMessage) {
+  chrome.runtime.onMessage.addListener(msg => {
+    if (msg.target !== 'offscreen' || msg.cmd !== 'run') return;
+    KTS.setProgress((text, pct) => chrome.runtime.sendMessage({ cmd: 'progress', text, pct }));
+    KTS.run(msg.settings)
+      .then(r => chrome.runtime.sendMessage({ cmd: 'done', ...r }))
+      .catch(e => chrome.runtime.sendMessage({ cmd: 'done', ok: false, summary: 'エラー：' + (e && e.message || e) }));
+  });
+}

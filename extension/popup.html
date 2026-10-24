@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>買取差益チェッカー</title>
+<style>
+:root{--bg:#fff;--ink:#1d1d1b;--sub:#6b6a66;--line:#e4e2dc;--accent:#d6362c;--ok:#0f8a4b;--ng:#b42318;--bar:#eee}
+@media (prefers-color-scheme:dark){:root{--bg:#1e1e1c;--ink:#ecebe7;--sub:#9d9b95;--line:#33322f;--accent:#ff5a4e;--ok:#4cd38a;--ng:#ff7b6e;--bar:#33322f}}
+body{margin:0;width:340px;background:var(--bg);color:var(--ink);font:13px/1.6 "Yu Gothic UI","Meiryo",sans-serif;padding:14px}
+h1{font-size:15px;margin:0 0 8px}h1 b{color:var(--accent)}
+.box{border:1px solid var(--line);border-radius:8px;padding:10px;margin:8px 0}
+.sub{color:var(--sub);font-size:12px}
+.bar{height:6px;background:var(--bar);border-radius:3px;overflow:hidden;margin-top:6px}.bar div{height:100%;background:var(--accent);width:0}
+button{font:inherit;border:0;border-radius:6px;padding:7px 12px;background:var(--accent);color:#fff;font-weight:700;cursor:pointer;width:100%}
+button:disabled{opacity:.5;cursor:default}
+.ok{color:var(--ok)}.ng{color:var(--ng)}
+a{color:inherit}
+.row{display:flex;justify-content:space-between;gap:8px}
+ul{margin:4px 0 0;padding-left:16px}li{margin:2px 0}
+</style>
+</head>
+<body>
+<h1>買取<b>差益</b>チェッカー 自動取得</h1>
+<div class="box" id="now">読み込み中…</div>
+<button id="run">今すぐ取得する</button>
+<div class="box"><div class="row"><span>次回の自動取得</span><b id="next">—</b></div>
+  <div class="sub">PC と Chrome が起動していれば、その時刻に自動で動きます</div></div>
+<div class="box"><b>最近の実行</b><ul id="hist"><li class="sub">まだありません</li></ul></div>
+<div class="row sub"><a href="options.html" target="_blank">設定（合鍵・時刻）</a><a id="list" href="#" target="_blank">一覧を開く</a></div>
+<script src="popup.js"></script>
+</body>
+</html>
