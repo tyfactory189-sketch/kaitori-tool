@@ -84,7 +84,8 @@ function evalOffer(o){
 }
 function info(jan){
   const it=BY[jan];if(!it)return {};
-  const buys=Object.entries(it.buys||{}).map(([k,b])=>({k,...b})).sort((a,b)=>b.p-a.p);
+  const noMulti=S.noMulti!==false;
+  const buys=Object.entries(it.buys||{}).map(([k,b])=>({k,...b})).filter(b=>!(noMulti&&b.m)).sort((a,b)=>b.p-a.p);
   const offers=(it.offers||[]).map(evalOffer).sort((a,b)=>a.eff-b.eff);
   const best=buys[0],top=offers[0];
   return {it,buys,best,top,profit:best&&top?best.p-top.eff-S.sendCost:null};

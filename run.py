@@ -109,6 +109,21 @@ def source_status():
     return out
 
 
+# 買取wikiでは iPhone・iPad・Mac などが「容量・色を選ぶ1商品」として載っていて、
+# 一覧の買取価格は一番高い仕様（例: 2TB）の金額になっていることがある。
+# 商品名に容量が無いこれらの商品は「仕様で価格が変わる」印（m）を付け、画面側で扱いを選べるようにする。
+RE_MULTI_FAMILY = re.compile(
+    r"iPad|iPhone|MacBook|iMac|Mac ?mini|Mac ?Studio|Mac ?Pro|Pixel ?\d|Galaxy ?[ASZ]\d|Surface|Steam ?Deck")
+RE_CAPACITY = re.compile(r"\d+\s*(GB|TB|G)\b|\d+G\+\d+G|\d+GB?/\d+", re.I)
+MULTI_SITES = ("iphonekaitori.tokyo", "ipadkaitori.jp", "pckaitori.tokyo", "gamekaitori.jp")
+
+
+def is_multi_spec(key, it):
+    name, url = it.get("name", ""), it.get("url", "")
+    return (key == "wiki" and any(d in url for d in MULTI_SITES)
+            and bool(RE_MULTI_FAMILY.search(name)) and not RE_CAPACITY.search(name))
+
+
 def merged_buyback():
     """JANごとに各買取サイトの価格をまとめる。"""
     by_jan = {}
@@ -122,6 +137,8 @@ def merged_buyback():
             cur = rec["buys"].get(key)
             if not cur or price > cur["p"]:
                 rec["buys"][key] = {"p": int(price), "u": it.get("url", ""), "note": it.get("note", "")}
+                if is_multi_spec(key, it):
+                    rec["buys"][key]["m"] = 1
             if len(it.get("name", "")) > len(rec["name"]):
                 rec["name"] = it["name"]
     return by_jan

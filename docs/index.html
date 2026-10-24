@@ -124,6 +124,8 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
     <div class="row">買取価格 <input type="number" id="minBuy" step="1000"> 円以上</div>
     <label><input type="checkbox" id="freeOnly"> 送料無料のみ</label>
     <label><input type="checkbox" id="noProof"> 購入証明が必要な商品を除く</label>
+    <label><input type="checkbox" id="noMulti"> 容量・色で価格が変わる買取価格を使わない</label>
+    <div class="hint">買取wikiの iPhone・iPad・Mac 等は「容量・色を選ぶ1商品」で、表示額が最高仕様の金額のことがあるため</div>
   </fieldset>
   <div class="btns"><button id="reset">初期値に戻す</button><button id="theme">表示切替</button></div>
 </aside>
@@ -146,7 +148,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 <script>
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 const DEFAULTS={step:8,extra:0,premium:false,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
-  shipAdd:800,sendCost:0,q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,sort:'profit',srcOff:[]};
+  shipAdd:800,sendCost:0,q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
 let S={...DEFAULTS,...store.get()};
@@ -156,7 +158,7 @@ const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 const NUMS=['step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','minProfit','minBuy'];
-const BOOLS=['premium','freeOnly','noProof'];
+const BOOLS=['premium','freeOnly','noProof','noMulti'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
   $('cpType').value=S.cpType;$('q').value=S.q;
@@ -195,7 +197,9 @@ function compute(){
   const W=!!S.watchOnly;
   const pool0=W?[...WATCH.keys()].map(j=>BYJAN[j]||{jan:j,name:WATCH.get(j).memo||'（まだ照合されていません）',buys:{},offers:[],at:''}):DATA.items;
   for(const it of pool0){
-    const buys=srcs.map(k=>it.buys[k]&&{k,...it.buys[k]}).filter(Boolean);
+    const allBuys=srcs.map(k=>it.buys[k]&&{k,...it.buys[k]}).filter(Boolean);
+    const buys=S.noMulti?allBuys.filter(b=>!b.m):allBuys;
+    const multi=allBuys.filter(b=>b.m);
     if(W&&(!buys.length||!it.offers.length)){ // ウォッチ表示ではデータ不足でも出す
       if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)))continue;
       const offers=it.offers.map(evalOffer).sort((a,b)=>a.eff-b.eff);
@@ -214,7 +218,7 @@ function compute(){
     const profit=best.p-top.eff-S.sendCost;
     if(!W&&profit<S.minProfit)continue;
     if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)||offers.some(e=>e.o.s.toLowerCase().includes(q)||e.o.n.toLowerCase().includes(q))))continue;
-    rows.push({it,buys,best,offers,top,profit,rate:profit/(top.paid+top.ship)});
+    rows.push({it,buys,best,offers,top,profit,rate:profit/(top.paid+top.ship),multi});
   }
   const key={profit:r=>-r.profit,rate:r=>-r.rate,buy:r=>-(r.best?r.best.p:0)}[S.sort]||(r=>-r.profit);
   rows.sort((a,b)=>key(a)-key(b));
@@ -240,7 +244,8 @@ function render(){
         <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}">買取スキャナー</a></div></div></article>`;
     }
     const o=top.o;
-    const chips=r.buys.sort((a,b)=>b.p-a.p).map(b=>`<a class="chip ${b===best?'best':''}" href="${esc(b.u)}" target="_blank" rel="noopener">${esc(L[b.k].label)} ${yen(b.p)}</a>${b.note?`<span class="chip warn">${esc(b.note)}</span>`:''}`).join('');
+    const chips=r.buys.sort((a,b)=>b.p-a.p).map(b=>`<a class="chip ${b===best?'best':''}" href="${esc(b.u)}" target="_blank" rel="noopener">${esc(L[b.k].label)} ${yen(b.p)}</a>${b.note?`<span class="chip warn">${esc(b.note)}</span>`:''}${b.m?`<span class="chip warn" title="買取wikiでは容量・色を選ぶ1商品として載っていて、この金額は一番高い仕様の買取価格の可能性があります。リンク先で仕様を選んで確認してください">容量・色で変動（最高額の可能性）</span>`:''}`).join('')
+      +((S.noMulti&&r.multi&&r.multi.length)?r.multi.map(b=>`<a class="chip" style="opacity:.55;text-decoration:line-through" href="${esc(b.u)}" target="_blank" rel="noopener" title="容量・色で価格が変わるため計算から除外中（左の絞り込みで切替）">${esc(L[b.k].label)} ${yen(b.p)}</a>`).join(''):'');
     const others=r.offers.map(e=>`<tr><td><a href="${esc(e.o.u)}" target="_blank" rel="noopener">${esc(e.o.s)}</a>${e.o.bs?' ★':''}${e.o.pv?' <span class="chip warn">仕様で価格差</span>':''}${e.o.add?' <span class="chip warn">必須OP込</span>':''}</td><td>${yen(e.base)}</td><td>${e.cp?'-'+yen(e.cp):'—'}</td><td>${e.o.sh===2?'無料':'+'+yen(e.ship)}</td><td>${e.pts.toLocaleString()}P</td><td><b>${yen(e.eff)}</b></td><td class="${best.p-e.eff-S.sendCost>=0?'plus':'minus'}">${yen(best.p-e.eff-S.sendCost)}</td></tr>`).join('');
     const pc=r.profit>=0?'plus':'minus';
     return `<article class="item">
