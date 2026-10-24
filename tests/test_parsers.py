@@ -202,3 +202,16 @@ def test_select_option_model():
 if __name__ == "__main__":
     test_select_option_model()
     print("ok test_select_option_model")
+
+
+def test_bara():
+    item = {"applicablePrice": 5010, "stock": {"isAvailable": True},
+            "caption": "Nintendo Switch 選べるカラー Joy-Con (左または右) 純正品<br>※Joy-Conの単品販売（左または右）となります。外箱は付属できません。"}
+    assert yahoo.parse_item_page(_page(item), "4902370544060")["ng"] == "ばら売り"
+    item["caption"] = "新品未開封のメーカー正規品です。"
+    assert yahoo.parse_item_page(_page(item), "4902370544060")["ng"] == ""
+
+
+if __name__ == "__main__":
+    test_bara()
+    print("ok test_bara")
