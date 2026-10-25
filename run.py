@@ -265,6 +265,10 @@ def due_hours(entry):
     return 72       # 見込みが薄い・Yahooに出品なし
 
 
+# Yahoo API の 429（短時間にアクセスが多いと一時的に利用制限）を受けたときの待ち時間（秒）
+LIMIT_WAITS = (60, 180, 600, 900)
+
+
 def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     """ウォッチ商品を毎回最初に照合し、その後は「照合の時期が来た」商品を見込みの高い順に。
     1回あたりの問い合わせ数は YAHOO_MAX_REQ（既定 9000）まで。時間切れ・上限なら残りは次回へ。"""
@@ -291,11 +295,14 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     targets.sort()
     targets = [(t[2], 0, t[3], t[4]) for t in targets][:max_req]
     log(f"[yahoo] 今回の照合対象 {len(targets)}件（時期が来ていない {skipped}件は省略）")
-    client = Client(delay=1.1, retries=2, backoff=5)
+    client = Client(delay=float(os.environ.get("YAHOO_DELAY", "1.5")), retries=1, backoff=5)
     page_client = Client(delay=0.8, retries=1, backoff=3)
     chk = {"checked": 0, "changed": 0, "failed": 0, "last_error": "", "disabled": False}
     deadline = time.time() + budget_min * 60
-    done = fails = streak = 0
+    done = fails = streak = hits429 = 0
+    first_429 = ""
+    err = None
+    started = time.time()
     errors: dict[str, int] = {}
     last_error = ""
     first_400 = ""
@@ -304,8 +311,27 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
         if time.time() > deadline:
             stopped = "時間切れ（残りは次回）"
             break
+        offers = None
+        for wait in (0, *LIMIT_WAITS):
+            if wait:
+                if time.time() + wait > deadline:
+                    break
+                log(f"[yahoo] 一時的な利用制限（429）。{wait}秒待って再開します（{done}件目のあと）")
+                time.sleep(wait)
+            try:
+                offers = yahoo.search_jan(client, appid, jan, top, keep=10)
+                break
+            except Exception as e:  # noqa: BLE001
+                err = e
+                if "limit count" not in str(e):
+                    break
+                hits429 += 1
+                first_429 = first_429 or f"{done}件目のあと（開始から{int(time.time() - started)}秒）"
+        if offers is None:
+            e = err
         try:
-            offers = yahoo.search_jan(client, appid, jan, top, keep=10)
+            if offers is None:
+                raise e
         except Exception as e:  # noqa: BLE001
             fails += 1
             streak += 1
@@ -315,7 +341,7 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
             errors[key] = errors.get(key, 0) + 1
             log(f"[yahoo] {jan} 失敗: {last_error}")
             if "limit count" in last_error:
-                stopped = "Yahoo API の1日の利用上限に達したため中断（翌日に再開）"
+                stopped = "Yahoo API の利用制限（429）が待っても解除されないため中断（次回に再開）"
                 log(f"[yahoo] {stopped}")
                 break
             if key == "HTTP 400":  # その商品だけの問題（JANの形式など）。連続失敗には数えない
@@ -344,7 +370,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     log(f"[yahoo] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped}")
     RUN_LOG["yahoo"] = {"targets": len(targets), "done": done, "failed": fails,
                         "errors": errors, "last_error": last_error, "first_400": first_400[:300],
-                        "stopped": stopped, "skipped_not_due": skipped}
+                        "stopped": stopped, "skipped_not_due": skipped,
+                        "limited_429": hits429, "first_429": first_429}
     RUN_LOG["item_check"] = chk
     log(f"[yahoo] 商品ページ確認 {chk['checked']}件 / 価格補正 {chk['changed']}件 / 失敗 {chk['failed']}件")
     return cache
