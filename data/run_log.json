@@ -1,7 +1,7 @@
 {
- "started": "2026-10-25T03:26+09:00",
+ "started": "2026-10-25T09:32+09:00",
  "yahoo": {
-  "targets": 6752,
+  "targets": 7005,
   "done": 30,
   "failed": 1,
   "errors": {
@@ -10,7 +10,7 @@
   "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 429 '{ \"Status\": 429, \"Message\":\"The AppID is denied: total count of AppID reached the URL\\'s limit count.\" }'",
   "first_400": "",
   "stopped": "Yahoo API の1日の利用上限に達したため中断（翌日に再開）",
-  "skipped_not_due": 9607
+  "skipped_not_due": 9354
  },
  "item_check": {
   "checked": 36,
@@ -20,6 +20,6 @@
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-25T04:21+09:00",
- "items": 3522
+ "finished": "2026-10-25T10:27+09:00",
+ "items": 3523
 }
