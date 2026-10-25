@@ -284,6 +284,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
         if top < min_buy or jan in watch:
             continue
         e = cache.get(jan, {})
+        if len(jan) == 12 and e.get("r") == 9.9 and not e.get("o"):
+            e = {}  # 以前 400 で失敗した12桁JAN（先頭0付きで再照合）
         try:
             age = (now - datetime.fromisoformat(e["at"])).total_seconds() / 3600
         except (KeyError, ValueError):
@@ -295,7 +297,7 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     targets.sort()
     targets = [(t[2], 0, t[3], t[4]) for t in targets][:max_req]
     log(f"[yahoo] 今回の照合対象 {len(targets)}件（時期が来ていない {skipped}件は省略）")
-    client = Client(delay=float(os.environ.get("YAHOO_DELAY", "1.5")), retries=1, backoff=5)
+    client = Client(delay=float(os.environ.get("YAHOO_DELAY", "2.1")), retries=1, backoff=5)
     page_client = Client(delay=0.8, retries=1, backoff=3)
     chk = {"checked": 0, "changed": 0, "failed": 0, "last_error": "", "disabled": False}
     deadline = time.time() + budget_min * 60

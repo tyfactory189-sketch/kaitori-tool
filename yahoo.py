@@ -49,7 +49,7 @@ def _offer(hit: dict) -> dict:
 def search_jan(client: Client, appid: str, jan: str, buy_price: int, keep: int = 5):
     data = client.get(API, params={
         "appid": appid,
-        "jan_code": jan,
+        "jan_code": jan.zfill(13) if len(jan) == 12 else jan,  # 12桁(UPC)は先頭0を付けた13桁で検索
         "condition": "new",
         "in_stock": "true",
         "sort": "+price",
@@ -59,7 +59,7 @@ def search_jan(client: Client, appid: str, jan: str, buy_price: int, keep: int =
     offers = []
     for hit in data.get("hits", []):
         code = (hit.get("janCode") or "").strip()
-        if code and code != jan:
+        if code and code.zfill(13) != jan.zfill(13):
             continue
         name = hit.get("name") or ""
         if EXCLUDE.search(name):
