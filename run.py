@@ -39,6 +39,10 @@ KEEP_OFFERS = 3
 
 # 実行結果の記録（data/run_log.json に保存。Actionsのログを見なくても状況が分かるように）
 RUN_LOG: dict = {}
+STARTED = time.time()
+# 1回の実行全体の上限（分）。GitHub Actions の timeout-minutes(355) より十分短くし、
+# 次の定期実行や拡張機能からの実行が長く待たされないようにする
+JOB_MAX_MIN = int(os.environ.get("JOB_MAX_MIN", "170"))
 
 
 def now_iso():
@@ -300,7 +304,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     client = Client(delay=float(os.environ.get("YAHOO_DELAY", "2.1")), retries=1, backoff=5)
     page_client = Client(delay=0.8, retries=1, backoff=3)
     chk = {"checked": 0, "changed": 0, "failed": 0, "last_error": "", "disabled": False}
-    deadline = time.time() + budget_min * 60
+    # 買取商店の取得などで使った時間を差し引き、全体が JOB_MAX_MIN に収まるようにする（集計・保存に10分残す）
+    deadline = min(time.time() + budget_min * 60, STARTED + (JOB_MAX_MIN - 10) * 60)
     done = fails = streak = hits429 = 0
     first_429 = ""
     err = None
@@ -449,7 +454,7 @@ def main():
         cache = update_yahoo(
             by_jan, cache, appid,
             int(os.environ.get("MIN_BUY", "3000")),
-            int(os.environ.get("YAHOO_BUDGET_MIN", "300")),
+            int(os.environ.get("YAHOO_BUDGET_MIN", "160")),
             watch,
         )
     build(by_jan, cache, watch)
