@@ -39,14 +39,58 @@ async function schedule() {
     await chrome.alarms.create('run-' + t, { when: nextTime(t), periodInMinutes: 24 * 60 });
   }
 }
-chrome.runtime.onInstalled.addListener(schedule);
+chrome.runtime.onInstalled.addListener(async () => { await schedule(); report({ event: 'インストール・更新' }); });
 chrome.runtime.onStartup.addListener(async () => {
   await schedule();
   const st = await getStatus();
   if (st.running) await setStatus({ running: false, text: '前回の実行は Chrome の終了で中断されました' });
+  await report({ event: 'Chrome起動' });
 });
 chrome.storage.onChanged.addListener((ch, area) => { if (area === 'local' && ch.settings) schedule(); });
-chrome.alarms.onAlarm.addListener(a => { if (a.name.startsWith('run-')) startJob('定時（' + a.name.slice(4) + '）'); });
+chrome.alarms.onAlarm.addListener(async a => {
+  if (!a.name.startsWith('run-')) return;
+  const st = await getStatus();
+  if (st.running && Date.now() - (st.startedAt || 0) >= STALE_MS) {
+    await setStatus({ running: false, text: '前回の実行が途中で止まっていました（' + (st.text || '') + '）' });
+    await report({ event: '前回の実行が途中で停止' });
+  }
+  const r = await startJob('定時（' + a.name.slice(4) + '）');
+  if (!r.ok) report({ event: '定時実行できず：' + r.message });
+});
+
+// ---------- 状態をGitHubに報告（ツール画面とサポート側から確認できるように） ----------
+async function report(extra = {}) {
+  try {
+    const settings = await getSettings();
+    if (!settings.token) return;
+    const st = await getStatus();
+    const alarms = (await chrome.alarms.getAll()).filter(a => a.name.startsWith('run-'));
+    const body = {
+      version: chrome.runtime.getManifest().version,
+      reportedAt: new Date().toISOString(),
+      running: !!st.running, text: st.text || '', trigger: st.trigger || '',
+      startedAt: st.startedAt ? new Date(st.startedAt).toISOString() : null,
+      last: st.last ? { ...st.last, at: new Date(st.last.at).toISOString() } : null,
+      history: (st.history || []).slice(0, 10).map(h => ({ ...h, at: new Date(h.at).toISOString() })),
+      times: settings.times, sites: settings.sites,
+      next: alarms.length ? new Date(Math.min(...alarms.map(a => a.scheduledTime))).toISOString() : null,
+      ...extra,
+    };
+    const api = (path, opt = {}) => fetch('https://api.github.com/repos/' + settings.repo + path, {
+      ...opt, headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + settings.token, 'X-GitHub-Api-Version': '2022-11-28' },
+    });
+    const path = '/contents/docs/extension_status.json';
+    const bytes = new TextEncoder().encode(JSON.stringify(body, null, 1));
+    let bin = ''; bytes.forEach(c => { bin += String.fromCharCode(c); });
+    for (let i = 0; i < 3; i++) {
+      const cur = await api(path + '?ref=main');
+      const sha = cur.ok ? (await cur.json()).sha : undefined;
+      const r = await api(path, { method: 'PUT', body: JSON.stringify({ message: '自動取得の状態: ' + (extra.event || body.text).slice(0, 60), content: btoa(bin), sha, branch: 'main' }) });
+      if (r.ok || r.status === 401 || r.status === 403) return;
+      await new Promise(res => setTimeout(res, 3000));
+    }
+  } catch (e) { /* 報告の失敗は無視（取得そのものには影響させない） */ }
+}
 
 // ---------- ジョブ ----------
 async function ensureOffscreen() {
@@ -67,6 +111,7 @@ async function startJob(trigger) {
     return { ok: false, message: '合鍵が未設定です' };
   }
   await setStatus({ running: true, startedAt: Date.now(), trigger, text: '開始しました', pct: 0 });
+  report({ event: '開始（' + trigger + '）' });
   await ensureOffscreen();
   chrome.runtime.sendMessage({ target: 'offscreen', cmd: 'run', settings });
   return { ok: true };
@@ -77,6 +122,7 @@ async function finishJob(result) {
   const entry = { at: Date.now(), trigger: st.trigger, ok: result.ok, summary: result.summary, secs: Math.round((Date.now() - (st.startedAt || Date.now())) / 1000) };
   await setStatus({ running: false, text: result.summary, pct: 100, last: entry, history: [entry, ...(st.history || [])].slice(0, 20) });
   try { await chrome.offscreen.closeDocument(); } catch (e) { /* noop */ }
+  await report({ event: (result.ok ? '完了' : 'エラーあり') + '（' + (st.trigger || '') + '）' });
 }
 
 chrome.runtime.onMessage.addListener((msg, _sender, reply) => {
