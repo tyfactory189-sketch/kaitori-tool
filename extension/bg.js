@@ -3,14 +3,15 @@ const DEFAULT_SETTINGS = {
   token: '',
   repo: 'tyfactory189-sketch/kaitori-tool',
   times: ['11:00', '14:00', '20:00'],
-  sites: { wiki: true, variants: true, morimori: true, yahooUser: true },
+  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true },
   startYahoo: true,
+  sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4 },
 };
 const STALE_MS = 3 * 60 * 60e3; // 3時間以上「実行中」のままなら止まったとみなす
 
 async function getSettings() {
   const { settings } = await chrome.storage.local.get('settings');
-  return { ...DEFAULT_SETTINGS, ...(settings || {}), sites: { ...DEFAULT_SETTINGS.sites, ...((settings || {}).sites || {}) } };
+  return { ...DEFAULT_SETTINGS, ...(settings || {}), sites: { ...DEFAULT_SETTINGS.sites, ...((settings || {}).sites || {}) }, sheet: { ...DEFAULT_SETTINGS.sheet, ...((settings || {}).sheet || {}) } };
 }
 async function getStatus() {
   const { status } = await chrome.storage.local.get('status');

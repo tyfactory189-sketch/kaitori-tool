@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "買取差益チェッカー 自動取得",
-  "version": "1.5.0",
+  "version": "1.6.1",
   "description": "買取wiki（専用サイトの容量・色ごとの価格を含む）と森森買取の買取価格を決まった時間に取得し、GitHubに保存してYahoo照合を始めます。",
   "permissions": ["alarms", "storage", "offscreen"],
   "host_permissions": [
@@ -14,7 +14,8 @@
     "https://www.morimori-kaitori.jp/*",
     "https://api.github.com/*",
     "https://*.github.io/*",
-    "https://store.shopping.yahoo.co.jp/*"
+    "https://store.shopping.yahoo.co.jp/*",
+    "https://docs.google.com/*"
   ],
   "background": { "service_worker": "bg.js" },
   "action": { "default_title": "買取差益チェッカー", "default_popup": "popup.html" },

@@ -76,6 +76,11 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 .more{margin:14px auto;display:block}
 .star{border:0;background:none;padding:0 4px 0 0;font-size:17px;line-height:1;color:var(--sub);cursor:pointer;vertical-align:-1px}
 .star.on{color:#e0a000;background:none;border:0}
+.budget{margin-bottom:10px;padding:10px 12px}.budget .bh{margin-bottom:6px}.budget .bamt{font-weight:700;margin-left:6px}
+.budget table{width:100%;border-collapse:collapse;font-size:13px}.budget td,.budget th{padding:4px 6px;border-top:1px solid var(--line,#ddd);text-align:right;white-space:nowrap}
+.budget td.bn,.budget th:first-child{text-align:left;white-space:normal}
+.budget-login{padding:16px}.budget-login form{margin-top:10px}.budget-login input{font:inherit;padding:6px 8px}
+.budget-ctl{margin-bottom:10px;padding:8px 12px;font-size:13px}.budget-ctl button{margin-right:4px}
 .exc{border:0;background:none;color:var(--sub);cursor:pointer;padding:0 6px 0 0;font-size:12px}
 .exc:hover{color:#d33}
 .exc.big{border:1px solid var(--line,#ccc);border-radius:6px;padding:3px 8px;margin-top:4px;font-size:12px}
@@ -150,6 +155,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
       <button data-sort="buy">買取価格順</button>
       <span class="btns" id="sizeBtns"><button data-size="all">全部</button><button data-size="normal">通常</button><button data-size="large">大型</button><button data-size="tool">電動工具</button></span>
       <button class="wbtn" id="watchOnly" title="ウォッチリストの商品だけ表示（差益がマイナスでも表示）">★ ウォッチのみ</button>
+      <button class="wbtn" id="budgetView" title="残高シートの金額ごとに、その金額で買える利益の出る商品を表示">💴 残高別</button>
       <a href="watch.html" style="align-self:center;font-size:13px">ウォッチリスト管理</a>
     </div>
     <div class="count" id="count"></div>
@@ -191,6 +197,7 @@ function syncForm(){
   document.querySelectorAll('#sizeBtns button').forEach(b=>b.classList.toggle('on',b.dataset.size===S.size));
   document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
   $('watchOnly').classList.toggle('on',!!S.watchOnly);
+  $('budgetView').classList.toggle('on',!!S.budget);
   document.querySelectorAll('#srcBoxes input').forEach(c=>c.checked=!S.srcOff.includes(c.value));
 }
 function readForm(){
@@ -300,9 +307,34 @@ function compute(){
   return rows;
 }
 
+// 残高別：残高シートの各行の金額で払える（支払額＝価格−クーポン＋送料 ≦ 残高）利益の出る商品
+function renderBudget(rows){
+  if(!BUDGET_ENC){$('list').innerHTML='<div class="empty panel">残高のデータがまだありません。もう1台のPCの拡張機能（v1.6.1以降）で残高のパスワードを設定すると、次の定時取得で読み込まれます。</div>';$('more').hidden=true;$('count').textContent='';return}
+  if(!BUDGET){
+    $('count').textContent='';$('more').hidden=true;
+    $('list').innerHTML=`<div class="panel budget-login"><b>🔒 残高を見るにはログインしてください</b><div class="calc">拡張機能の設定画面で決めた「残高のパスワード」を入力します（このブラウザに記憶されます）</div><form id="bLogin"><input type="password" id="bPass" placeholder="パスワード" autocomplete="current-password"> <button>ログイン</button> <span id="bErr" class="err"></span></form></div>`;
+    $('bLogin').onsubmit=async ev=>{ev.preventDefault();const pw=$('bPass').value;if(await unlockBudget(pw)){try{localStorage.setItem(PASS_KEY,pw)}catch(_){}render()}else $('bErr').textContent='パスワードが違います'};
+    return;
+  }
+  const per=S.budgetN||5,near=S.budgetSort==='near';
+  const cand=rows.filter(r=>!r.partial&&r.profit>0);
+  const tot=BUDGET.items.reduce((a,b)=>a+b.amt,0);
+  $('count').textContent=`${BUDGET.items.length}件の残高（合計 ${yen(tot)}・${esc(String(BUDGET.updated||'').slice(5,16).replace('T',' '))} 読込）`;
+  const ctl=`<div class="panel budget-ctl">並び：<button data-bs="profit" class="${near?'':'on'}">差益が大きい順</button><button data-bs="near" class="${near?'on':''}">残高に近い順（使い切り）</button>　表示数：${[3,5,10].map(n=>`<button data-bn="${n}" class="${per===n?'on':''}">${n}件</button>`).join('')}</div>`;
+  const html=BUDGET.items.map(b=>{
+    const fit=cand.filter(r=>r.top.paid+r.top.ship<=b.amt);
+    fit.sort(near?(x,y)=>(b.amt-(x.top.paid+x.top.ship))-(b.amt-(y.top.paid+y.top.ship))||y.profit-x.profit:(x,y)=>y.profit-x.profit);
+    const list=fit.slice(0,per).map(r=>{const pay=r.top.paid+r.top.ship;return `<tr><td class="bn"><a href="${esc(r.top.o.u)}" target="_blank" rel="noopener">${esc(r.it.name)}</a><div class="calc">${esc(r.top.o.s)} ／ 買取 ${esc(DATA.sources[r.best.k].label)} ${yen(r.best.p)}</div></td><td>${yen(pay)}</td><td class="plus">+${yen(r.profit)}</td><td>${yen(b.amt-pay)}</td></tr>`}).join('');
+    return `<article class="panel budget"><div class="bh"><b>${esc(b.name)}</b> <span class="bamt">${yen(b.amt)}</span> <span class="calc">${fit.length}件が買える</span></div>${b.amt<=0?'<div class="calc">残高なし</div>':list?`<table><tr><th>商品</th><th>支払額</th><th>差益</th><th>残り</th></tr>${list}</table>`:'<div class="calc">この金額で買える利益の出る商品はありません</div>'}</article>`;
+  }).join('');
+  $('list').innerHTML=ctl.replace('</div>',' <button id="bLogout" style="float:right">ログアウト</button></div>')+html;$('more').hidden=true;
+  $('bLogout').onclick=()=>{try{localStorage.removeItem(PASS_KEY)}catch(_){}BUDGET=null;render()};
+}
+
 function render(){
   if(!DATA)return;
   const rows=compute();
+  if(S.budget)return renderBudget(rows);
   $('count').textContent=`${rows.length.toLocaleString()}件 / 全${DATA.items.length.toLocaleString()}件`;
   const L=DATA.sources;
   $('list').innerHTML=rows.length?rows.slice(0,shown).map(r=>{
@@ -386,6 +418,20 @@ $('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button[data
 $('more').onclick=()=>{shown+=100;render()};
 $('sizeBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-size]');if(!b)return;S.size=b.dataset.size;store.set(S);syncForm();shown=100;render()});
 $('watchOnly').onclick=()=>{S.watchOnly=!S.watchOnly;store.set(S);syncForm();shown=100;render()};
+$('budgetView').onclick=()=>{S.budget=!S.budget;store.set(S);syncForm();render()};
+$('list').addEventListener('click',e=>{const bs=e.target.closest('[data-bs]');if(bs){S.budgetSort=bs.dataset.bs;store.set(S);render();return}const bn=e.target.closest('[data-bn]');if(bn){S.budgetN=+bn.dataset.bn;store.set(S);render()}});
+// 残高は暗号化して保存されている（budgets.enc.json）。パスワードで復号して表示する
+let BUDGET=null,BUDGET_ENC=null;const PASS_KEY='kts_budget_pass';
+const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function unlockBudget(pass){
+  try{
+    const e=BUDGET_ENC,base=await crypto.subtle.importKey('raw',new TextEncoder().encode(pass),'PBKDF2',false,['deriveKey']);
+    const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:b64d(e.salt),iterations:200000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['decrypt']);
+    const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(e.iv)},key,b64d(e.ct));
+    BUDGET=JSON.parse(new TextDecoder().decode(pt));return true;
+  }catch(_){return false}
+}
+fetch('budgets.enc.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(async j=>{BUDGET_ENC=j;let pw=null;try{pw=localStorage.getItem(PASS_KEY)}catch(_){}if(j&&pw)await unlockBudget(pw);if(DATA&&S.budget)render()}).catch(()=>{});
 function toast(t){const d=document.createElement('div');d.className='toast';d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),3500)}
 async function toggleStar(jan){
   const on=!WATCH.has(jan);

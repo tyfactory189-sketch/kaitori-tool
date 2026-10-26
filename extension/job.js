@@ -353,6 +353,59 @@ const KTS = (() => {
     };
   }
 
+
+  // 残高などの個人データは、パスワードで暗号化してから保存する（公開ページでも中身は読めない）
+  const b64e = buf => btoa(String.fromCharCode(...new Uint8Array(buf)));
+  async function deriveKey(pass, salt) {
+    const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
+  }
+  async function encryptJson(obj, pass) {
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const key = await deriveKey(pass, salt);
+    const ct = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(JSON.stringify(obj)));
+    return { v: 1, kdf: 'PBKDF2-SHA256-200000', alg: 'AES-GCM', salt: b64e(salt), iv: b64e(iv), ct: b64e(ct) };
+  }
+
+  // ---------- 残高シート（Googleスプレッドシート） ----------
+  function parseCsv(text) {
+    const rows = []; let row = [], cur = '', q = false;
+    for (let i = 0; i < text.length; i++) {
+      const c = text[i];
+      if (q) { if (c === '"') { if (text[i + 1] === '"') { cur += '"'; i++; } else q = false; } else cur += c; }
+      else if (c === '"') q = true;
+      else if (c === ',') { row.push(cur); cur = ''; }
+      else if (c === '\n') { row.push(cur); rows.push(row); row = []; cur = ''; }
+      else if (c !== '\r') cur += c;
+    }
+    if (cur || row.length) { row.push(cur); rows.push(row); }
+    return rows;
+  }
+  const colNo = c => String(c).toUpperCase().split('').reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);
+  function parseBudget(csv, sheet) {
+    const n = colNo(sheet.nameCol), a = colNo(sheet.amtCol), first = Math.min(n, a);
+    const items = [];
+    parseCsv(csv).forEach((r, i) => {
+      const name = String(r[n - first] || '').trim();
+      const raw = String(r[a - first] || '').normalize('NFKC').replace(/[,円¥\s]/g, '');
+      if (!name || !/^-?\d+(\.\d+)?$/.test(raw)) return;
+      items.push({ name, amt: Math.round(+raw), row: sheet.startRow + i });
+    });
+    return items;
+  }
+  async function grabBudget(sheet) {
+    const m = String(sheet.url || '').match(/\/spreadsheets\/d\/([\w-]+)/);
+    if (!m) throw new Error('残高シートのURLが正しくありません');
+    const gid = (String(sheet.url).match(/[#?&]gid=(\d+)/) || [])[1] || '0';
+    const c1 = String.fromCharCode(64 + Math.min(colNo(sheet.nameCol), colNo(sheet.amtCol)));
+    const c2 = String.fromCharCode(64 + Math.max(colNo(sheet.nameCol), colNo(sheet.amtCol)));
+    const url = `https://docs.google.com/spreadsheets/d/${m[1]}/gviz/tq?tqx=out:csv&gid=${gid}&headers=0&range=${c1}${sheet.startRow}:${c2}${sheet.startRow + 300}`;
+    const r = await fetch(url, { credentials: 'include', cache: 'no-store' });
+    const t = await r.text();
+    if (!r.ok || /^\s*<(!doctype|html)/i.test(t)) throw new Error('シートを開けません（このChromeでシートを見られるGoogleアカウントにログインしてください）');
+    return parseBudget(t, sheet);
+  }
+
   // ---------- 全体 ----------
   async function run(settings) {
     const g = gh(settings);
@@ -394,6 +447,16 @@ const KTS = (() => {
         notes.push(`Yahooポイント ${y.stats.ok}件` + (y.stats.premium ? '' : '（LYPプレミアム会員としてログインしていません）')); saved++;
       } catch (e) { notes.push('Yahooポイント 失敗：' + e.message); }
     }
+    if (sites.budget !== false && settings.sheet && settings.sheet.url) {
+      try {
+        if (!settings.sheet.pass) throw new Error('残高のパスワードが未設定です（設定画面で入力してください）');
+        progress('残高シートを読み込み中…', 99);
+        const items = await grabBudget(settings.sheet);
+        if (!items.length) throw new Error('金額の行が見つかりませんでした');
+        await g.write('docs/budgets.enc.json', await encryptJson({ updated: jstNow(), items }, settings.sheet.pass), `残高シートを更新（暗号化・${items.length}件）`);
+        notes.push(`残高 ${items.length}件`);
+      } catch (e) { notes.push('残高シート 失敗：' + e.message); }
+    }
     if (saved && settings.startYahoo) {
       progress('Yahoo照合を起動中…', 98);
       notes.push((await g.startYahoo().catch(() => false)) ? 'Yahoo照合を開始' : 'Yahoo照合は次の定期実行で');
@@ -401,7 +464,7 @@ const KTS = (() => {
     return { ok: saved > 0 && !notes.some(n => n.includes('失敗')), summary: notes.join(' ／ ') || '取得対象がありません' };
   }
 
-  return { run, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
+  return { run, parseCsv, parseBudget, encryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
 })();
 
 // オフスクリーン文書として読み込まれたときだけ、バックグラウンドからの指示を待つ
