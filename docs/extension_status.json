@@ -1,10 +1,10 @@
 {
  "version": "1.7.0",
- "reportedAt": "2026-10-26T08:25:30.388Z",
- "running": false,
- "text": "買取wiki 12,701件 ／ 仕様別 7商品 ／ 森森買取 10,345件 ／ Yahooポイント 398件 ／ 残高 22件 ／ Yahoo照合を開始",
- "trigger": "手動",
- "startedAt": "2026-10-26T07:40:45.278Z",
+ "reportedAt": "2026-10-26T11:00:00.561Z",
+ "running": true,
+ "text": "開始しました",
+ "trigger": "定時（20:00）",
+ "startedAt": "2026-10-26T11:00:00.542Z",
  "last": {
   "at": "2026-10-26T08:25:30.373Z",
   "ok": true,
@@ -40,6 +40,6 @@
   "yahooUser": true,
   "budget": true
  },
- "next": "2026-10-26T11:00:00.000Z",
- "event": "完了（手動）"
+ "next": "2026-10-27T02:00:00.000Z",
+ "event": "開始（定時（20:00））"
 }
