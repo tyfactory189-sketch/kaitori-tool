@@ -41,7 +41,7 @@ button{font:inherit;border:0;border-radius:6px;padding:8px 18px;background:var(-
     <label class="block" for="sheetUrl">残高シートのURL（このChromeでログインしているGoogleアカウントで開けるもの）</label>
     <input type="text" id="sheetUrl" placeholder="https://docs.google.com/spreadsheets/d/…/edit?gid=0">
     <div style="display:flex;gap:10px;margin-top:6px;font-size:13px">名前の列 <input type="text" id="nameCol" style="width:50px"> 金額の列 <input type="text" id="amtCol" style="width:50px"> 開始行 <input type="text" id="startRow" style="width:60px"></div>
-    <label class="block" for="sheetPass">残高を見るためのパスワード（ツール画面の「残高別」でこのパスワードを入れると表示されます）</label>
+    <label class="block" for="sheetPass">サイトのパスワード（GitHub の Secrets に登録した SITE_PASSWORD と同じもの。残高の暗号化と、暗号化されたサイトの読み込みに使います）</label>
     <input type="password" id="sheetPass" placeholder="8文字以上">
     <div class="sub" style="margin-left:22px">この Chrome で Yahoo! JAPAN にログインしておく必要があります。利益が出そうな出品（最大400件）だけ商品ページを開いて確認します。</div>
     <label class="chk"><input type="checkbox" id="startYahoo"> 取得後すぐに Yahoo照合を始める</label>

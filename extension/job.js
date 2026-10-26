@@ -293,8 +293,13 @@ const KTS = (() => {
     return out.filter(c => !seen.has(c.url) && seen.add(c.url)).slice(0, limit);
   }
 
-  async function grabYahooUser(g, pagesUrl, limit = 400) {
-    const data = await fetch(pagesUrl + 'data.json', { cache: 'no-store' }).then(r => r.json());
+  async function grabYahooUser(g, pagesUrl, limit = 400, pass = '') {
+    const er = await fetch(pagesUrl + 'data.enc.json', { cache: 'no-store' }).catch(() => null);
+    let data;
+    if (er && er.ok) {
+      if (!pass) throw new Error('サイトが暗号化されていますが、拡張機能にサイトのパスワードが未設定です');
+      try { data = await decryptJson(await er.json(), pass); } catch (e) { throw new Error('サイトのパスワードが違います（設定画面で入れ直してください）'); }
+    } else data = await fetch(pagesUrl + 'data.json', { cache: 'no-store' }).then(r => r.json());
     const wl = await g.readJson('docs/watchlist.json').catch(() => null);
     const watch = new Set(((wl && wl.items) || []).map(w => String(w.jan)));
     const cands = pickCandidates(data, watch, limit);
@@ -360,6 +365,11 @@ const KTS = (() => {
     const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pass), 'PBKDF2', false, ['deriveKey']);
     return crypto.subtle.deriveKey({ name: 'PBKDF2', salt, iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['encrypt', 'decrypt']);
   }
+  async function decryptJson(enc, pass) {
+    const d = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+    const key = await deriveKey(pass, d(enc.salt));
+    return JSON.parse(new TextDecoder().decode(await crypto.subtle.decrypt({ name: 'AES-GCM', iv: d(enc.iv) }, key, d(enc.ct))));
+  }
   async function encryptJson(obj, pass) {
     const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
     const key = await deriveKey(pass, salt);
@@ -413,6 +423,7 @@ const KTS = (() => {
     const notes = [];
     let saved = 0;
     const MIN_ITEMS = 1000;
+    const sitePass = settings.sitePass || (settings.sheet && settings.sheet.pass) || '';
 
     if (sites.wiki) {
       try {
@@ -442,18 +453,18 @@ const KTS = (() => {
       try {
         progress('Yahoo のポイントを確認中…', 0);
         const [u, r] = settings.repo.split('/');
-        const y = await grabYahooUser(g, `https://${u}.github.io/${r}/`);
+        const y = await grabYahooUser(g, `https://${u}.github.io/${r}/`, 400, sitePass);
         await g.write('data/yahoo_user.json', y, `Yahoo ログイン条件のポイントを更新（${y.stats.ok}件）`);
         notes.push(`Yahooポイント ${y.stats.ok}件` + (y.stats.premium ? '' : '（LYPプレミアム会員としてログインしていません）')); saved++;
       } catch (e) { notes.push('Yahooポイント 失敗：' + e.message); }
     }
     if (sites.budget !== false && settings.sheet && settings.sheet.url) {
       try {
-        if (!settings.sheet.pass) throw new Error('残高のパスワードが未設定です（設定画面で入力してください）');
+        if (!sitePass) throw new Error('サイトのパスワードが未設定です（設定画面で入力してください）');
         progress('残高シートを読み込み中…', 99);
         const items = await grabBudget(settings.sheet);
         if (!items.length) throw new Error('金額の行が見つかりませんでした');
-        await g.write('docs/budgets.enc.json', await encryptJson({ updated: jstNow(), items }, settings.sheet.pass), `残高シートを更新（暗号化・${items.length}件）`);
+        await g.write('docs/budgets.enc.json', await encryptJson({ updated: jstNow(), items }, sitePass), `残高シートを更新（暗号化・${items.length}件）`);
         notes.push(`残高 ${items.length}件`);
       } catch (e) { notes.push('残高シート 失敗：' + e.message); }
     }
@@ -464,7 +475,7 @@ const KTS = (() => {
     return { ok: saved > 0 && !notes.some(n => n.includes('失敗')), summary: notes.join(' ／ ') || '取得対象がありません' };
   }
 
-  return { run, parseCsv, parseBudget, encryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
+  return { run, parseCsv, parseBudget, encryptJson, decryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
 })();
 
 // オフスクリーン文書として読み込まれたときだけ、バックグラウンドからの指示を待つ

@@ -399,6 +399,19 @@ def load_yahoo_user():
     return out, raw.get("updated")
 
 
+def encrypt_json(obj, password: str) -> dict:
+    """ブラウザ（crypt.js）で復号できる形で暗号化する：PBKDF2-SHA256(20万回) → AES-256-GCM。"""
+    import base64
+    from cryptography.hazmat.primitives import hashes
+    from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+    from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+    salt, iv = os.urandom(16), os.urandom(12)
+    key = PBKDF2HMAC(algorithm=hashes.SHA256(), length=32, salt=salt, iterations=200000).derive(password.encode())
+    ct = AESGCM(key).encrypt(iv, json.dumps(obj, ensure_ascii=False, separators=(",", ":")).encode(), None)
+    b = lambda x: base64.b64encode(x).decode()  # noqa: E731
+    return {"v": 1, "kdf": "PBKDF2-SHA256-200000", "alg": "AES-GCM", "salt": b(salt), "iv": b(iv), "ct": b(ct)}
+
+
 def load_excludes():
     """ツール画面の「この出品を除外」で登録された出品URL。"""
     try:
@@ -438,8 +451,15 @@ def build(by_jan, cache, watch):
             item["w"] = 1
         items.append(item)
     out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated}
-    save(DOCS / "data.json", out, compact=True)
-    log(f"[build] {len(items)}件を docs/data.json に出力")
+    pw = os.environ.get("SITE_PASSWORD", "")
+    if pw:
+        # サイト全体をパスワードで保護：暗号化した data.enc.json だけを公開し、平文は消す
+        save(DOCS / "data.enc.json", encrypt_json(out, pw), compact=True)
+        (DOCS / "data.json").unlink(missing_ok=True)
+        log(f"[build] {len(items)}件を docs/data.enc.json に暗号化して出力")
+    else:
+        save(DOCS / "data.json", out, compact=True)
+        log(f"[build] {len(items)}件を docs/data.json に出力")
     RUN_LOG.update({"finished": now_iso(), "items": len(items)})
     save(DATA / "run_log.json", RUN_LOG)
 
