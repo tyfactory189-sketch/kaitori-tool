@@ -91,6 +91,27 @@ window.KTS_GH = (() => {
     throw new Error('保存に失敗しました（同時に更新されました）。もう一度お試しください。');
   }
 
+  // 任意のリスト（{updated, items}）を保存。最新を読み直して mutate で変更を重ねる
+  async function saveList(path, mutate, message) {
+    const token = askToken();
+    if (!token) throw new Error('合鍵が入力されなかったので保存していません。');
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const cur = await api('/contents/' + path + '?ref=main', { token });
+      let sha, items = [];
+      if (cur.ok) { const j = await cur.json(); sha = j.sha; try { items = JSON.parse(b64dec(j.content)).items || []; } catch (e) { items = []; } }
+      items = mutate(items);
+      const body = JSON.stringify({ updated: new Date().toISOString(), items }, null, 1);
+      const r = await api('/contents/' + path, { method: 'PUT', token, body: JSON.stringify({ message: message + '（' + items.length + '件）', content: await b64enc(body), sha, branch: 'main' }) });
+      if (r.ok) {
+        try { localStorage.setItem('kts_excl_local', JSON.stringify({ at: Date.now(), items })); } catch (e) { /* noop */ }
+        return items;
+      }
+      if (r.status === 403 || r.status === 404) throw new Error('保存する権限がありません（HTTP ' + r.status + '）。合鍵の「Contents: Read and write」権限を確認してください。');
+      if (r.status !== 409 && r.status !== 422) throw new Error('保存に失敗しました（HTTP ' + r.status + '）');
+    }
+    throw new Error('保存に失敗しました（同時に更新されました）。もう一度お試しください。');
+  }
+
   // Yahoo照合を今すぐ開始（買取サイトの取得は飛ばす）
   async function startYahoo() {
     const token = getToken();
@@ -120,5 +141,5 @@ window.KTS_GH = (() => {
     return out;
   }
 
-  return { repo, getToken, setToken, loadWatch, saveWatch, startYahoo, parseInput };
+  return { repo, getToken, setToken, loadWatch, saveWatch, saveList, startYahoo, parseInput };
 })();

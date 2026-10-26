@@ -362,6 +362,7 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
                 break
             continue
         streak = 0
+        offers = drop_excluded(offers)
         if not chk["disabled"]:
             check_variants(page_client, offers, jan, top, jan in watch, chk,
                            list(by_jan.get(jan, {}).get("names", [])))
@@ -398,6 +399,20 @@ def load_yahoo_user():
     return out, raw.get("updated")
 
 
+def load_excludes():
+    """ツール画面の「この出品を除外」で登録された出品URL。"""
+    try:
+        d = json.loads((DOCS / "excludes.json").read_text(encoding="utf-8"))
+        return {str(x.get("u", "")).split("?")[0] for x in d.get("items", []) if x.get("u")}
+    except (OSError, ValueError):
+        return set()
+
+
+def drop_excluded(offers):
+    ex = load_excludes()
+    return [o for o in offers if (o.get("u") or "").split("?")[0] not in ex] if ex else offers
+
+
 def build(by_jan, cache, watch):
     yu, yu_updated = load_yahoo_user()
     yahoo_names = {j: [o.get("n", "") for o in (c.get("o") or [])] for j, c in cache.items()}
@@ -407,7 +422,7 @@ def build(by_jan, cache, watch):
         rec = by_jan.get(jan, {"name": "", "buys": {}})
         watched = jan in watch
         y = cache.get(jan) or {}
-        offers = trim_offers(y.get("o", []), top_buy(rec), watched)
+        offers = trim_offers(drop_excluded(y.get("o", [])), top_buy(rec), watched)
         if not offers and not watched:
             continue
         name = rec["name"] or watch.get(jan, {}).get("memo") or (offers[0]["n"] if offers else "")
