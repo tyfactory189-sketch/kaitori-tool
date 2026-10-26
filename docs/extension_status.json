@@ -1,40 +1,12 @@
 {
- "version": "1.5.0",
- "reportedAt": "2026-10-26T05:43:03.095Z",
- "running": false,
- "text": "買取wiki 12,701件 ／ 仕様別 7商品 ／ 森森買取 10,345件 ／ Yahooポイント 398件 ／ Yahoo照合を開始",
- "trigger": "定時（14:00）",
- "startedAt": "2026-10-26T05:00:00.283Z",
- "last": {
-  "at": "2026-10-26T05:43:03.062Z",
-  "ok": true,
-  "secs": 2583,
-  "summary": "買取wiki 12,701件 ／ 仕様別 7商品 ／ 森森買取 10,345件 ／ Yahooポイント 398件 ／ Yahoo照合を開始",
-  "trigger": "定時（14:00）"
- },
- "history": [
-  {
-   "at": "2026-10-26T05:43:03.062Z",
-   "ok": true,
-   "secs": 2583,
-   "summary": "買取wiki 12,701件 ／ 仕様別 7商品 ／ 森森買取 10,345件 ／ Yahooポイント 398件 ／ Yahoo照合を開始",
-   "trigger": "定時（14:00）"
-  },
-  {
-   "at": "2026-10-26T02:44:07.844Z",
-   "ok": true,
-   "secs": 2648,
-   "summary": "買取wiki 12,696件 ／ 仕様別 7商品 ／ 森森買取 10,344件 ／ Yahooポイント 386件 ／ Yahoo照合を開始",
-   "trigger": "定時（11:00）"
-  },
-  {
-   "at": "2026-10-26T01:38:57.026Z",
-   "ok": true,
-   "secs": 2837,
-   "summary": "買取wiki 12,697件 ／ 仕様別 7商品 ／ 森森買取 10,344件 ／ Yahooポイント 387件 ／ Yahoo照合を開始",
-   "trigger": "手動"
-  }
- ],
+ "version": "1.7.0",
+ "reportedAt": "2026-10-26T06:52:10.763Z",
+ "running": true,
+ "text": "開始しました",
+ "trigger": "手動",
+ "startedAt": "2026-10-26T06:52:10.727Z",
+ "last": null,
+ "history": [],
  "times": [
   "11:00",
   "14:00",
@@ -44,8 +16,9 @@
   "wiki": true,
   "variants": true,
   "morimori": true,
-  "yahooUser": true
+  "yahooUser": true,
+  "budget": true
  },
  "next": "2026-10-26T11:00:00.000Z",
- "event": "完了（定時（14:00））"
+ "event": "開始（手動）"
 }
