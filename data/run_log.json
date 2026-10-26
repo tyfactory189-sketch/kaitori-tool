@@ -1,25 +1,25 @@
 {
- "started": "2026-10-26T16:56+09:00",
+ "started": "2026-10-26T20:33+09:00",
  "yahoo": {
-  "targets": 790,
-  "done": 790,
+  "targets": 343,
+  "done": 343,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 15569,
+  "skipped_not_due": 16039,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1067,
-  "changed": 9,
+  "checked": 189,
+  "changed": 1,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-26T17:28+09:00",
- "items": 3909
+ "finished": "2026-10-26T20:47+09:00",
+ "items": 3917
 }
