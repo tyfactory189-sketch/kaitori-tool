@@ -394,11 +394,13 @@ const KTS = (() => {
   const colNo = c => String(c).toUpperCase().split('').reduce((n, ch) => n * 26 + ch.charCodeAt(0) - 64, 0);
   function parseBudget(csv, sheet) {
     const n = colNo(sheet.nameCol), a = colNo(sheet.amtCol), first = Math.min(n, a);
+    const skip = new Set(String(sheet.skip == null ? 'an3,an4,an5,an6' : sheet.skip).split(/[,、\s]+/).map(x => x.trim().toLowerCase()).filter(Boolean));
     const items = [];
     parseCsv(csv).forEach((r, i) => {
       const name = String(r[n - first] || '').trim();
       const raw = String(r[a - first] || '').normalize('NFKC').replace(/[,円¥\s]/g, '');
       if (!name || !/^-?\d+(\.\d+)?$/.test(raw)) return;
+      if (skip.has(name.toLowerCase())) return; // 読み込まない名前
       items.push({ name, amt: Math.round(+raw), row: sheet.startRow + i });
     });
     return items;

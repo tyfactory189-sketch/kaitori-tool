@@ -5,7 +5,7 @@ const DEFAULT_SETTINGS = {
   times: ['11:00', '14:00', '20:00'],
   sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true },
   startYahoo: true,
-  sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4 },
+  sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4, skip: 'an3,an4,an5,an6' },
 };
 const STALE_MS = 3 * 60 * 60e3; // 3時間以上「実行中」のままなら止まったとみなす
 
