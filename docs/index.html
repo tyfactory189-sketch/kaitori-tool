@@ -22,7 +22,7 @@
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 "Hiragino Sans","Noto Sans JP","Yu Gothic UI",sans-serif}
 a{color:inherit}
-header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 16px}
+header{background:var(--panel);border-bottom:1px solid var(--line);padding:14px 16px;position:sticky;top:0;z-index:50}
 .wrap{max-width:1180px;margin:0 auto}
 h1{margin:0;font-size:20px;letter-spacing:.02em}
 h1 b{color:var(--accent)}
@@ -32,8 +32,8 @@ main{padding:16px}
 .layout{display:grid;grid-template-columns:290px 1fr;gap:16px;align-items:start}
 @media(max-width:860px){.layout{grid-template-columns:1fr}}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px}
-aside.panel{position:sticky;top:12px}
-@media(max-width:860px){aside.panel{position:static}}
+aside.panel{position:sticky;top:calc(var(--hh,90px) + 12px);max-height:calc(100vh - var(--hh,90px) - 24px);overflow:auto}
+@media(max-width:860px){aside.panel{position:static;max-height:none;overflow:visible}}
 fieldset{border:0;margin:0 0 14px;padding:0}
 legend{font-weight:700;font-size:12px;color:var(--sub);margin-bottom:6px;letter-spacing:.04em}
 label{display:flex;align-items:center;gap:6px;margin:4px 0;cursor:pointer}
@@ -42,14 +42,16 @@ input[type=number],input[type=text],select{background:var(--bg);color:var(--ink)
 input[type=number]{width:78px}
 .row input[type=number]{flex:0 0 auto}
 .hint{font-size:11px;color:var(--sub);margin-top:2px}
-.btns{display:flex;gap:6px}
+.btns{display:flex;gap:6px;flex-wrap:wrap}.btns button,.btns a{white-space:nowrap}
+@media(max-width:860px){header{padding:8px 12px}header .meta{max-height:3.2em;overflow:auto}.toolbar .btns{flex-wrap:nowrap;overflow-x:auto;max-width:100%;padding-bottom:2px}}
 button{font:inherit;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:6px;padding:6px 10px;cursor:pointer}
 button.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:8px;position:sticky;top:var(--hh,90px);z-index:40;background:var(--bg);padding:8px 0;margin-top:-8px}
 .count{color:var(--sub)}
 .list{display:flex;flex-direction:column;gap:8px}
 .item{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px;display:grid;grid-template-columns:64px 1fr 150px;gap:12px}
 @media(max-width:600px){.item{grid-template-columns:52px 1fr}.profit{grid-column:1/-1}}
+.layout>*,.item>*{min-width:0}.item .name,.item .offer{overflow-wrap:anywhere}.item details table{display:block;overflow-x:auto;max-width:100%}.item details td:first-child{min-width:120px}.budget table{display:block;overflow-x:auto}
 .item img{width:64px;height:64px;object-fit:contain;background:#fff;border-radius:6px}
 @media(max-width:600px){.item img{width:52px;height:52px}}
 .name{font-weight:600;line-height:1.35;overflow-wrap:anywhere}
@@ -164,6 +166,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
   <button class="more" id="more" hidden>さらに表示</button>
 </section>
 </div></main>
+<script>(()=>{const h=document.querySelector('header');const set=()=>document.documentElement.style.setProperty('--hh',h.offsetHeight+'px');set();new ResizeObserver(set).observe(h);addEventListener('resize',set)})();</script>
 <script src="gh.js"></script>
 <script src="crypt.js"></script>
 <script>
