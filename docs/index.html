@@ -173,7 +173,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 // 新品以外・別物の出品を除外（yahoo.py の EXCLUDE と同じ。データ更新前でもすぐ効くように画面側でも適用）
 const EXCLUDE=/フラストレーション|\bFFP\b|ＦＦＰ|簡易箱|簡易パッケージ|簡易パック|白箱|バルク|キットばらし|キットバラシ|キットばらし品|キット分解|キットから|ばらし品|バラし品|片方|[LRＬＲ]\s?のみ|左のみ|右のみ|L\s?or\s?R|左右選べる|左右どちらか|バンドのみ|ベルトのみ|専用バンド|替えバンド|交換バンド|交換ベルト|ストラップのみ|リモコンのみ|セットばらし|セットバラシ|セットバラ|本体同梱品|左または右|左右どちらか|福袋|オリパ|(?<!レビュー)くじ|ガチャ|中身ランダム|ランダム発送|ランダム封入|PSA\s?\d+|鑑定品|延長申込|延長申し込み|延長料金|延長プラン|無制限プラン|料金プラン|専用ページ|\d+\s*(?:日|日間|ヶ月|ケ月|カ月|か月|ヵ月)(?:間)?(?:レンタル|プラン|延長|利用)|貸出|貸し出し|サブスク|保証開始|箱不良|箱痛み|箱傷み|箱ダメージ|シュリンク破れ|保証期間開始|印付|印あり|印有り?|捺印|押印済|[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|美品|良品|使用感|傷あり|キズあり|難あり|パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|箱潰れ|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|海外版|並行輸入|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ/i;
-const DEFAULTS={useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
+const DEFAULTS={budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,sendCostL:0,sendCostT:0,toolWords:'マキタ|makita|HiKOKI|ハイコーキ|日立工機|BOSCH|ボッシュ|Milwaukee|ミルウォーキー|DEWALT|デウォルト|京セラ インダストリアル|RYOBI|リョービ|インパクトドライバ|インパクトレンチ|ドリルドライバ|振動ドリル|ハンマドリル|ハンマードリル|丸ノコ|丸のこ|マルノコ|グラインダ|サンダ|ジグソー|レシプロソー|チェーンソー|チェンソー|草刈機|刈払機|ヘッジトリマ|ブロワ|マルチツール|高圧洗浄機|工進|KOSHIN|高儀|プロ用',largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,noMismatch:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
@@ -322,16 +322,19 @@ function renderBudget(rows){
   }
   const per=S.budgetN||5,near=S.budgetSort==='near';
   const cand=rows.filter(r=>!r.partial&&r.profit>0);
-  const tot=BUDGET.items.reduce((a,b)=>a+b.amt,0);
-  $('count').textContent=`${BUDGET.items.length}件の残高（合計 ${yen(tot)}・${esc(String(BUDGET.updated||'').slice(5,16).replace('T',' '))} 読込）`;
-  const ctl=`<div class="panel budget-ctl">並び：<button data-bs="profit" class="${near?'':'on'}">差益が大きい順</button><button data-bs="near" class="${near?'on':''}">残高に近い順（使い切り）</button>　表示数：${[3,5,10].map(n=>`<button data-bn="${n}" class="${per===n?'on':''}">${n}件</button>`).join('')}</div>`;
-  const html=BUDGET.items.map(b=>{
+  const hide=new Set(String(S.budgetHide||'').split(/[,、\s]+/).map(x=>x.trim().toLowerCase()).filter(Boolean));
+  const shownB=BUDGET.items.filter(b=>!hide.has(String(b.name).toLowerCase()));
+  const tot=shownB.reduce((a,b)=>a+b.amt,0);
+  $('count').textContent=`${shownB.length}件の残高（合計 ${yen(tot)}・${esc(String(BUDGET.updated||'').slice(5,16).replace('T',' '))} 読込）`;
+  const ctl=`<div class="panel budget-ctl">並び：<button data-bs="profit" class="${near?'':'on'}">差益が大きい順</button><button data-bs="near" class="${near?'on':''}">残高に近い順（使い切り）</button>　表示数：${[3,5,10].map(n=>`<button data-bn="${n}" class="${per===n?'on':''}">${n}件</button>`).join('')}　表示しない名前：<input id="bHide" value="${esc(S.budgetHide||'')}" placeholder="例 an3,an4" style="width:160px;font:inherit;padding:3px 6px"></div>`;
+  const html=shownB.map(b=>{
     const fit=cand.filter(r=>r.top.paid+r.top.ship<=b.amt);
     fit.sort(near?(x,y)=>(b.amt-(x.top.paid+x.top.ship))-(b.amt-(y.top.paid+y.top.ship))||y.profit-x.profit:(x,y)=>y.profit-x.profit);
     const list=fit.slice(0,per).map(r=>{const pay=r.top.paid+r.top.ship;return `<tr><td class="bn"><a href="${esc(r.top.o.u)}" target="_blank" rel="noopener">${esc(r.it.name)}</a><div class="calc">${esc(r.top.o.s)} ／ 買取 ${esc(DATA.sources[r.best.k].label)} ${yen(r.best.p)}</div></td><td>${yen(pay)}</td><td class="plus">+${yen(r.profit)}</td><td>${yen(b.amt-pay)}</td></tr>`}).join('');
     return `<article class="panel budget"><div class="bh"><b>${esc(b.name)}</b> <span class="bamt">${yen(b.amt)}</span> <span class="calc">${fit.length}件が買える</span></div>${b.amt<=0?'<div class="calc">残高なし</div>':list?`<table><tr><th>商品</th><th>支払額</th><th>差益</th><th>残り</th></tr>${list}</table>`:'<div class="calc">この金額で買える利益の出る商品はありません</div>'}</article>`;
   }).join('');
   $('list').innerHTML=ctl.replace('</div>',' <button id="bLogout" style="float:right">ログアウト</button></div>')+html;$('more').hidden=true;
+  $('bHide').onchange=e=>{S.budgetHide=e.target.value;store.set(S);render()};
   $('bLogout').onclick=()=>{try{localStorage.removeItem(PASS_KEY)}catch(_){}BUDGET=null;render()};
 }
 
