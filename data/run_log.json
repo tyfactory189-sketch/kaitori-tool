@@ -1,25 +1,25 @@
 {
- "started": "2026-10-27T03:42+09:00",
+ "started": "2026-10-27T09:36+09:00",
  "yahoo": {
-  "targets": 665,
-  "done": 665,
+  "targets": 2475,
+  "done": 2475,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 15717,
+  "skipped_not_due": 13907,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 314,
-  "changed": 2,
-  "failed": 0,
-  "last_error": "",
+  "checked": 2186,
+  "changed": 20,
+  "failed": 1,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/f-marunishi3/4969363046727.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/shp_shared_p",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-27T05:02+09:00",
- "items": 3899
+ "finished": "2026-10-27T12:10+09:00",
+ "items": 3882
 }
