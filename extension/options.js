@@ -26,6 +26,20 @@ $('save').onclick = async () => {
   if (settings.sitePass && settings.sitePass.length < 8) return msg('サイトのパスワードは8文字以上にしてください', false);
   await chrome.storage.local.set({ settings });
   $('times').value = settings.times.join(', ');
+  // サイトのパスワードが GitHub の SITE_PASSWORD と同じか、公開中の暗号化データで確かめる
+  if (settings.sitePass) {
+    try {
+      const [u, r] = repo.split('/');
+      const er = await fetch(`https://${u}.github.io/${r}/data.enc.json`, { cache: 'no-store' });
+      if (er.ok) {
+        const enc = await er.json(), d = x => Uint8Array.from(atob(x), c => c.charCodeAt(0));
+        const base = await crypto.subtle.importKey('raw', new TextEncoder().encode(settings.sitePass), 'PBKDF2', false, ['deriveKey']);
+        const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: d(enc.salt), iterations: 200000, hash: 'SHA-256' }, base, { name: 'AES-GCM', length: 256 }, false, ['decrypt']);
+        try { await crypto.subtle.decrypt({ name: 'AES-GCM', iv: d(enc.iv) }, key, d(enc.ct)); }
+        catch (e) { return msg('保存しましたが、サイトのパスワードが GitHub の SITE_PASSWORD と一致しません。同じものを入れてください', false); }
+      }
+    } catch (e) { /* 確認できないときはそのまま */ }
+  }
   if (!token) return msg('保存しました（合鍵が空なので自動取得は動きません）', false);
   // 合鍵の確認
   try {
