@@ -1,27 +1,25 @@
 {
- "started": "2026-10-29T09:46+09:00",
+ "started": "2026-10-29T15:48+09:00",
  "yahoo": {
-  "targets": 5224,
-  "done": 2670,
-  "failed": 1,
-  "errors": {
-   "HTTP 400": 1
-  },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "first_400": "10458977962789: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "targets": 8720,
+  "done": 2669,
+  "failed": 0,
+  "errors": {},
+  "last_error": "",
+  "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 11158,
+  "skipped_not_due": 7664,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1281,
-  "changed": 13,
+  "checked": 1378,
+  "changed": 14,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-29T12:26+09:00",
- "items": 3897
+ "finished": "2026-10-29T18:28+09:00",
+ "items": 3932
 }

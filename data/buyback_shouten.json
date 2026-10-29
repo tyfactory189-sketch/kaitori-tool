@@ -3,7 +3,7 @@
   "source": "shouten",
   "jan": "4549995732696",
   "name": "iPhone Duo 256GB ナイトスカイ MK254J/A SIMフリー",
-  "price": 372000,
+  "price": 374000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27089",
   "note": ""
@@ -12,7 +12,7 @@
   "source": "shouten",
   "jan": "4549995732641",
   "name": "iPhone Duo 256GB スターホワイト MK244J/A SIMフリー",
-  "price": 366000,
+  "price": 363000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27090",
   "note": ""
@@ -21,7 +21,7 @@
   "source": "shouten",
   "jan": "4549995732795",
   "name": "iPhone Duo 512GB ナイトスカイ MK274J/A SIMフリー",
-  "price": 415000,
+  "price": 419000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27091",
   "note": ""
@@ -30,7 +30,7 @@
   "source": "shouten",
   "jan": "4549995732740",
   "name": "iPhone Duo 512GB スターホワイト MK264J/A SIMフリー",
-  "price": 405000,
+  "price": 401000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27092",
   "note": ""
@@ -39,7 +39,7 @@
   "source": "shouten",
   "jan": "4549995732894",
   "name": "iPhone Duo 1TB ナイトスカイ MK294J/A SIMフリー",
-  "price": 491000,
+  "price": 495000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27093",
   "note": ""
@@ -48,7 +48,7 @@
   "source": "shouten",
   "jan": "4549995732849",
   "name": "iPhone Duo 1TB スターホワイト MK284J/A SIMフリー",
-  "price": 489000,
+  "price": 492000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27094",
   "note": ""
@@ -57,7 +57,7 @@
   "source": "shouten",
   "jan": "4549995732993",
   "name": "iPhone Duo 2TB ナイトスカイ MK2C4J/A SIMフリー",
-  "price": 591000,
+  "price": 595000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27095",
   "note": ""
@@ -66,7 +66,7 @@
   "source": "shouten",
   "jan": "4549995732948",
   "name": "iPhone Duo 2TB スターホワイト MK2A4J/A SIMフリー",
-  "price": 590000,
+  "price": 595000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27096",
   "note": ""
@@ -3349,6 +3349,15 @@
  },
  {
   "source": "shouten",
+  "jan": "4986773261205",
+  "name": "Galaxy Z Fold8 Ultra SM-F976Q 256G+12G SIMフリー [グリーンシャドウ]",
+  "price": 225000,
+  "category": "スマホ",
+  "url": "https://www.kaitorishouten-co.jp/products/detail/26770",
+  "note": ""
+ },
+ {
+  "source": "shouten",
   "jan": "4986773261199",
   "name": "Galaxy Z Fold8 Ultra SM-F976Q 256G+12G SIMフリー [バイオレットシャドウ]",
   "price": 230000,
@@ -3909,7 +3918,7 @@
   "source": "shouten",
   "jan": "4582239434635",
   "name": "motorola edge 60 8G+128G SIMフリー [ジブラルタルシーネイビー]",
-  "price": 33500,
+  "price": 34000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26625",
   "note": ""
@@ -3918,7 +3927,7 @@
   "source": "shouten",
   "jan": "4582239434642",
   "name": "motorola edge 60 8G+128G SIMフリー [シャムロックグリーン]",
-  "price": 32000,
+  "price": 33000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26626",
   "note": ""
@@ -3927,7 +3936,7 @@
   "source": "shouten",
   "jan": "4582239433782",
   "name": "motorola edge 60 pro 12G+256G SIMフリー [カルサイトホワイト]",
-  "price": 49000,
+  "price": 50000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24108",
   "note": ""
@@ -3936,7 +3945,7 @@
   "source": "shouten",
   "jan": "4582239433669",
   "name": "motorola edge 60 pro 12G+256G SIMフリー [シャドーグリーン]",
-  "price": 49000,
+  "price": 50000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24106",
   "note": ""
@@ -3945,7 +3954,7 @@
   "source": "shouten",
   "jan": "4582239433676",
   "name": "motorola edge 60 pro 12G+256G SIMフリー [ダーズブルー]",
-  "price": 49500,
+  "price": 50000,
   "category": "スマホ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24107",
   "note": ""
@@ -7086,7 +7095,7 @@
   "source": "shouten",
   "jan": "4902370552843",
   "name": "Nintendo Switch 2 Proコントローラー",
-  "price": 8500,
+  "price": 8600,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/23172",
   "note": ""
@@ -7095,7 +7104,7 @@
   "source": "shouten",
   "jan": "4902370554564",
   "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション",
-  "price": 11500,
+  "price": 12000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27042",
   "note": ""
@@ -8139,7 +8148,7 @@
   "source": "shouten",
   "jan": "4948872416320",
   "name": "プレイステーション5 Pro [CFI-7000B01]",
-  "price": 204700,
+  "price": 205000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/21060",
   "note": ""
@@ -8148,7 +8157,7 @@
   "source": "shouten",
   "jan": "4948872417075",
   "name": "プレイステーション5 Pro [CFI-7100B01] 2025版",
-  "price": 204700,
+  "price": 205000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25543",
   "note": ""
@@ -8787,7 +8796,7 @@
   "source": "shouten",
   "jan": "0814585022803",
   "name": "Steam Controller コントローラー",
-  "price": 21300,
+  "price": 21400,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26509",
   "note": ""
@@ -9012,7 +9021,7 @@
   "source": "shouten",
   "jan": "4902370554892",
   "name": "Nintendo Switch Sports Resort/Switch 2",
-  "price": 5100,
+  "price": 5000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26634",
   "note": ""
@@ -9186,6 +9195,15 @@
   "price": 3000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24366",
+  "note": ""
+ },
+ {
+  "source": "shouten",
+  "jan": "4521329458366",
+  "name": "ぽこ あ ポケモン ＋ エキスパンションパス Nintendo Switch 2 専用",
+  "price": 10000,
+  "category": "家電",
+  "url": "https://www.kaitorishouten-co.jp/products/detail/27354",
   "note": ""
  },
  {
@@ -9435,7 +9453,7 @@
   "source": "shouten",
   "jan": "4549995725025",
   "name": "AirPods 第5世代 ワイヤレス充電ケース付き MKFT4J/A",
-  "price": 22500,
+  "price": 22000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27047",
   "note": ""
@@ -11010,7 +11028,7 @@
   "source": "shouten",
   "jan": "4548736074033",
   "name": "デジタルカメラ サイバーショット DSC-RX10M4",
-  "price": 230000,
+  "price": 110000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/3964",
   "note": ""
@@ -11856,7 +11874,7 @@
   "source": "shouten",
   "jan": "4547410573251",
   "name": "FUJIFILM チェキ instax Pal 2 ブラック",
-  "price": 17500,
+  "price": 17000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27314",
   "note": ""
@@ -11865,7 +11883,7 @@
   "source": "shouten",
   "jan": "4547410573268",
   "name": "FUJIFILM チェキ instax Pal 2 ホワイト",
-  "price": 17500,
+  "price": 17000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27315",
   "note": ""
@@ -13782,7 +13800,7 @@
   "source": "shouten",
   "jan": "4548736176843",
   "name": "イヤホン・ヘッドホン SONY WH-1000XM6TM サンドストーン",
-  "price": 49000,
+  "price": 48500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26536",
   "note": ""
@@ -14061,7 +14079,7 @@
   "source": "shouten",
   "jan": "4548736163614",
   "name": "イヤホン・ヘッドホン WF-1000XM5 スモーキーピンク",
-  "price": 22500,
+  "price": 22300,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/20966",
   "note": ""
@@ -14070,7 +14088,7 @@
   "source": "shouten",
   "jan": "4548736143531",
   "name": "イヤホン・ヘッドホン WF-1000XM5 プラチナシルバー",
-  "price": 22500,
+  "price": 22300,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/17062",
   "note": ""
@@ -14079,7 +14097,7 @@
   "source": "shouten",
   "jan": "4548736143470",
   "name": "イヤホン・ヘッドホン WF-1000XM5 ブラック",
-  "price": 22500,
+  "price": 22300,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/17061",
   "note": ""
@@ -14763,7 +14781,7 @@
   "source": "shouten",
   "jan": "0850049670302",
   "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
-  "price": 37800,
+  "price": 38000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25887",
   "note": ""
@@ -14970,7 +14988,7 @@
   "source": "shouten",
   "jan": "4547410570014",
   "name": "FUJIFILM instax mini用フィルム パステルギャラクシー 1パック（10枚入り）",
-  "price": 1550,
+  "price": 1500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26446",
   "note": ""
@@ -16455,7 +16473,7 @@
   "source": "shouten",
   "jan": "4550719159408",
   "name": "Panasonic ストレートアイロン EH-HN30-P ピンクシトラス",
-  "price": 19500,
+  "price": 19000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27277",
   "note": ""
@@ -16482,7 +16500,7 @@
   "source": "shouten",
   "jan": "4549980972755",
   "name": "Panasonic ストレートアイロン ナノケア EH-HN50-H [ミストグレー]",
-  "price": 22800,
+  "price": 22000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/23661",
   "note": ""
@@ -16545,7 +16563,7 @@
   "source": "shouten",
   "jan": "4550719162293",
   "name": "Panasonic ドライヤー EH-NB70-P ミスティローズ",
-  "price": 33000,
+  "price": 32500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27280",
   "note": ""
@@ -16734,7 +16752,7 @@
   "source": "shouten",
   "jan": "4549980857809",
   "name": "Panasonic ナノケア EH-NA9M-E [ノーブルベージュ]",
-  "price": 19500,
+  "price": 19000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/20491",
   "note": ""
@@ -16743,7 +16761,7 @@
   "source": "shouten",
   "jan": "4549980857793",
   "name": "Panasonic ナノケア EH-NA9M-H [ノーブルグレー]",
-  "price": 19000,
+  "price": 18500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/20490",
   "note": ""
@@ -17391,7 +17409,7 @@
   "source": "shouten",
   "jan": "4550556108317",
   "name": "シャープ Beauty IB-WX901-B [ミッドナイトブラック]",
-  "price": 21000,
+  "price": 20500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/18025",
   "note": ""
@@ -17580,7 +17598,7 @@
   "source": "shouten",
   "jan": "4549526347344",
   "name": "CASIO G-SHOCK ジー・スクワッド DW-H5600MB-1JR",
-  "price": 24100,
+  "price": 24000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/23916",
   "note": ""
@@ -17805,7 +17823,7 @@
   "source": "shouten",
   "jan": "0753759354688",
   "name": "GARMIN Forerunner 970 010-02969-52 [French Grey/Indigo]",
-  "price": 75500,
+  "price": 75400,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/24016",
   "note": ""
@@ -18408,7 +18426,7 @@
   "source": "shouten",
   "jan": "0753759318581",
   "name": "ガーミン Forerunner 265 010-02810-41 [White]",
-  "price": 42800,
+  "price": 42700,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/16498",
   "note": ""
@@ -18417,7 +18435,7 @@
   "source": "shouten",
   "jan": "0753759318598",
   "name": "ガーミン Forerunner 265 010-02810-42 [Aqua]",
-  "price": 31000,
+  "price": 43000,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/16497",
   "note": ""
@@ -20001,7 +20019,7 @@
   "source": "shouten",
   "jan": "4549980852361",
   "name": "Panasonic ラムダッシュPRO ES-L690U-K [クラフトブラック]",
-  "price": 53500,
+  "price": 52500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/20535",
   "note": ""
@@ -20325,7 +20343,7 @@
   "source": "shouten",
   "jan": "4549980885512",
   "name": "Panasonic 電気シェーバー ラムダッシュ パームイン LITE ES-P330U-H [ミストグレー]",
-  "price": 15100,
+  "price": 14800,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/23773",
   "note": ""
@@ -22269,7 +22287,7 @@
   "source": "shouten",
   "jan": "4549980652923",
   "name": "美顔器 Panasonic 光美顔器 フォト ブライトショット EH-SL85-W",
-  "price": 55000,
+  "price": 54500,
   "category": "家電",
   "url": "https://www.kaitorishouten-co.jp/products/detail/13745",
   "note": ""
@@ -22467,7 +22485,7 @@
   "source": "shouten",
   "jan": "4904810914563",
   "name": "BEYBLADE X BX-34 スターター コバルトドラグーン2-60C",
-  "price": 2200,
+  "price": 1900,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26554",
   "note": ""
@@ -22503,7 +22521,7 @@
   "source": "shouten",
   "jan": "4904810096122",
   "name": "BEYBLADE X BX-49 スターター ドランストライク4-50FF",
-  "price": 2400,
+  "price": 2000,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26579",
   "note": ""
@@ -22566,7 +22584,7 @@
   "source": "shouten",
   "jan": "4904810956976",
   "name": "BEYBLADE X CX-07 スターター ペガサスブラストATr",
-  "price": 2300,
+  "price": 2000,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26580",
   "note": ""
@@ -22638,7 +22656,7 @@
   "source": "shouten",
   "jan": "4904810096177",
   "name": "BEYBLADE X CX-18 ランダムブースター ブラキオウィップセレクト",
-  "price": 1800,
+  "price": 1600,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/26638",
   "note": ""
@@ -22773,7 +22791,7 @@
   "source": "shouten",
   "jan": "4521329463872",
   "name": "ポケモンカードゲーム MEGA 30th CELEBRATION FUTURISTIC BOX",
-  "price": 59000,
+  "price": 53000,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27144",
   "note": ""
@@ -22782,7 +22800,7 @@
   "source": "shouten",
   "jan": "9900000008291",
   "name": "ポケモンカードゲーム MEGA 30th CELEBRATION カードセット 9種セット",
-  "price": 14000,
+  "price": 12500,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27343",
   "note": ""
@@ -22809,7 +22827,7 @@
   "source": "shouten",
   "jan": "4521329462424",
   "name": "ポケモンカードゲーム MEGA 拡張パック 30th CELEBRATION BOX",
-  "price": 23000,
+  "price": 22000,
   "category": "おもちゃ",
   "url": "https://www.kaitorishouten-co.jp/products/detail/27142",
   "note": ""
@@ -23295,7 +23313,7 @@
   "source": "shouten",
   "jan": "4967576565387",
   "name": "IRIS OHYAMA 自動かくはん式調理機 CHEF DRUM KDAC-IA2",
-  "price": 26100,
+  "price": 26500,
   "category": "",
   "url": "https://www.kaitorishouten-co.jp/products/detail/21417",
   "note": ""
@@ -23304,7 +23322,7 @@
   "source": "shouten",
   "jan": "4967576643771",
   "name": "IRIS OHYAMA ホームベーカリー IBM-010-C [サンドベージュ]",
-  "price": 7300,
+  "price": 7200,
   "category": "",
   "url": "https://www.kaitorishouten-co.jp/products/detail/25192",
   "note": ""
@@ -23367,7 +23385,7 @@
   "source": "shouten",
   "jan": "4967576419482",
   "name": "IRIS OHYAMA 電気圧力鍋 PC-MA2",
-  "price": 6200,
+  "price": 5700,
   "category": "",
   "url": "https://www.kaitorishouten-co.jp/products/detail/16905",
   "note": ""
