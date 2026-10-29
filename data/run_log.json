@@ -1,25 +1,25 @@
 {
- "started": "2026-10-29T15:48+09:00",
+ "started": "2026-10-29T21:47+09:00",
  "yahoo": {
-  "targets": 8720,
-  "done": 2669,
+  "targets": 9000,
+  "done": 2676,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 7664,
+  "skipped_not_due": 7359,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1378,
-  "changed": 14,
+  "checked": 2843,
+  "changed": 23,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-29T18:28+09:00",
- "items": 3932
+ "finished": "2026-10-30T00:27+09:00",
+ "items": 3921
 }
