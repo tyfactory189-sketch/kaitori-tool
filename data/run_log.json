@@ -1,25 +1,25 @@
 {
- "started": "2026-10-30T03:45+09:00",
+ "started": "2026-10-30T09:48+09:00",
  "yahoo": {
-  "targets": 8998,
-  "done": 2673,
+  "targets": 7292,
+  "done": 2677,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 7385,
+  "skipped_not_due": 9091,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1597,
-  "changed": 19,
-  "failed": 3,
+  "checked": 1338,
+  "changed": 16,
+  "failed": 1,
   "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-10-30T06:25+09:00",
- "items": 3947
+ "finished": "2026-10-30T12:28+09:00",
+ "items": 3952
 }
