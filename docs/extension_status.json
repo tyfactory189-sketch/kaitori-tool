@@ -1,18 +1,25 @@
 {
  "version": "1.7.1",
- "reportedAt": "2026-10-30T03:03:42.142Z",
+ "reportedAt": "2026-10-30T03:49:08.524Z",
  "running": false,
- "text": "前回の実行は Chrome の終了で中断されました",
- "trigger": "定時（11:00）",
- "startedAt": "2026-10-30T03:03:42.037Z",
+ "text": "買取wiki 12,721件 ／ 仕様別 7商品 ／ 森森買取 10,382件 ／ Yahooポイント 400件 ／ 残高 22件 ／ Yahoo照合を開始",
+ "trigger": "手動",
+ "startedAt": "2026-10-30T03:04:10.858Z",
  "last": {
-  "at": "2026-10-29T11:07:10.359Z",
-  "ok": false,
-  "secs": 430,
-  "summary": "買取wiki 失敗：買取wikiの1ページ目を開けませんでした ／ 森森買取 失敗：森森買取のトップページを開けませんでした ／ Yahooポイント 失敗：Failed to fetch ／ 残高シート 失敗：Failed to fetch",
-  "trigger": "定時（20:00）"
+  "at": "2026-10-30T03:49:08.510Z",
+  "ok": true,
+  "secs": 2698,
+  "summary": "買取wiki 12,721件 ／ 仕様別 7商品 ／ 森森買取 10,382件 ／ Yahooポイント 400件 ／ 残高 22件 ／ Yahoo照合を開始",
+  "trigger": "手動"
  },
  "history": [
+  {
+   "at": "2026-10-30T03:49:08.510Z",
+   "ok": true,
+   "secs": 2698,
+   "summary": "買取wiki 12,721件 ／ 仕様別 7商品 ／ 森森買取 10,382件 ／ Yahooポイント 400件 ／ 残高 22件 ／ Yahoo照合を開始",
+   "trigger": "手動"
+  },
   {
    "at": "2026-10-29T11:07:10.359Z",
    "ok": false,
@@ -83,5 +90,5 @@
   "budget": true
  },
  "next": "2026-10-30T05:00:00.000Z",
- "event": "Chrome起動"
+ "event": "完了（手動）"
 }
