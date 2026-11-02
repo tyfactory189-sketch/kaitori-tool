@@ -1,27 +1,25 @@
 {
- "started": "2026-11-02T14:42+09:00",
+ "started": "2026-11-02T20:45+09:00",
  "yahoo": {
-  "targets": 4339,
-  "done": 3744,
-  "failed": 234,
-  "errors": {
-   "HTTP 400": 234
-  },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "first_400": "85126206659: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 12092,
+  "targets": 1292,
+  "done": 1292,
+  "failed": 0,
+  "errors": {},
+  "last_error": "",
+  "first_400": "",
+  "stopped": "",
+  "skipped_not_due": 15119,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 279,
-  "changed": 2,
-  "failed": 2,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 44,
+  "changed": 0,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-11-02T17:22+09:00",
- "items": 3948
+ "finished": "2026-11-02T21:37+09:00",
+ "items": 3946
 }
