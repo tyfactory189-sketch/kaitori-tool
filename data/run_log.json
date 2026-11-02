@@ -1,25 +1,27 @@
 {
- "started": "2026-11-02T09:55+09:00",
+ "started": "2026-11-02T14:42+09:00",
  "yahoo": {
-  "targets": 2574,
-  "done": 2574,
-  "failed": 0,
-  "errors": {},
-  "last_error": "",
-  "first_400": "",
-  "stopped": "",
-  "skipped_not_due": 13858,
+  "targets": 4339,
+  "done": 3744,
+  "failed": 234,
+  "errors": {
+   "HTTP 400": 234
+  },
+  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "first_400": "85126206659: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "stopped": "時間切れ（残りは次回）",
+  "skipped_not_due": 12092,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2593,
-  "changed": 25,
-  "failed": 3,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/quality-shop/m-valve-steam-2629.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/shp_sha",
+  "checked": 279,
+  "changed": 2,
+  "failed": 2,
+  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-11-02T12:31+09:00",
- "items": 4027
+ "finished": "2026-11-02T17:22+09:00",
+ "items": 3948
 }
