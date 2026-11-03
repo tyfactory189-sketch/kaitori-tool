@@ -253,7 +253,7 @@ def test_rakuten():
             ]}
     c = C()
     offers = rakuten.search_jan(c, "id", "key", "4548736132610", 42000)
-    assert len(offers) == 1, offers
+    assert len(offers) == 2, offers  # 中古・付属品(価格)は除外、説明文にJANが無くても対象
     o = offers[0]
     assert o["u"] == "https://item.rakuten.co.jp/a/1/" and o["sh"] == 2 and o["src"] == "r" and o["pt"] == int(44000 / 1.1 * 9 / 100)
     assert c.h["Origin"].startswith("https://") and "openapi" in c.url

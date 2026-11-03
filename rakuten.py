@@ -3,8 +3,8 @@
 - 新しい公開API（openapi.rakuten.co.jp）は applicationId と accessKey が必要で、
   アプリに登録した「許可するWebサイト」を Origin ヘッダーで送る必要がある。
 - 利用制限は 1リクエスト/秒。
-- JAN を keyword に入れて検索する（楽天はJANの専用項目がないため、商品名・説明文に
-  JANが書かれている出品が見つかる）。別物が混ざりやすいので、除外語・価格・在庫で絞る。
+- JAN を keyword に入れて検索する（楽天側の商品情報のJANで見つかる）。
+  別物が混ざることがあるので、除外語・価格・在庫で絞り、画面側で型番の一致も確認する。
 """
 import os
 import re
@@ -51,7 +51,7 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
         "availability": 1,
         "format": "json",
         "formatVersion": 2,
-        "elements": "itemName,itemPrice,itemUrl,shopName,shopCode,pointRate,postageFlag,availability,mediumImageUrls,itemCaption",
+        "elements": "itemName,itemPrice,itemPriceMin1,itemPriceMax1,itemUrl,shopName,shopCode,pointRate,postageFlag,availability,mediumImageUrls",
     }
     if access_key:
         params["accessKey"] = access_key
@@ -64,12 +64,15 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
         if int(it.get("availability") or 0) != 1:
             continue
         name = it.get("itemName") or ""
-        text = name + " " + (it.get("itemCaption") or "")
-        if jan not in text and jan.zfill(13) not in text:
-            continue  # JANが本文に書かれていない（キーワードの部分一致など）
         if EXCLUDE.search(name) or SKIP_ITEM.search(name) or RE_USED.search(name):
             continue
         o = _offer(it)
+        lo, hi = int(it.get("itemPriceMin1") or 0), int(it.get("itemPriceMax1") or 0)
+        if lo and hi and hi > lo:  # 色・容量などで価格が違う出品：どれがこのJANか分からないので高い方で計算
+            o["pv"] = [lo, hi]
+            if hi > o["p"]:
+                o["pt"] = int(o["pt"] * hi / o["p"]) if o["p"] else 0
+                o["p"] = hi
         if o["p"] <= 0 or o["p"] < buy_price * 0.5:
             continue
         offers.append(o)
