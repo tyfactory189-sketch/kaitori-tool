@@ -1,253 +1,132 @@
 {
- "at": "2026-11-03 13:42",
- "has_id": true,
- "has_key": true,
- "results": [
-  {
-   "jan": "4548736132610",
-   "n": 0,
-   "top": []
-  },
-  {
-   "jan": "4902370550733",
-   "n": 0,
-   "top": []
-  },
-  {
-   "jan": "4549995635232",
-   "n": 0,
-   "top": []
-  }
- ],
- "raw": [
-  {
-   "jan": "4548736132610",
-   "keys": [
-    "count",
-    "page",
-    "first",
-    "last",
-    "hits",
-    "carrier",
-    "pageCount",
-    "Items",
-    "GenreInformation",
-    "Attributes"
-   ],
-   "count": 0,
-   "n": 0,
-   "first": []
-  },
-  {
-   "jan": "4549995635232",
-   "keys": [
-    "count",
-    "page",
-    "first",
-    "last",
-    "hits",
-    "carrier",
-    "pageCount",
-    "Items",
-    "GenreInformation",
-    "Attributes"
-   ],
+ "at": "2026-11-03 13:43",
+ "tests": {
+  "base": {
    "count": 450,
-   "n": 10,
+   "n": 30,
    "first": [
-    {
-     "name": "Apple AirPods Pro 3",
-     "price": 42799,
-     "avail": 1,
-     "jan_in_caption": false,
-     "keys": [
-      "itemName",
-      "catchcopy",
-      "itemCode",
-      "itemPrice",
-      "itemPriceBaseField",
-      "itemPriceMax1",
-      "itemPriceMax2",
-      "itemPriceMax3",
-      "itemPriceMin1",
-      "itemPriceMin2",
-      "itemPriceMin3",
-      "itemCaption",
-      "itemUrl",
-      "shopUrl",
-      "smallImageUrls",
-      "mediumImageUrls",
-      "affiliateUrl",
-      "shopAffiliateUrl",
-      "imageFlag",
-      "availability",
-      "taxFlag",
-      "postageFlag",
-      "creditCardFlag",
-      "shopOfTheYearFlag",
-      "shipOverseasFlag",
-      "shipOverseasArea",
-      "asurakuFlag",
-      "asurakuClosingTime",
-      "asurakuArea",
-      "affiliateRate",
-      "startTime",
-      "endTime",
-      "reviewCount",
-      "reviewAverage",
-      "pointRate",
-      "pointRateStartTime",
-      "pointRateEndTime",
-      "giftFlag",
-      "shopName",
-      "shopCode"
-     ]
-    },
-    {
-     "name": "【送料無料】Apple純正品 アップル エアポッズ Apple AirPods Pro 3 第3世代 MFHP4J/A Bluetooth イヤホン【国内正規品",
-     "price": 39850,
-     "avail": 1,
-     "jan_in_caption": false,
-     "keys": [
-      "itemName",
-      "catchcopy",
-      "itemCode",
-      "itemPrice",
-      "itemPriceBaseField",
-      "itemPriceMax1",
-      "itemPriceMax2",
-      "itemPriceMax3",
-      "itemPriceMin1",
-      "itemPriceMin2",
-      "itemPriceMin3",
-      "itemCaption",
-      "itemUrl",
-      "shopUrl",
-      "smallImageUrls",
-      "mediumImageUrls",
-      "affiliateUrl",
-      "shopAffiliateUrl",
-      "imageFlag",
-      "availability",
-      "taxFlag",
-      "postageFlag",
-      "creditCardFlag",
-      "shopOfTheYearFlag",
-      "shipOverseasFlag",
-      "shipOverseasArea",
-      "asurakuFlag",
-      "asurakuClosingTime",
-      "asurakuArea",
-      "affiliateRate",
-      "startTime",
-      "endTime",
-      "reviewCount",
-      "reviewAverage",
-      "pointRate",
-      "pointRateStartTime",
-      "pointRateEndTime",
-      "giftFlag",
-      "shopName",
-      "shopCode"
-     ]
-    },
-    {
-     "name": "APPLE MFHP4J/A AirPods Pro 3 [完全ワイヤレスイヤホン]",
-     "price": 40370,
-     "avail": 1,
-     "jan_in_caption": false,
-     "keys": [
-      "itemName",
-      "catchcopy",
-      "itemCode",
-      "itemPrice",
-      "itemPriceBaseField",
-      "itemPriceMax1",
-      "itemPriceMax2",
-      "itemPriceMax3",
-      "itemPriceMin1",
-      "itemPriceMin2",
-      "itemPriceMin3",
-      "itemCaption",
-      "itemUrl",
-      "shopUrl",
-      "smallImageUrls",
-      "mediumImageUrls",
-      "affiliateUrl",
-      "shopAffiliateUrl",
-      "imageFlag",
-      "availability",
-      "taxFlag",
-      "postageFlag",
-      "creditCardFlag",
-      "shopOfTheYearFlag",
-      "shipOverseasFlag",
-      "shipOverseasArea",
-      "asurakuFlag",
-      "asurakuClosingTime",
-      "asurakuArea",
-      "affiliateRate",
-      "startTime",
-      "endTime",
-      "reviewCount",
-      "reviewAverage",
-      "pointRate",
-      "pointRateStartTime",
-      "pointRateEndTime",
-      "giftFlag",
-      "shopName",
-      "shopCode"
-     ]
-    },
-    {
-     "name": "【新品 箱不良・シュリンク破れ品】AirPods Pro 3 MFHP4J/A",
-     "price": 35720,
-     "avail": 1,
-     "jan_in_caption": true,
-     "keys": [
-      "itemName",
-      "catchcopy",
-      "itemCode",
-      "itemPrice",
-      "itemPriceBaseField",
-      "itemPriceMax1",
-      "itemPriceMax2",
-      "itemPriceMax3",
-      "itemPriceMin1",
-      "itemPriceMin2",
-      "itemPriceMin3",
-      "itemCaption",
-      "itemUrl",
-      "shopUrl",
-      "smallImageUrls",
-      "mediumImageUrls",
-      "affiliateUrl",
-      "shopAffiliateUrl",
-      "imageFlag",
-      "availability",
-      "taxFlag",
-      "postageFlag",
-      "creditCardFlag",
-      "shopOfTheYearFlag",
-      "shipOverseasFlag",
-      "shipOverseasArea",
-      "asurakuFlag",
-      "asurakuClosingTime",
-      "asurakuArea",
-      "affiliateRate",
-      "startTime",
-      "endTime",
-      "reviewCount",
-      "reviewAverage",
-      "pointRate",
-      "pointRateStartTime",
-      "pointRateEndTime",
-      "giftFlag",
-      "shopName",
-      "shopCode"
-     ]
-    }
+    [
+     "Apple AirPods Pro 3",
+     42799,
+     1
+    ],
+    [
+     "【送料無料】Apple純正品 アップル エアポッズ Apple AirPods Pro 3 第3世代",
+     39850,
+     1
+    ],
+    [
+     "APPLE MFHP4J/A AirPods Pro 3 [完全ワイヤレスイヤホン]",
+     40370,
+     1
+    ]
+   ]
+  },
+  "sort": {
+   "count": 450,
+   "n": 30,
+   "first": [
+    [
+     "Apple AirPods Pro 3 アップル エアーポッズ エアーポッツ ワイヤレスイヤホン ア",
+     10900,
+     1
+    ],
+    [
+     "【中古】Apple AirPods Pro 3 MFHP4J/A【千葉】保証期間1ヶ月",
+     24980,
+     1
+    ],
+    [
+     "【Apple】アップル『完全ワイヤレスイヤホン / AirPods Pro 3』MFHP4J/A 2",
+     25389,
+     1
+    ]
+   ]
+  },
+  "avail": {
+   "count": 450,
+   "n": 30,
+   "first": [
+    [
+     "Apple AirPods Pro 3",
+     42799,
+     1
+    ],
+    [
+     "【送料無料】Apple純正品 アップル エアポッズ Apple AirPods Pro 3 第3世代",
+     39850,
+     1
+    ],
+    [
+     "APPLE MFHP4J/A AirPods Pro 3 [完全ワイヤレスイヤホン]",
+     40370,
+     1
+    ]
+   ]
+  },
+  "minPrice": {
+   "count": 449,
+   "n": 30,
+   "first": [
+    [
+     "Apple AirPods Pro 3",
+     42799,
+     1
+    ],
+    [
+     "【送料無料】Apple純正品 アップル エアポッズ Apple AirPods Pro 3 第3世代",
+     39850,
+     1
+    ],
+    [
+     "APPLE MFHP4J/A AirPods Pro 3 [完全ワイヤレスイヤホン]",
+     40370,
+     1
+    ]
+   ]
+  },
+  "elements": {
+   "count": null,
+   "n": 30,
+   "first": [
+    [
+     "Apple AirPods Pro 3",
+     42799,
+     1
+    ],
+    [
+     "【送料無料】Apple純正品 アップル エアポッズ Apple AirPods Pro 3 第3世代",
+     39850,
+     1
+    ],
+    [
+     "APPLE MFHP4J/A AirPods Pro 3 [完全ワイヤレスイヤホン]",
+     40370,
+     1
+    ]
+   ]
+  },
+  "all": {
+   "count": 449,
+   "n": 30,
+   "first": [
+    [
+     "【中古】Apple AirPods Pro 3 MFHP4J/A【千葉】保証期間1ヶ月",
+     24980,
+     1
+    ],
+    [
+     "【Apple】アップル『完全ワイヤレスイヤホン / AirPods Pro 3』MFHP4J/A 2",
+     25389,
+     1
+    ],
+    [
+     "【Apple】アップル『完全ワイヤレスイヤホン / AirPods Pro 3』MFHP4J/A 2",
+     25389,
+     1
+    ]
    ]
   }
- ]
+ },
+ "search_jan": []
 }
