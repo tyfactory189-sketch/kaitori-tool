@@ -26,6 +26,17 @@ for k, v in variants.items():
     except Exception as e:  # noqa: BLE001
         out["tests"][k] = {"error": str(e)[:300]}
 try:
+    from yahoo import EXCLUDE, SKIP_ITEM
+    d = c.get(R.API_NEW, params={**base, "sort": "+itemPrice", "availability": 1, "minPrice": 15000}, as_json=True, headers=H)
+    why = []
+    for it in (d.get("Items") or [])[:30]:
+        n = it.get("itemName") or ""
+        m = EXCLUDE.search(n) or SKIP_ITEM.search(n) or R.RE_USED.search(n)
+        why.append([n[:70], it.get("itemPrice"), it.get("availability"), m.group(0) if m else "", type(it.get("availability")).__name__])
+    out["why"] = why
+except Exception as e:  # noqa: BLE001
+    out["why"] = str(e)[:300]
+try:
     offers = R.search_jan(c, ID, KEY, jan, 30000, keep=3)
     out["search_jan"] = [{k: o[k] for k in ("n", "p", "pt", "ptr", "sh", "s")} for o in offers]
 except Exception as e:  # noqa: BLE001
