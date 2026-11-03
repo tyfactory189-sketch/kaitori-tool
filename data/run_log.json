@@ -1,25 +1,25 @@
 {
- "started": "2026-11-03T09:54+09:00",
+ "started": "2026-11-03T11:40+09:00",
  "yahoo": {
-  "targets": 919,
-  "done": 919,
+  "targets": 687,
+  "done": 687,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 15488,
+  "skipped_not_due": 15719,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1247,
-  "changed": 13,
-  "failed": 1,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 782,
+  "changed": 2,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-11-03T11:23+09:00",
- "items": 3932
+ "finished": "2026-11-03T12:07+09:00",
+ "items": 3933
 }
