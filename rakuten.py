@@ -15,7 +15,7 @@ from yahoo import EXCLUDE, SKIP_ITEM
 API_NEW = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
 API_OLD = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20260701"
 ORIGIN = os.environ.get("RAKUTEN_ORIGIN", "https://tyfactory189-sketch.github.io")
-RE_USED = re.compile(r"中古|ユーズド|USED|訳あり|アウトレット|展示品|ジャンク|レンタル|整備済|再生品", re.I)
+RE_USED = re.compile(r"中古|ユーズド|USED|訳あり|アウトレット|展示品|ジャンク|レンタル|整備済|再生品|未使用|箱難|箱つぶれ|箱潰れ|保証期間\d+\s*[ヶケか]月", re.I)
 
 
 def _clean_url(u: str) -> str:

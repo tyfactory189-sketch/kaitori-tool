@@ -115,7 +115,6 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
   </fieldset>
   <fieldset>
     <legend>ポイント還元（楽天市場）</legend>
-    <label><input type="checkbox" id="rkOn"> 楽天市場の出品も比べる</label>
     <div class="row">楽天のポイント <input type="number" id="rkRate" step="0.5" min="0"> %</div>
     <div class="hint">通常1%＋SPU（会員・カード・アプリ等）＋お買い物マラソン等の合計。ショップ独自のポイント倍率は自動で加算</div>
   </fieldset>
@@ -158,6 +157,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 </aside>
 <section>
   <div class="toolbar">
+    <div class="btns" id="mktBtns" style="margin-bottom:6px"><button data-mkt="yahoo">Yahoo!ショッピング</button><button data-mkt="rakuten">楽天市場</button></div>
     <div class="btns" id="sortBtns">
       <button data-sort="profit" class="on">お得額順</button>
       <button data-sort="rate">お得率順</button>
@@ -180,7 +180,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 // 新品以外・別物の出品を除外（yahoo.py の EXCLUDE と同じ。データ更新前でもすぐ効くように画面側でも適用）
 const EXCLUDE=/フラストレーション|\bFFP\b|ＦＦＰ|簡易箱|簡易パッケージ|簡易パック|白箱|バルク|キットばらし|キットバラシ|キットばらし品|キット分解|キットから|ばらし品|バラし品|片方|[LRＬＲ]\s?のみ|左のみ|右のみ|L\s?or\s?R|左右選べる|左右どちらか|バンドのみ|ベルトのみ|専用バンド|替えバンド|交換バンド|交換ベルト|ストラップのみ|リモコンのみ|セットばらし|セットバラシ|セットバラ|本体同梱品|左または右|左右どちらか|福袋|オリパ|(?<!レビュー)くじ|ガチャ|中身ランダム|ランダム発送|ランダム封入|PSA\s?\d+|鑑定品|延長申込|延長申し込み|延長料金|延長プラン|無制限プラン|料金プラン|専用ページ|\d+\s*(?:日|日間|ヶ月|ケ月|カ月|か月|ヵ月)(?:間)?(?:レンタル|プラン|延長|利用)|貸出|貸し出し|サブスク|保証開始|箱不良|箱痛み|箱傷み|箱ダメージ|シュリンク破れ|保証期間開始|印付|印あり|印有り?|捺印|押印済|[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|美品|良品|使用感|傷あり|キズあり|難あり|パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|箱潰れ|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|海外版|並行輸入|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ/i;
-const DEFAULTS={rkOn:true,rkRate:3,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
+const DEFAULTS={market:'yahoo',rkRate:3,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,sendCostL:0,sendCostT:0,toolWords:'マキタ|makita|HiKOKI|ハイコーキ|日立工機|BOSCH|ボッシュ|Milwaukee|ミルウォーキー|DEWALT|デウォルト|京セラ インダストリアル|RYOBI|リョービ|インパクトドライバ|インパクトレンチ|ドリルドライバ|振動ドリル|ハンマドリル|ハンマードリル|丸ノコ|丸のこ|マルノコ|グラインダ|サンダ|ジグソー|レシプロソー|チェーンソー|チェンソー|草刈機|刈払機|ヘッジトリマ|ブロワ|マルチツール|高圧洗浄機|工進|KOSHIN|高儀|プロ用',largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,noMismatch:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
@@ -201,7 +201,7 @@ const hit=(re,it)=>!!(re&&(re.test(it.name)||(it.offers[0]&&re.test(it.offers[0]
 const kindOf=it=>hit(TOOL_RE,it)?'tool':hit(LARGE_RE,it)?'large':'normal';
 const isLarge=it=>kindOf(it)==='large';
 const sendCostOf=it=>({tool:S.sendCostT,large:S.sendCostL,normal:S.sendCost})[kindOf(it)];
-const BOOLS=['rkOn','useUser','premium','freeOnly','noProof','noMulti','noMismatch'];
+const BOOLS=['useUser','premium','freeOnly','noProof','noMulti','noMismatch'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
   $('cpType').value=S.cpType;$('q').value=S.q;$('largeWords').value=S.largeWords;$('toolWords').value=S.toolWords;largeRe();
@@ -209,6 +209,7 @@ function syncForm(){
   document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
   $('watchOnly').classList.toggle('on',!!S.watchOnly);
   $('budgetView').classList.toggle('on',!!S.budget);
+  document.querySelectorAll('#mktBtns button').forEach(b=>b.classList.toggle('on',b.dataset.mkt===(S.market||'yahoo')));
   document.querySelectorAll('#srcBoxes input').forEach(c=>c.checked=!S.srcOff.includes(c.value));
 }
 function readForm(){
@@ -298,7 +299,7 @@ function compute(){
     const multi=allBuys.filter(b=>b.m);
     if(W&&(!buys.length||!it.offers.length)){ // ウォッチ表示ではデータ不足でも出す
       if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)))continue;
-      const offers=it.offers.map(evalOffer).sort((a,b)=>a.eff-b.eff);
+      const offers=it.offers.filter(o=>S.market==='rakuten'?o.src==='r':o.src!=='r').map(evalOffer).sort((a,b)=>a.eff-b.eff);
       rows.push({it,buys,best:buys.sort((a,b)=>b.p-a.p)[0],offers,top:offers[0],profit:-Infinity,rate:-Infinity,partial:true});continue;
     }
     if(!buys.length)continue;
@@ -306,7 +307,7 @@ function compute(){
     const pool=S.noProof?buys.filter(b=>!b.note):buys;
     const best=pool.reduce((a,b)=>b.p>a.p?b:a);
     if(!W&&best.p<S.minBuy)continue;
-    let offers=(S.noMismatch?it.offers.filter(o=>!modelMismatch(it,o,best.p)):it.offers).filter(o=>S.rkOn||o.src!=='r').map(evalOffer);
+    let offers=(S.noMismatch?it.offers.filter(o=>!modelMismatch(it,o,best.p)):it.offers).filter(o=>S.market==='rakuten'?o.src==='r':o.src!=='r').map(evalOffer);
     if(S.freeOnly)offers=offers.filter(e=>e.ship===0);
     if(!offers.length)continue;
     offers.sort((a,b)=>a.eff-b.eff);
@@ -441,6 +442,7 @@ $('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button[data
 $('more').onclick=()=>{shown+=100;render()};
 $('sizeBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-size]');if(!b)return;S.size=b.dataset.size;store.set(S);syncForm();shown=100;render()});
 $('watchOnly').onclick=()=>{S.watchOnly=!S.watchOnly;store.set(S);syncForm();shown=100;render()};
+$('mktBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-mkt]');if(!b)return;S.market=b.dataset.mkt;store.set(S);syncForm();shown=100;render()});
 $('budgetView').onclick=()=>{S.budget=!S.budget;store.set(S);syncForm();render()};
 $('list').addEventListener('click',e=>{const bs=e.target.closest('[data-bs]');if(bs){S.budgetSort=bs.dataset.bs;store.set(S);render();return}const bn=e.target.closest('[data-bn]');if(bn){S.budgetN=+bn.dataset.bn;store.set(S);render()}});
 // 残高は暗号化して保存されている（budgets.enc.json）。パスワードで復号して表示する
