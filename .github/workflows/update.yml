@@ -10,10 +10,6 @@ on:
         description: "買取サイトの取得を飛ばす（Yahooだけ更新）"
         type: boolean
         default: false
-      rakuten_test:
-        description: "楽天APIの接続確認だけ行う"
-        type: boolean
-        default: false
 
 permissions:
   contents: write
@@ -55,13 +51,6 @@ jobs:
           MIN_BUY: ${{ vars.MIN_BUY || '3000' }}
           YAHOO_BUDGET_MIN: ${{ vars.YAHOO_BUDGET_MIN || '300' }}
         run: |
-          if [ "${{ inputs.rakuten_test }}" = "true" ]; then
-            python tools_rakuten_test.py
-            git config user.name "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/rakuten_test.json && git commit -q -m "楽天API 接続確認" && git pull -q --rebase origin main && git push -q
-            exit 0
-          fi
           if [ "${{ inputs.skip_buyback }}" = "true" ]; then
             python run.py --skip-buyback
           else
