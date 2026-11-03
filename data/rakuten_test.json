@@ -1,0 +1,19 @@
+{
+ "at": "2026-11-03 13:30",
+ "has_id": true,
+ "has_key": true,
+ "results": [
+  {
+   "jan": "4548736132610",
+   "error": "GET失敗 https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601: HTTP 403 '{\\n  \"errors\": {\\n    \"errorCode\": 403,\\n    \"errorMessage\": \"REQUESTED_SCOPES_NOT_ALLOWED\"\\n  }\\n}'"
+  },
+  {
+   "jan": "4902370550733",
+   "error": "GET失敗 https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601: HTTP 403 '{\\n  \"errors\": {\\n    \"errorCode\": 403,\\n    \"errorMessage\": \"REQUESTED_SCOPES_NOT_ALLOWED\"\\n  }\\n}'"
+  },
+  {
+   "jan": "4549995635232",
+   "error": "GET失敗 https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20220601: HTTP 403 '{\\n  \"errors\": {\\n    \"errorCode\": 403,\\n    \"errorMessage\": \"REQUESTED_SCOPES_NOT_ALLOWED\"\\n  }\\n}'"
+  }
+ ]
+}
