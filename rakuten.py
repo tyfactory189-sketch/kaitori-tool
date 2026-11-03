@@ -52,7 +52,6 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
         "availability": 1,
         "format": "json",
         "formatVersion": 2,
-        "elements": "itemName,itemPrice,itemPriceMin1,itemPriceMax1,itemUrl,shopName,shopCode,pointRate,postageFlag,availability,mediumImageUrls",
     }
     if access_key:
         params["accessKey"] = access_key
