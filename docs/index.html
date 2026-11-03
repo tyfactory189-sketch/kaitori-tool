@@ -116,7 +116,11 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
   <fieldset>
     <legend>ポイント還元（楽天市場）</legend>
     <div class="row">楽天のポイント <input type="number" id="rkRate" step="0.5" min="0"> %</div>
-    <div class="hint">通常1%＋SPU（会員・カード・アプリ等）＋お買い物マラソン等の合計。ショップ独自のポイント倍率は自動で加算</div>
+    <div class="hint">通常1%＋SPU（会員・カード・アプリ等）の合計。ショップ独自のポイント倍率は自動で加算</div>
+    <label><input type="checkbox" id="mOn"> お買い物マラソン・スーパーSALE（ショップ買いまわり）</label>
+    <div class="row">買いまわり <input type="number" id="mShops" min="1" max="10" step="1"> ショップ（最大10）</div>
+    <div class="row">特典の残り上限 <input type="number" id="mCap" min="0" step="500"> P</div>
+    <div class="hint">税込1,000円以上の買い物をしたショップ数。2店目から+1倍ずつ、10店で+9倍（通常分と合わせて10倍）。特典は税抜価格に付き、期間中の合計で上限7,000P。既にもらえる予定の特典を引いた残りを入れると、上限を超える分は計算しません</div>
   </fieldset>
   <fieldset>
     <legend>クーポン</legend>
@@ -183,7 +187,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 // 新品以外・別物の出品を除外（yahoo.py の EXCLUDE と同じ。データ更新前でもすぐ効くように画面側でも適用）
 const EXCLUDE=/フラストレーション|\bFFP\b|ＦＦＰ|簡易箱|簡易パッケージ|簡易パック|白箱|バルク|キットばらし|キットバラシ|キットばらし品|キット分解|キットから|ばらし品|バラし品|片方|[LRＬＲ]\s?のみ|左のみ|右のみ|L\s?or\s?R|左右選べる|左右どちらか|バンドのみ|ベルトのみ|専用バンド|替えバンド|交換バンド|交換ベルト|ストラップのみ|リモコンのみ|セットばらし|セットバラシ|セットバラ|本体同梱品|左または右|左右どちらか|福袋|オリパ|(?<!レビュー)くじ|ガチャ|中身ランダム|ランダム発送|ランダム封入|PSA\s?\d+|鑑定品|延長申込|延長申し込み|延長料金|延長プラン|無制限プラン|料金プラン|専用ページ|\d+\s*(?:日|日間|ヶ月|ケ月|カ月|か月|ヵ月)(?:間)?(?:レンタル|プラン|延長|利用)|貸出|貸し出し|サブスク|保証開始|箱不良|箱痛み|箱傷み|箱ダメージ|シュリンク破れ|保証期間開始|印付|印あり|印有り?|捺印|押印済|[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|美品|良品|使用感|傷あり|キズあり|難あり|パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|箱潰れ|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|海外版|並行輸入|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ/i;
-const DEFAULTS={market:'yahoo',rkRate:3,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
+const DEFAULTS={market:'yahoo',rkRate:3,mOn:false,mShops:10,mCap:7000,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,sendCostL:0,sendCostT:0,sendCostC:0,carWords:'カー用品|カーナビ|ポータブルナビ|彩速ナビ|楽ナビ|サイバーナビ|ストラーダ|カロッツェリア|carrozzeria|ドライブレコーダー|ドラレコ|レーダー探知|レーザー探知|ETC(?:2\\.0|車載器|-|\\d)|カーオーディオ|ディスプレイオーディオ|カースピーカー|カーステレオ|車載|リアビジョン|ビッグX|オットキャスト|Ottocast|OttoAibox|CarPlay|バックカメラ|ジャンプスターター|カーメイト|コムテック|COMTEC|セルスター|CELLSTAR|ALPINE(?!\\s?LOOP)|アルパイン(?!ループ)|MDV-|AVIC-|DMH-|DEH-|MVH-|DPX-|DRV-|(?<!自転)車用',toolWords:'マキタ|makita|HiKOKI|ハイコーキ|日立工機|BOSCH|ボッシュ|Milwaukee|ミルウォーキー|DEWALT|デウォルト|京セラ インダストリアル|RYOBI|リョービ|インパクトドライバ|インパクトレンチ|ドリルドライバ|振動ドリル|ハンマドリル|ハンマードリル|丸ノコ|丸のこ|マルノコ|グラインダ|サンダ|ジグソー|レシプロソー|チェーンソー|チェンソー|草刈機|刈払機|ヘッジトリマ|ブロワ|マルチツール|高圧洗浄機|工進|KOSHIN|高儀|プロ用',largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,noMismatch:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
@@ -195,7 +199,7 @@ const $=id=>document.getElementById(id);
 const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-const NUMS=['rkRate','step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','sendCostL','sendCostT','sendCostC','minProfit','minBuy'];
+const NUMS=['rkRate','mShops','mCap','step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','sendCostL','sendCostT','sendCostC','minProfit','minBuy'];
 let LARGE_RE=null,TOOL_RE=null,CAR_RE=null;
 const mkRe=w=>{try{return w&&w.trim()?new RegExp(w.trim().replace(/[｜,、]/g,'|').replace(/^\|+|\|+$/g,''),'i'):null}catch(e){return null}};
 function largeRe(){LARGE_RE=mkRe(S.largeWords);TOOL_RE=mkRe(S.toolWords);CAR_RE=mkRe(S.carWords)}
@@ -204,7 +208,7 @@ const hit=(re,it)=>!!(re&&(re.test(it.name)||(it.offers[0]&&re.test(it.offers[0]
 const kindOf=it=>hit(TOOL_RE,it)?'tool':hit(CAR_RE,it)?'car':hit(LARGE_RE,it)?'large':'normal';
 const isLarge=it=>kindOf(it)==='large';
 const sendCostOf=it=>({tool:S.sendCostT,car:S.sendCostC,large:S.sendCostL,normal:S.sendCost})[kindOf(it)];
-const BOOLS=['useUser','premium','freeOnly','noProof','noMulti','noMismatch'];
+const BOOLS=['mOn','useUser','premium','freeOnly','noProof','noMulti','noMismatch'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
   $('cpType').value=S.cpType;$('q').value=S.q;$('largeWords').value=S.largeWords;$('toolWords').value=S.toolWords;$('carWords').value=S.carWords;largeRe();
@@ -266,8 +270,12 @@ function shipOf(o,base){
 function evalOffer(o){
   if(o.src==='r'){ // 楽天市場：ショップの上乗せ（o.pt）＋設定の％（税抜に付与）。クーポンはYahoo用なので使わない
     const base=o.p,paid=base,sh=o.sh===2?{ship:0}:{ship:S.shipAdd,est:true},ship=sh.ship;
-    const userPt=Math.floor(paid/1.1*S.rkRate/100),pts=(o.pt||0)+userPt;
-    return {o,base,cp:0,paid,ship,shipEst:sh.est,storePt:o.pt||0,userPt,pts,eff:paid+ship-pts*S.ptval/100,rk:true};
+    const userPt=Math.floor(paid/1.1*S.rkRate/100);
+    // ショップ買いまわり：(店舗数-1)% を税抜価格に上乗せ（残り上限まで）
+    const mRate=S.mOn?Math.max(0,Math.min(10,Math.round(S.mShops||1))-1):0;
+    const mPt=mRate?Math.min(Math.floor(paid/1.1*mRate/100),Math.max(0,S.mCap||0)):0;
+    const pts=(o.pt||0)+userPt+mPt;
+    return {o,base,cp:0,paid,ship,shipEst:sh.est,storePt:o.pt||0,userPt,mPt,mRate,pts,eff:paid+ship-pts*S.ptval/100,rk:true};
   }
   if(S.useUser&&o.yu){ // ログイン状態で確認した価格・ポイント
     const base=o.yu.p;let cp=0;
@@ -387,7 +395,7 @@ function render(){
         <div class="chips">${chips}</div>
         ${o.pv||o.add?`<div class="chips">${o.pv?`<span class="chip warn" title="商品ページで色・容量などを選ぶと価格が変わる出品です。JANに一致する選択肢が分からないため、高い方の価格で計算しています">仕様で価格差 ${yen(o.pv[0])}〜${yen(o.pv[1])}（高い方で計算）</span>`:''}${o.add?`<span class="chip warn" title="全ての選択肢に料金がかかるオプションの最低額を加えています">必須オプション +${yen(o.add)} 込み</span>`:''}</div>`:''}
         <div class="offer">${o.src==='r'?'<span class="chip rk">楽天</span> 最安(実質)':'Yahoo最安(実質)'}: <a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.s)}</a>${o.bs?' ★優良':''}${o.chk&&!o.pv&&!o.add?' <span title="商品ページで仕様選択・必須オプションを確認済み">✓</span>':''} ${yen(top.base)}${top.cp?` − クーポン${yen(top.cp)}`:''}${top.ship?` ＋送料${yen(top.ship)}`:''} − ${top.pts.toLocaleString()}P
-          <div class="calc">${top.rk?`ショップ ${o.ptr||1}倍（+${(o.pt||0).toLocaleString()}P）＋ 楽天 ${S.rkRate}%（${top.userPt.toLocaleString()}P）`:top.user?`<span title="ログイン状態で商品ページに表示された付与ポイント（${o.yu.capped&&o.yu.capped.length?'上限到達：'+esc(o.yu.capped.join('、')):'上限到達なし'}）">あなたの条件 ${o.yu.rate}%（${esc(o.yu.at.slice(5,16).replace('T',' '))}確認${o.yu.capped&&o.yu.capped.length?'・上限あり':''}）</span>`:`ストアP ${top.storePt.toLocaleString()} ＋ 還元 ${top.userPt.toLocaleString()}（設定の％で計算）`} ／ Yahoo確認 ${esc(it.at.slice(5,16).replace('T',' '))}</div></div>
+          <div class="calc">${top.rk?`ショップ ${o.ptr||1}倍（+${(o.pt||0).toLocaleString()}P）＋ 楽天 ${S.rkRate}%（${top.userPt.toLocaleString()}P）${top.mRate?` ＋ 買いまわり +${top.mRate}倍（${top.mPt.toLocaleString()}P${top.mPt<Math.floor(top.paid/1.1*top.mRate/100)?'・上限':''}）`:''}`:top.user?`<span title="ログイン状態で商品ページに表示された付与ポイント（${o.yu.capped&&o.yu.capped.length?'上限到達：'+esc(o.yu.capped.join('、')):'上限到達なし'}）">あなたの条件 ${o.yu.rate}%（${esc(o.yu.at.slice(5,16).replace('T',' '))}確認${o.yu.capped&&o.yu.capped.length?'・上限あり':''}）</span>`:`ストアP ${top.storePt.toLocaleString()} ＋ 還元 ${top.userPt.toLocaleString()}（設定の％で計算）`} ／ Yahoo確認 ${esc(it.at.slice(5,16).replace('T',' '))}</div></div>
       </div>
       <div class="profit">
         <div class="v ${pc}">${r.profit>=0?'+':''}${yen(r.profit)}</div>
