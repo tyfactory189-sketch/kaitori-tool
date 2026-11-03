@@ -48,6 +48,7 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
         "keyword": jan.zfill(13) if len(jan) == 12 else jan,
         "hits": 30,
         "sort": "+itemPrice",
+        "minPrice": max(1, int(buy_price * 0.5)),  # 安い付属品（ケース等）で30件が埋まらないように
         "availability": 1,
         "format": "json",
         "formatVersion": 2,
