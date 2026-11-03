@@ -209,6 +209,7 @@ function syncForm(){
   document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
   $('watchOnly').classList.toggle('on',!!S.watchOnly);
   $('budgetView').classList.toggle('on',!!S.budget);
+  $('budgetView').hidden=S.market==='rakuten';
   document.querySelectorAll('#mktBtns button').forEach(b=>b.classList.toggle('on',b.dataset.mkt===(S.market||'yahoo')));
   document.querySelectorAll('#srcBoxes input').forEach(c=>c.checked=!S.srcOff.includes(c.value));
 }
@@ -354,7 +355,7 @@ function renderBudget(rows){
 function render(){
   if(!DATA)return;
   const rows=compute();
-  if(S.budget)return renderBudget(rows);
+  if(S.budget&&S.market!=='rakuten')return renderBudget(rows); // 残高別はYahoo版だけ
   $('count').textContent=`${rows.length.toLocaleString()}件 / 全${DATA.items.length.toLocaleString()}件`;
   const L=DATA.sources;
   $('list').innerHTML=rows.length?rows.slice(0,shown).map(r=>{
