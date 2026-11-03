@@ -49,17 +49,26 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
         "hits": 30,
         "sort": "+itemPrice",
         "minPrice": max(1, int(buy_price * 0.5)),  # 安い付属品（ケース等）で30件が埋まらないように
+        "NGKeyword": "中古 中古品 ジャンク 訳あり レンタル 整備済",  # 中古で安い順の上位が埋まらないように
         "availability": 1,
         "format": "json",
         "formatVersion": 2,
     }
-    if access_key:
-        params["accessKey"] = access_key
-        data = client.get(API_NEW, params=params, as_json=True, headers={"Origin": ORIGIN, "Referer": ORIGIN + "/"})
-    else:
-        data = client.get(API_OLD, params=params, as_json=True)
+    items = []
+    for page in (1, 2, 3):  # 安い順に最大90件まで見る（条件に合う出品が keep 件そろえば終わり）
+        params["page"] = page
+        if access_key:
+            params["accessKey"] = access_key
+            data = client.get(API_NEW, params=params, as_json=True, headers={"Origin": ORIGIN, "Referer": ORIGIN + "/"})
+        else:
+            data = client.get(API_OLD, params=params, as_json=True)
+        got = data.get("Items") or data.get("items") or []
+        items += got
+        ok = [x for x in items if not (EXCLUDE.search(x.get("itemName") or "") or RE_USED.search(x.get("itemName") or ""))]
+        if len(ok) >= keep or len(got) < 30 or page >= int(data.get("pageCount") or 1):
+            break
     offers = []
-    for it in data.get("Items") or data.get("items") or []:
+    for it in items:
         it = it.get("Item", it) if isinstance(it, dict) else {}
         if int(it.get("availability") or 0) != 1:
             continue
