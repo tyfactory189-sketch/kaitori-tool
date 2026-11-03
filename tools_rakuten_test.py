@@ -1,27 +1,33 @@
-"""楽天APIの接続確認（数件だけ検索して data/rakuten_test.json に結果を書く）。"""
+"""楽天APIの接続確認（パラメータを変えて件数を比べ、data/rakuten_test.json に書く）。"""
 import json, os, time
 from pathlib import Path
-import rakuten
+import rakuten as R
 from scrapers.http import Client
 
-out = {"at": time.strftime("%Y-%m-%d %H:%M"), "has_id": bool(os.environ.get("RAKUTEN_APP_ID")), "has_key": bool(os.environ.get("RAKUTEN_ACCESS_KEY")), "results": []}
-c = Client(delay=1.2, retries=1, backoff=3)
-import rakuten as R
-raw_c = Client(delay=1.2, retries=1, backoff=3)
-for jan in ["4548736132610", "4549995635232"]:
+ID, KEY = os.environ.get("RAKUTEN_APP_ID", ""), os.environ.get("RAKUTEN_ACCESS_KEY", "")
+c = Client(delay=1.3, retries=1, backoff=3)
+H = {"Origin": R.ORIGIN, "Referer": R.ORIGIN + "/"}
+jan = "4549995635232"
+base = {"applicationId": ID, "accessKey": KEY, "keyword": jan, "hits": 30, "format": "json", "formatVersion": 2}
+variants = {
+    "base": {},
+    "sort": {"sort": "+itemPrice"},
+    "avail": {"availability": 1},
+    "minPrice": {"minPrice": 15000},
+    "elements": {"elements": "itemName,itemPrice,itemUrl,shopName,availability"},
+    "all": {"sort": "+itemPrice", "availability": 1, "minPrice": 15000},
+}
+out = {"at": time.strftime("%Y-%m-%d %H:%M"), "tests": {}}
+for k, v in variants.items():
     try:
-        d = raw_c.get(R.API_NEW, params={"applicationId": os.environ.get("RAKUTEN_APP_ID", ""), "accessKey": os.environ.get("RAKUTEN_ACCESS_KEY", ""), "keyword": jan, "hits": 10, "format": "json", "formatVersion": 2},
-                      as_json=True, headers={"Origin": R.ORIGIN, "Referer": R.ORIGIN + "/"})
-        its = d.get("Items") or d.get("items") or []
-        out.setdefault("raw", []).append({"jan": jan, "keys": list(d.keys())[:10], "count": d.get("count"), "n": len(its),
-            "first": [{"name": (i.get("itemName") or "")[:80], "price": i.get("itemPrice"), "avail": i.get("availability"), "jan_in_caption": jan in (i.get("itemCaption") or ""), "keys": list(i.keys())[:40]} for i in its[:4]]})
+        d = c.get(R.API_NEW, params={**base, **v}, as_json=True, headers=H)
+        its = d.get("Items") or []
+        out["tests"][k] = {"count": d.get("count"), "n": len(its), "first": [((i.get("itemName") or "")[:50], i.get("itemPrice"), i.get("availability")) for i in its[:3]]}
     except Exception as e:  # noqa: BLE001
-        out.setdefault("raw", []).append({"jan": jan, "error": str(e)[:300]})
-for jan, buy in [("4548736132610", 40000), ("4902370550733", 40000), ("4549995635232", 30000)]:
-    try:
-        offers = rakuten.search_jan(c, os.environ.get("RAKUTEN_APP_ID", ""), os.environ.get("RAKUTEN_ACCESS_KEY", ""), jan, buy, keep=3)
-        out["results"].append({"jan": jan, "n": len(offers), "top": [{k: o[k] for k in ("n", "p", "pt", "ptr", "sh", "s")} for o in offers]})
-    except Exception as e:  # noqa: BLE001
-        out["results"].append({"jan": jan, "error": str(e)[:400]})
+        out["tests"][k] = {"error": str(e)[:300]}
+try:
+    offers = R.search_jan(c, ID, KEY, jan, 30000, keep=3)
+    out["search_jan"] = [{k: o[k] for k in ("n", "p", "pt", "ptr", "sh", "s")} for o in offers]
+except Exception as e:  # noqa: BLE001
+    out["search_jan"] = str(e)[:300]
 Path("data/rakuten_test.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
-print(json.dumps(out, ensure_ascii=False)[:2000])
