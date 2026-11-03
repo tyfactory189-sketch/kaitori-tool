@@ -385,6 +385,59 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     return cache
 
 
+def update_rakuten(by_jan, cache, app_id, access_key, min_buy, watch):
+    """楽天市場の照合。Yahooと同じく「照合の時期が来た」商品を見込みの高い順に、時間内でできるだけ。
+    Yahoo の照合と同時に（別スレッドで）動かす。"""
+    import rakuten
+    now = datetime.now(JST)
+    targets = []
+    for jan in watch:
+        if jan in by_jan:
+            targets.append((0, 0, jan, top_buy(by_jan[jan])))
+    for jan, rec in by_jan.items():
+        top = top_buy(rec)
+        if top < min_buy or jan in watch:
+            continue
+        e = cache.get(jan, {})
+        try:
+            age = (now - datetime.fromisoformat(e["at"])).total_seconds() / 3600
+        except (KeyError, ValueError):
+            age = 1e9
+        if age < due_hours(e):
+            continue
+        targets.append((1, e.get("r", -1) if e else -1, jan, top))
+    targets.sort()
+    client = Client(delay=float(os.environ.get("RAKUTEN_DELAY", "1.2")), retries=2, backoff=10)
+    deadline = STARTED + (JOB_MAX_MIN - 12) * 60
+    done = fails = streak = 0
+    last_error = stopped = ""
+    for _, _, jan, top in targets:
+        if time.time() > deadline:
+            stopped = "時間切れ（残りは次回）"
+            break
+        try:
+            offers = rakuten.search_jan(client, app_id, access_key, jan, top, keep=5)
+        except Exception as e:  # noqa: BLE001
+            fails += 1
+            streak += 1
+            last_error = str(e)[:300]
+            if streak >= 15:
+                stopped = "楽天APIが連続で失敗したため中断"
+                break
+            continue
+        streak = 0
+        offers = drop_excluded(offers)
+        kept = trim_offers(offers, top, jan in watch)
+        best = min((o["p"] - o.get("pt", 0) for o in offers), default=None)
+        cache[jan] = {"at": now_iso(), "o": kept, "r": round(best / top, 3) if best and top else 9.9}
+        done += 1
+    RUN_LOG["rakuten"] = {"targets": len(targets), "done": done, "failed": fails, "last_error": last_error, "stopped": stopped}
+    log(f"[rakuten] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped} {last_error[:120]}")
+    cache = {k: v for k, v in cache.items() if k in by_jan or k in watch}
+    save(DATA / "rakuten_cache.json", cache, compact=True)
+    return cache
+
+
 def load_yahoo_user():
     """Chrome拡張がログイン状態で確認した「あなたの条件での価格・ポイント」。36時間より古いものは使わない。"""
     raw = load(DATA / "yahoo_user.json", {})
@@ -426,7 +479,7 @@ def drop_excluded(offers):
     return [o for o in offers if (o.get("u") or "").split("?")[0] not in ex] if ex else offers
 
 
-def build(by_jan, cache, watch):
+def build(by_jan, cache, watch, rcache=None):
     yu, yu_updated = load_yahoo_user()
     yahoo_names = {j: [o.get("n", "") for o in (c.get("o") or [])] for j, c in cache.items()}
     RUN_LOG["variants_fixed"] = apply_variants(by_jan, yahoo_names)
@@ -436,6 +489,8 @@ def build(by_jan, cache, watch):
         watched = jan in watch
         y = cache.get(jan) or {}
         offers = trim_offers(drop_excluded(y.get("o", [])), top_buy(rec), watched)
+        rk = (rcache or {}).get(jan) or {}
+        offers += trim_offers(drop_excluded(rk.get("o", [])), top_buy(rec), watched)[:2]  # 楽天の出品
         if not offers and not watched:
             continue
         name = rec["name"] or watch.get(jan, {}).get("memo") or (offers[0]["n"] if offers else "")
@@ -446,11 +501,11 @@ def build(by_jan, cache, watch):
         offers = [o for o in offers if not (o.get("yu") or {}).get("ng")]
         if not offers and not watched:
             continue
-        item = {"jan": jan, "name": name, "buys": rec["buys"], "offers": offers, "at": y.get("at", "")}
+        item = {"jan": jan, "name": name, "buys": rec["buys"], "offers": offers, "at": y.get("at", "") or rk.get("at", "")}
         if watched:
             item["w"] = 1
         items.append(item)
-    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated}
+    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated, "rakuten": RUN_LOG.get("rakuten")}
     pw = os.environ.get("SITE_PASSWORD", "")
     if pw:
         # サイト全体をパスワードで保護：暗号化した data.enc.json だけを公開し、平文は消す
@@ -478,12 +533,26 @@ def main():
     log(f"買取データ {len(by_jan)} JAN")
 
     cache = load(DATA / "yahoo_cache.json", {})
+    rcache = load(DATA / "rakuten_cache.json", {})
     watch = load_watch()
     log(f"ウォッチリスト {len(watch)}件")
+    # 楽天は別スレッドで同時に照合（APIの利用制限はYahooと別）
+    rk_id, rk_key = os.environ.get("RAKUTEN_APP_ID", "").strip(), os.environ.get("RAKUTEN_ACCESS_KEY", "").strip()
+    rk_thread, rk_box = None, {}
+    if rk_id and not args.skip_yahoo:
+        import threading
+        def _rk():
+            try:
+                rk_box["c"] = update_rakuten(by_jan, rcache, rk_id, rk_key, int(os.environ.get("MIN_BUY", "3000")), watch)
+            except Exception as e:  # noqa: BLE001
+                log(f"[rakuten] エラー: {e}")
+                RUN_LOG["rakuten"] = {"error": str(e)[:300]}
+        rk_thread = threading.Thread(target=_rk, daemon=True)
+        rk_thread.start()
     if not args.skip_yahoo:
         appid = os.environ.get("YAHOO_APPID", "").strip()
         if not appid:
-            build(by_jan, cache, watch)
+            build(by_jan, cache, watch, rcache)
             sys.exit("★エラー: YAHOO_APPID が設定されていません。"
                      "Settings → Secrets and variables → Actions に登録してください")
         cache = update_yahoo(
@@ -492,7 +561,10 @@ def main():
             int(os.environ.get("YAHOO_BUDGET_MIN", "160")),
             watch,
         )
-    build(by_jan, cache, watch)
+    if rk_thread:
+        rk_thread.join(timeout=max(60, STARTED + (JOB_MAX_MIN - 8) * 60 - time.time()))
+        rcache = rk_box.get("c", rcache)
+    build(by_jan, cache, watch, rcache)
 
 
 if __name__ == "__main__":

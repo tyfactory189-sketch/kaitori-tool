@@ -236,3 +236,29 @@ def test_postage():
 if __name__ == "__main__":
     test_postage()
     print("ok test_postage")
+
+
+def test_rakuten():
+    import rakuten
+    class C:
+        def __init__(self): self.h = None
+        def get(self, url, params=None, as_json=False, headers=None):
+            self.h = headers; self.url = url
+            return {"Items": [
+                {"itemName": "SONY WH-1000XM5 ブラック 新品", "itemPrice": 44000, "itemUrl": "https://item.rakuten.co.jp/a/1/?x=1", "shopName": "A", "shopCode": "a",
+                 "pointRate": 10, "postageFlag": 0, "availability": 1, "mediumImageUrls": ["https://thumbnail.image.rakuten.co.jp/x.jpg?_ex=128x128"], "itemCaption": "JAN:4548736132610"},
+                {"itemName": "WH-1000XM5 中古 美品", "itemPrice": 30000, "itemUrl": "u2", "availability": 1, "itemCaption": "4548736132610"},
+                {"itemName": "イヤーパッド XM5用", "itemPrice": 3000, "itemUrl": "u3", "availability": 1, "itemCaption": "4548736132610"},
+                {"itemName": "SONY WH-1000XM5", "itemPrice": 45000, "itemUrl": "u4", "availability": 1, "itemCaption": "別のJAN"},
+            ]}
+    c = C()
+    offers = rakuten.search_jan(c, "id", "key", "4548736132610", 42000)
+    assert len(offers) == 1, offers
+    o = offers[0]
+    assert o["u"] == "https://item.rakuten.co.jp/a/1/" and o["sh"] == 2 and o["src"] == "r" and o["pt"] == int(44000 / 1.1 * 9 / 100)
+    assert c.h["Origin"].startswith("https://") and "openapi" in c.url
+
+
+if __name__ == "__main__":
+    test_rakuten()
+    print("ok test_rakuten")

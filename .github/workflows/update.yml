@@ -36,7 +36,9 @@ jobs:
       - name: Yahoo照合キャッシュを復元
         uses: actions/cache/restore@v4
         with:
-          path: data/yahoo_cache.json
+          path: |
+            data/yahoo_cache.json
+            data/rakuten_cache.json
           key: yahoo-cache-${{ github.run_id }}
           restore-keys: yahoo-cache-
 
@@ -44,6 +46,8 @@ jobs:
         env:
           YAHOO_APPID: ${{ secrets.YAHOO_APPID }}
           SITE_PASSWORD: ${{ secrets.SITE_PASSWORD }}
+          RAKUTEN_APP_ID: ${{ secrets.RAKUTEN_APP_ID }}
+          RAKUTEN_ACCESS_KEY: ${{ secrets.RAKUTEN_ACCESS_KEY }}
           MIN_BUY: ${{ vars.MIN_BUY || '3000' }}
           YAHOO_BUDGET_MIN: ${{ vars.YAHOO_BUDGET_MIN || '300' }}
         run: |
@@ -57,7 +61,9 @@ jobs:
         if: always()
         uses: actions/cache/save@v4
         with:
-          path: data/yahoo_cache.json
+          path: |
+            data/yahoo_cache.json
+            data/rakuten_cache.json
           key: yahoo-cache-${{ github.run_id }}
 
       - name: 結果をコミット
@@ -65,7 +71,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git rm --cached -q --ignore-unmatch data/yahoo_cache.json
+          git rm --cached -q --ignore-unmatch data/yahoo_cache.json data/rakuten_cache.json
           git add data/status.json data/run_log.json data/buyback_shouten.json 2>/dev/null || true
           for f in docs/data.json docs/data.enc.json; do git add -A -- "$f" 2>/dev/null || true; done
           git diff --cached --quiet && exit 0

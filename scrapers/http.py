@@ -41,12 +41,12 @@ class Client:
             time.sleep(sleep)
         self._last = time.time()
 
-    def get(self, url: str, params=None, as_json: bool = False):
+    def get(self, url: str, params=None, as_json: bool = False, headers=None):
         last_err = None
         for attempt in range(self.retries):
             self._wait()
             try:
-                r = self.session.get(url, params=params, timeout=30, **_IMPERSONATE)
+                r = self.session.get(url, params=params, timeout=30, headers=headers, **_IMPERSONATE)
                 if r.status_code >= 400:
                     last_err = f"HTTP {r.status_code} {r.text[:200]!r}"
                     if r.status_code in (429, 500, 502, 503, 504):
