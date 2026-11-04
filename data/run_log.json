@@ -1,32 +1,32 @@
 {
- "started": "2026-11-04T20:44+09:00",
+ "started": "2026-11-04T21:56+09:00",
  "rakuten": {
-  "targets": 447,
-  "done": 447,
+  "targets": 42,
+  "done": 42,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 837,
-  "done": 837,
+  "targets": 283,
+  "done": 283,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 15573,
+  "skipped_not_due": 16127,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1143,
-  "changed": 9,
-  "failed": 1,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 121,
+  "changed": 3,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-11-04T21:17+09:00",
+ "finished": "2026-11-04T22:59+09:00",
  "items": 4445
 }
