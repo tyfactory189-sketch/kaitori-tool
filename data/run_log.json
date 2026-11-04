@@ -1,32 +1,32 @@
 {
- "started": "2026-11-04T02:05+09:00",
+ "started": "2026-11-04T09:56+09:00",
  "rakuten": {
-  "targets": 9619,
-  "done": 6822,
+  "targets": 466,
+  "done": 466,
   "failed": 0,
   "last_error": "",
-  "stopped": "時間切れ（残りは次回）"
+  "stopped": ""
  },
  "yahoo": {
-  "targets": 9000,
-  "done": 3977,
+  "targets": 6563,
+  "done": 2672,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 3874,
+  "skipped_not_due": 9846,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 927,
-  "changed": 9,
-  "failed": 0,
-  "last_error": "",
+  "checked": 461,
+  "changed": 3,
+  "failed": 2,
+  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-11-04T04:45+09:00",
- "items": 3603
+ "finished": "2026-11-04T12:36+09:00",
+ "items": 4331
 }
