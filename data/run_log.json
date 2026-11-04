@@ -1,32 +1,32 @@
 {
- "started": "2026-11-04T16:04+09:00",
+ "started": "2026-11-04T20:44+09:00",
  "rakuten": {
-  "targets": 43,
-  "done": 43,
+  "targets": 447,
+  "done": 447,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 287,
-  "done": 287,
+  "targets": 837,
+  "done": 837,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 16124,
+  "skipped_not_due": 15573,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 118,
-  "changed": 3,
-  "failed": 2,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/sanrex/nw-mc07-bz.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/shp_shared_parts/v2/2",
+  "checked": 1143,
+  "changed": 9,
+  "failed": 1,
+  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
   "disabled": false
  },
  "variants_fixed": 6,
- "finished": "2026-11-04T17:08+09:00",
- "items": 4449
+ "finished": "2026-11-04T21:17+09:00",
+ "items": 4445
 }
