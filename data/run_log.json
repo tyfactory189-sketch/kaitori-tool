@@ -1,32 +1,34 @@
 {
- "started": "2026-11-07T15:14+09:00",
+ "started": "2026-11-07T20:45+09:00",
  "rakuten": {
-  "targets": 1151,
-  "done": 1151,
+  "targets": 469,
+  "done": 469,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 7710,
-  "done": 3971,
-  "failed": 0,
-  "errors": {},
-  "last_error": "",
-  "first_400": "",
-  "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 8730,
+  "targets": 3179,
+  "done": 2945,
+  "failed": 234,
+  "errors": {
+   "HTTP 400": 234
+  },
+  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "first_400": "85126206659: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "stopped": "",
+  "skipped_not_due": 13262,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1457,
-  "changed": 12,
-  "failed": 2,
+  "checked": 961,
+  "changed": 9,
+  "failed": 1,
   "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-07T17:54+09:00",
- "items": 4468
+ "finished": "2026-11-07T22:53+09:00",
+ "items": 4467
 }
