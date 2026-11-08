@@ -378,7 +378,7 @@ function render(){
       return `<article class="item"><div></div><div>
         <div class="name">${star}${esc(it.name)}</div>
         <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
-        ${w.memo&&w.memo!==it.name?`<div class="calc">${esc(w.memo)}</div>`:''}
+        ${w.acct&&w.acct.length?`<div class="calc">📦 仕入れたアカウント：${w.acct.map(x=>`<span class="chip" style="font-size:11px;padding:0 6px">${esc(x)}</span>`).join(' ')}${w.last?`　最終 ${esc(w.last)}`:''}</div>`:w.memo&&w.memo!==it.name?`<div class="calc">${esc(w.memo)}</div>`:''}
         <div class="nodata">${best?`${esc(L[best.k].label)} ${yen(best.p)}`:'買取データなし'} ／ ${top?`Yahoo実質 ${yen(top.eff)}（<a href="${esc(top.o.u)}" target="_blank" rel="noopener">${esc(top.o.s)}</a>）`:it.at?'Yahooに在庫なし':'Yahoo未照合（次の照合で最優先に調べます）'}</div>
       </div><div class="profit"><div class="r">差益 —</div>
         <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}">買取スキャナー</a></div></div></article>`;
@@ -393,6 +393,7 @@ function render(){
       <div>
         <div class="name">${star}${r.lg==='large'?'<span class="chip warn" style="margin-right:6px" title="大型商品（発送費は「大型の発送費」で計算）">大型</span>':r.lg==='tool'?'<span class="chip warn" style="margin-right:6px" title="電動工具（発送費は「電動工具の発送費」で計算）">工具</span>':r.lg==='car'?'<span class="chip warn" style="margin-right:6px" title="カー用品（発送費は「カー用品の発送費」で計算）">カー</span>':''}${esc(it.name)}</div>
         <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
+        ${(()=>{const w=WATCH.get(it.jan);return w&&w.acct&&w.acct.length?`<div class="calc" title="${esc(w.memo||'')}">📦 仕入れたアカウント：${w.acct.map(a=>`<span class="chip" style="font-size:11px;padding:0 6px">${esc(a)}</span>`).join(' ')}${w.last?`　最終 ${esc(w.last)}`:''}</div>`:''})()}
         <div class="chips">${chips}</div>
         ${o.pv||o.add?`<div class="chips">${o.pv?`<span class="chip warn" title="商品ページで色・容量などを選ぶと価格が変わる出品です。JANに一致する選択肢が分からないため、高い方の価格で計算しています">仕様で価格差 ${yen(o.pv[0])}〜${yen(o.pv[1])}（高い方で計算）</span>`:''}${o.add?`<span class="chip warn" title="全ての選択肢に料金がかかるオプションの最低額を加えています">必須オプション +${yen(o.add)} 込み</span>`:''}</div>`:''}
         <div class="offer">${o.src==='r'?'<span class="chip rk">楽天</span> 最安(実質)':'Yahoo最安(実質)'}: <a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.s)}</a>${o.bs?' ★優良':''}${o.chk&&!o.pv&&!o.add?' <span title="商品ページで仕様選択・必須オプションを確認済み">✓</span>':''} ${yen(top.base)}${top.cp?` − クーポン${yen(top.cp)}`:''}${top.ship?` ＋送料${yen(top.ship)}`:''} − ${top.pts.toLocaleString()}P
