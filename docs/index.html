@@ -86,7 +86,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 .chip.rk{background:#bf0000;color:#fff;border-color:#bf0000;font-size:11px;padding:0 6px}
 .exc{border:0;background:none;color:var(--sub);cursor:pointer;padding:0 6px 0 0;font-size:12px}
 .exc:hover{color:#d33}
-.exc.big{border:1px solid var(--line,#ccc);border-radius:6px;padding:3px 8px;margin-top:4px;font-size:12px}
+.exc.big,.exci.big{border:1px solid var(--line,#ccc);border-radius:6px;padding:3px 8px;margin-top:4px;font-size:12px;background:none;color:var(--sub);cursor:pointer}.exci.big:hover{color:#d33}
 button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 .toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:var(--ink);color:var(--panel);padding:8px 14px;border-radius:8px;font-size:13px;z-index:9;max-width:calc(100vw - 32px)}
 .nodata{color:var(--sub);font-size:13px}
@@ -305,7 +305,8 @@ function compute(){
   const rows=[];
   const W=!!S.watchOnly;
   const pool0=W?[...WATCH.keys()].map(j=>BYJAN[j]||{jan:j,name:WATCH.get(j).memo||'（まだ照合されていません）',buys:{},offers:[],at:''}):DATA.items;
-  for(const it of pool0){
+  const pool=W?pool0:pool0.filter(it=>!EXCL_ITEM.has(mkey(it.jan,S.market)));
+  for(const it of pool){
     const allBuys=srcs.map(k=>it.buys[k]&&{k,...it.buys[k]}).filter(Boolean);
     const buys=S.noMulti?allBuys.filter(b=>!b.m):allBuys;
     const multi=allBuys.filter(b=>b.m);
@@ -401,7 +402,8 @@ function render(){
         <div class="v ${pc}">${r.profit>=0?'+':''}${yen(r.profit)}</div>
         <div class="r">実質 ${yen(top.eff)} ・ ${(r.rate*100).toFixed(1)}%</div>
         <div><a class="buy" href="${esc(o.u)}" target="_blank" rel="noopener">${o.src==='r'?'楽天で見る':'Yahooで見る'}</a></div>
-        <div><button class="exc big" data-u="${esc(o.u)}" data-jan="${it.jan}" title="この出品に問題があるとき（色違い・ばら売り・付属品など）に押すと、以後の一覧・照合から外します">この出品を除外</button></div>
+        <div><button class="exc big" data-u="${esc(o.u)}" data-jan="${it.jan}" title="この出品（ショップのこのページ）だけを外します。同じ商品の別の出品は残ります">この出品を除外</button></div>
+        <div><button class="exci big" data-jan="${it.jan}" title="この商品そのものを、${S.market==='rakuten'?'楽天':'Yahoo'}の一覧から外します（別の出品が出てきても表示しません）">この商品を除外</button></div>
         <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}" title="JANをコピーして買取スキャナーを開きます（検索欄に貼り付け）">買取スキャナー</a></div>
       </div>
       <details><summary>出品${r.offers.length}件を比較</summary>
@@ -496,13 +498,25 @@ async function excludeOffer(u,jan){
     toast('除外しました（次の照合からも外します）');
   }catch(e){toast(e.message||String(e))}
 }
-$('list').addEventListener('click',e=>{const ex=e.target.closest('.exc');if(ex){excludeOffer(ex.dataset.u,ex.dataset.jan);return}const st=e.target.closest('.star');if(st){toggleStar(st.dataset.star);return}const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
+// 商品ごとの除外（Yahoo・楽天それぞれ）
+let EXCL_ITEM=new Set();const mkey=(jan,m)=>jan+'|'+(m||'yahoo');
+async function excludeItem(jan){
+  const it=BYJAN[jan],m=S.market||'yahoo',mk=m==='rakuten'?'楽天':'Yahoo';
+  if(!confirm(`この商品を${mk}の一覧から外しますか？\n${it?it.name.slice(0,80):jan}\n（ウォッチリストの画面や、もう一方の一覧には残ります）`))return;
+  EXCL_ITEM.add(mkey(jan,m));render();
+  try{
+    const now=new Date(Date.now()+9*3600e3).toISOString().slice(0,16)+'+09:00';
+    await KTS_GH.saveList('docs/excludes.json',l=>l.some(x=>x.all&&x.jan===jan&&(x.mkt||'yahoo')===m)?l:[...l,{all:true,jan,mkt:m,n:(it?it.name:'').slice(0,120),added:now}],'除外する商品を追加');
+    toast('この商品を除外しました');
+  }catch(e){toast(e.message||String(e))}
+}
+$('list').addEventListener('click',e=>{const xi=e.target.closest('.exci');if(xi){excludeItem(xi.dataset.jan);return}const ex=e.target.closest('.exc');if(ex){excludeOffer(ex.dataset.u,ex.dataset.jan);return}const st=e.target.closest('.star');if(st){toggleStar(st.dataset.star);return}const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
 
 KTS_GH.loadWatch().then(w=>{WATCH=new Map(w.items.map(x=>[x.jan,x]));if(DATA)render()});
 const SKIP_ITEM=/ポケモンカード|ポケカ|pok[eé]mone?\s*cards?|ポケモン.{0,30}(?:拡張パック|ハイクラスパック|スターターデッキ|スタートデッキ|デッキビルド|プレミアムトレーナー|スペシャルBOX|カードセット|\bBOX\b)|\bsv\d+[a-z]?\s*box\b|カードゲーム|トレーディングカード|トレカ|\bTCG\b|ブースターパック|プレミアムブースター|エクストラブースター|ブースター\s*(?:BOX|ボックス)|アドバンスパック|スタートデッキ|構築済みデッキ|ONE\s*PIECE\s*CARD|ワンピースカード|遊戯王|デュエル・?マスターズ|デュエマ|ヴァイス・?シュヴァルツ|ユニオンアリーナ|UNION\s*ARENA|ドラゴンボール.{0,20}(?:ダイバーズ|ヒーローズ|フュージョンワールド|カード)|バトルスピリッツ|バトスピ|シャドウバース\s*エボルヴ|ビルディバイド|マジック[：:・]?\s*ザ[・ ]?ギャザリング|ロルカナ|ラッシュデュエル/i;
 let EXT=null;
 fetch('extension_status.json',{cache:'no-store'}).then(r=>r.ok?r.json():null).then(j=>{EXT=j;if(DATA)renderMeta()}).catch(()=>{});
-Promise.all([fetch('excludes.json',{cache:'no-store'}).then(r=>r.ok?r.json():{items:[]}).catch(()=>({items:[]})),KTS_CRYPT.loadData()]).then(async ([ex,d])=>{if(BUDGET_ENC&&!BUDGET){const b=await KTS_CRYPT.tryDecrypt(BUDGET_ENC,KTS_CRYPT.getPass());if(b)BUDGET=b}EXCL=new Set((ex.items||[]).map(x=>ukey(x.u)));try{const l=JSON.parse(localStorage.getItem('kts_excl_local')||'null');if(l&&Date.now()-l.at<10*60e3)l.items.forEach(x=>EXCL.add(x.u))}catch(_){}d.items.forEach(it=>it.offers=(it.offers||[]).filter(o=>!EXCL.has(ukey(o.u))));d.items=d.items.filter(it=>!SKIP_ITEM.test(it.name||'')&&!(it.offers||[]).some(o=>SKIP_ITEM.test(o.n||'')));d.items.forEach(it=>it.offers=(it.offers||[]).filter(o=>!EXCLUDE.test(o.n||'')&&!(o.yu&&o.yu.ng)&&!o.ng));DATA=d;d.items.forEach(it=>BYJAN[it.jan]=it);renderMeta();syncForm();render()})
+Promise.all([fetch('excludes.json',{cache:'no-store'}).then(r=>r.ok?r.json():{items:[]}).catch(()=>({items:[]})),KTS_CRYPT.loadData()]).then(async ([ex,d])=>{if(BUDGET_ENC&&!BUDGET){const b=await KTS_CRYPT.tryDecrypt(BUDGET_ENC,KTS_CRYPT.getPass());if(b)BUDGET=b}const exAll=[...(ex.items||[])];try{const l=JSON.parse(localStorage.getItem('kts_excl_local')||'null');if(l&&Date.now()-l.at<10*60e3)exAll.push(...l.items)}catch(_){}EXCL=new Set(exAll.filter(x=>x.u).map(x=>ukey(x.u)));EXCL_ITEM=new Set(exAll.filter(x=>x.all&&x.jan).map(x=>mkey(x.jan,x.mkt)));d.items.forEach(it=>it.offers=(it.offers||[]).filter(o=>!EXCL.has(ukey(o.u))));d.items=d.items.filter(it=>!SKIP_ITEM.test(it.name||'')&&!(it.offers||[]).some(o=>SKIP_ITEM.test(o.n||'')));d.items.forEach(it=>it.offers=(it.offers||[]).filter(o=>!EXCLUDE.test(o.n||'')&&!(o.yu&&o.yu.ng)&&!o.ng));DATA=d;d.items.forEach(it=>BYJAN[it.jan]=it);renderMeta();syncForm();render()})
   .catch(()=>{$('meta').textContent='data.json を読み込めませんでした';});
 </script>
 </body>

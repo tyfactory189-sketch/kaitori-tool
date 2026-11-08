@@ -257,6 +257,11 @@ def test_rakuten():
     o = offers[0]
     assert o["u"] == "https://item.rakuten.co.jp/a/1/" and o["sh"] == 2 and o["src"] == "r" and o["pt"] == int(44000 / 1.1 * 9 / 100)
     assert c.h["Origin"].startswith("https://") and "openapi" in c.url
+    # 型番が出品名に無い別物（JAN検索で混ざる）は除外
+    o2 = rakuten.search_jan(c, "id", "key", "4548736132610", 42000, names=["SONY WH-1000XM5 ブラック"])
+    assert [x["n"][:14] for x in o2] == ["SONY WH-1000X", "SONY WH-1000X"] or all("1000XM5" in x["n"] for x in o2)
+    o3 = rakuten.search_jan(c, "id", "key", "4548736132610", 42000, names=["Pioneer DDJ-GRV6"])
+    assert o3 == []
 
 
 if __name__ == "__main__":

@@ -10,12 +10,13 @@ import os
 import re
 
 from scrapers.http import Client
-from yahoo import EXCLUDE, SKIP_ITEM
+from yahoo import EXCLUDE, SKIP_ITEM, _model_tokens
+import unicodedata
 
 API_NEW = "https://openapi.rakuten.co.jp/ichibams/api/IchibaItem/Search/20260701"
 API_OLD = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20260701"
 ORIGIN = os.environ.get("RAKUTEN_ORIGIN", "https://tyfactory189-sketch.github.io")
-RE_USED = re.compile(r"中古|ユーズド|USED|訳あり|アウトレット|展示品|ジャンク|レンタル|整備済|再生品|未使用|箱難|箱つぶれ|箱潰れ|保証期間\d+\s*[ヶケか]月", re.I)
+RE_USED = re.compile(r"\d大特典|特典付|_set\b|セット品|中古|ユーズド|USED|訳あり|アウトレット|展示品|ジャンク|レンタル|整備済|再生品|未使用|箱難|箱つぶれ|箱潰れ|保証期間\d+\s*[ヶケか]月", re.I)
 
 
 def _clean_url(u: str) -> str:
@@ -42,7 +43,16 @@ def _offer(it: dict) -> dict:
     }
 
 
-def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price: int, keep: int = 5):
+def name_ok(offer_name: str, names) -> bool:
+    """買取側の型番が出品名に入っているか（型番が無い商品は判定しない）。古いキャッシュにも使う。"""
+    toks = _model_tokens(names)
+    if not toks:
+        return True
+    n = re.sub(r"[\s\-_/]", "", unicodedata.normalize("NFKC", offer_name or "")).upper()
+    return any(t in n for t in toks) and not RE_USED.search(offer_name or "")
+
+
+def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price: int, keep: int = 5, names=()):
     params = {
         "applicationId": app_id,
         "keyword": jan.zfill(13) if len(jan) == 12 else jan,
@@ -67,6 +77,9 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
         ok = [x for x in items if not (EXCLUDE.search(x.get("itemName") or "") or RE_USED.search(x.get("itemName") or ""))]
         if len(ok) >= keep or len(got) < 30 or page >= int(data.get("pageCount") or 1):
             break
+    # 買取側の商品名にある型番が、出品名にも入っているものだけにする（楽天はJAN検索で別物が混ざるため）
+    toks = _model_tokens(names)
+    norm = lambda t: re.sub(r"[\s\-_/]", "", unicodedata.normalize("NFKC", t)).upper()  # noqa: E731
     offers = []
     for it in items:
         it = it.get("Item", it) if isinstance(it, dict) else {}
@@ -74,6 +87,8 @@ def search_jan(client: Client, app_id: str, access_key: str, jan: str, buy_price
             continue
         name = it.get("itemName") or ""
         if EXCLUDE.search(name) or SKIP_ITEM.search(name) or RE_USED.search(name):
+            continue
+        if toks and not any(t in norm(name) for t in toks):
             continue
         o = _offer(it)
         lo, hi = int(it.get("itemPriceMin1") or 0), int(it.get("itemPriceMax1") or 0)

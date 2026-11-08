@@ -416,7 +416,7 @@ def update_rakuten(by_jan, cache, app_id, access_key, min_buy, watch):
             stopped = "時間切れ（残りは次回）"
             break
         try:
-            offers = rakuten.search_jan(client, app_id, access_key, jan, top, keep=5)
+            offers = rakuten.search_jan(client, app_id, access_key, jan, top, keep=5, names=list(by_jan[jan].get("names", ())) if jan in by_jan else [])
         except Exception as e:  # noqa: BLE001
             fails += 1
             streak += 1
@@ -490,7 +490,9 @@ def build(by_jan, cache, watch, rcache=None):
         y = cache.get(jan) or {}
         offers = trim_offers(drop_excluded(y.get("o", [])), top_buy(rec), watched)
         rk = (rcache or {}).get(jan) or {}
-        offers += trim_offers(drop_excluded(rk.get("o", [])), top_buy(rec), watched)[:2]  # 楽天の出品
+        import rakuten as _rk
+        rko = [o for o in drop_excluded(rk.get("o", [])) if _rk.name_ok(o.get("n", ""), rec.get("names", ()))]
+        offers += trim_offers(rko, top_buy(rec), watched)[:2]  # 楽天の出品（型番が合うものだけ）
         if not offers and not watched:
             continue
         name = rec["name"] or watch.get(jan, {}).get("memo") or (offers[0]["n"] if offers else "")
