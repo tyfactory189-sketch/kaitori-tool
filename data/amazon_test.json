@@ -6,10 +6,25 @@
   "AMAZON_CREDENTIAL_VERSION": true,
   "AMAZON_PARTNER_TAG": true
  },
- "version_ok": false,
+ "version_ok": true,
  "version_len": 4,
  "id_looks_like_secret": false,
+ "version_shape": "a9.9",
+ "tag_shape": "22.226",
  "tag_ok": false,
- "results": [],
- "error": "AMAZON_CREDENTIAL_VERSION が正しくありません（3.3 や 2.3 のような数字を入れてください）"
+ "results": [
+  {
+   "jan": "4549995635232",
+   "error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）"
+  },
+  {
+   "jan": "4548736132610",
+   "error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）"
+  },
+  {
+   "jan": "4902370550733",
+   "error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）"
+  }
+ ],
+ "token": "ok"
 }
