@@ -1,5 +1,5 @@
 {
- "at": "2026-11-08 14:11",
+ "at": "2026-11-08 14:14",
  "has": {
   "AMAZON_CREDENTIAL_ID": true,
   "AMAZON_CREDENTIAL_SECRET": true,
@@ -10,8 +10,8 @@
  "version_len": 4,
  "id_looks_like_secret": false,
  "version_shape": "a9.9",
- "tag_shape": "22.226",
- "tag_ok": false,
+ "tag_shape": "5a5-22",
+ "tag_ok": true,
  "results": [
   {
    "jan": "4549995635232",
