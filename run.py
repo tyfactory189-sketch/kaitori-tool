@@ -438,6 +438,62 @@ def update_rakuten(by_jan, cache, app_id, access_key, min_buy, watch):
     return cache
 
 
+def update_amazon(by_jan, cache, creds, min_buy, watch):
+    """Amazonの照合（Creators API）。楽天と同じ進め方。Yahooと同じく「照合の時期が来た」商品を見込みの高い順に、時間内でできるだけ。
+    Yahoo の照合と同時に（別スレッドで）動かす。"""
+    import amazon
+    api = amazon.Creators(*creds)
+    now = datetime.now(JST)
+    targets = []
+    for jan in watch:
+        if jan in by_jan:
+            targets.append((0, -int(watch[jan].get("n") or 0), jan, top_buy(by_jan[jan])))
+    for jan, rec in by_jan.items():
+        top = top_buy(rec)
+        if top < min_buy or jan in watch:
+            continue
+        e = cache.get(jan, {})
+        try:
+            age = (now - datetime.fromisoformat(e["at"])).total_seconds() / 3600
+        except (KeyError, ValueError):
+            age = 1e9
+        if age < due_hours(e):
+            continue
+        targets.append((1, e.get("r", -1) if e else -1, jan, top))
+    targets.sort()
+    deadline = STARTED + (JOB_MAX_MIN - 12) * 60
+    done = fails = streak = 0
+    last_error = stopped = ""
+    for _, _, jan, top in targets:
+        if time.time() > deadline:
+            stopped = "時間切れ（残りは次回）"
+            break
+        try:
+            offers = amazon.search_jan(api, jan, top, keep=5, names=list(by_jan[jan].get("names", ())) if jan in by_jan else [])
+        except Exception as e:  # noqa: BLE001
+            fails += 1
+            streak += 1
+            last_error = str(e)[:300]
+            if "403" in last_error:
+                stopped = "Amazon APIの利用資格がありません（403）"
+                break
+            if streak >= 15:
+                stopped = "Amazon APIが連続で失敗したため中断"
+                break
+            continue
+        streak = 0
+        offers = drop_excluded(offers)
+        kept = trim_offers(offers, top, jan in watch)
+        best = min((o["p"] - o.get("pt", 0) for o in offers), default=None)
+        cache[jan] = {"at": now_iso(), "o": kept, "r": round(best / top, 3) if best and top else 9.9}
+        done += 1
+    RUN_LOG["amazon"] = {"targets": len(targets), "done": done, "failed": fails, "last_error": last_error, "stopped": stopped}
+    log(f"[amazon] 更新 {done}件 / 失敗 {fails}件 / 対象 {len(targets)}件 {stopped} {last_error[:120]}")
+    cache = {k: v for k, v in cache.items() if k in by_jan or k in watch}
+    save(DATA / "amazon_cache.json", cache, compact=True)
+    return cache
+
+
 def load_yahoo_user():
     """Chrome拡張がログイン状態で確認した「あなたの条件での価格・ポイント」。36時間より古いものは使わない。"""
     raw = load(DATA / "yahoo_user.json", {})
@@ -479,7 +535,7 @@ def drop_excluded(offers):
     return [o for o in offers if (o.get("u") or "").split("?")[0] not in ex] if ex else offers
 
 
-def build(by_jan, cache, watch, rcache=None):
+def build(by_jan, cache, watch, rcache=None, acache=None):
     yu, yu_updated = load_yahoo_user()
     yahoo_names = {j: [o.get("n", "") for o in (c.get("o") or [])] for j, c in cache.items()}
     RUN_LOG["variants_fixed"] = apply_variants(by_jan, yahoo_names)
@@ -493,6 +549,9 @@ def build(by_jan, cache, watch, rcache=None):
         import rakuten as _rk
         rko = [o for o in drop_excluded(rk.get("o", [])) if _rk.name_ok(o.get("n", ""), rec.get("names", ()))]
         offers += trim_offers(rko, top_buy(rec), watched)[:2]  # 楽天の出品（型番が合うものだけ）
+        az = (acache or {}).get(jan) or {}
+        azo = [o for o in drop_excluded(az.get("o", [])) if _rk.name_ok(o.get("n", ""), rec.get("names", ()))]
+        offers += trim_offers(azo, top_buy(rec), watched)[:2]  # Amazonの出品
         if not offers and not watched:
             continue
         name = rec["name"] or watch.get(jan, {}).get("memo") or (offers[0]["n"] if offers else "")
@@ -507,7 +566,7 @@ def build(by_jan, cache, watch, rcache=None):
         if watched:
             item["w"] = 1
         items.append(item)
-    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated, "rakuten": RUN_LOG.get("rakuten")}
+    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated, "rakuten": RUN_LOG.get("rakuten"), "amazon": RUN_LOG.get("amazon")}
     pw = os.environ.get("SITE_PASSWORD", "")
     if pw:
         # サイト全体をパスワードで保護：暗号化した data.enc.json だけを公開し、平文は消す
@@ -540,6 +599,19 @@ def main():
     log(f"ウォッチリスト {len(watch)}件")
     # 楽天は別スレッドで同時に照合（APIの利用制限はYahooと別）
     rk_id, rk_key = os.environ.get("RAKUTEN_APP_ID", "").strip(), os.environ.get("RAKUTEN_ACCESS_KEY", "").strip()
+    acache = load(DATA / "amazon_cache.json", {})
+    az = [os.environ.get(k, "").strip() for k in ("AMAZON_CREDENTIAL_ID", "AMAZON_CREDENTIAL_SECRET", "AMAZON_CREDENTIAL_VERSION", "AMAZON_PARTNER_TAG")]
+    az_thread, az_box = None, {}
+    if az[0] and az[1] and az[3] and not args.skip_yahoo:
+        import threading as _th
+        def _az():
+            try:
+                az_box["c"] = update_amazon(by_jan, acache, (az[0], az[1], az[2] or "3.3", az[3]), int(os.environ.get("MIN_BUY", "3000")), watch)
+            except Exception as e:  # noqa: BLE001
+                log(f"[amazon] エラー: {e}")
+                RUN_LOG["amazon"] = {"error": str(e)[:300]}
+        az_thread = _th.Thread(target=_az, daemon=True)
+        az_thread.start()
     rk_thread, rk_box = None, {}
     if rk_id and not args.skip_yahoo:
         import threading
@@ -554,7 +626,7 @@ def main():
     if not args.skip_yahoo:
         appid = os.environ.get("YAHOO_APPID", "").strip()
         if not appid:
-            build(by_jan, cache, watch, rcache)
+            build(by_jan, cache, watch, rcache, acache)
             sys.exit("★エラー: YAHOO_APPID が設定されていません。"
                      "Settings → Secrets and variables → Actions に登録してください")
         cache = update_yahoo(
@@ -566,7 +638,10 @@ def main():
     if rk_thread:
         rk_thread.join(timeout=max(60, STARTED + (JOB_MAX_MIN - 8) * 60 - time.time()))
         rcache = rk_box.get("c", rcache)
-    build(by_jan, cache, watch, rcache)
+    if az_thread:
+        az_thread.join(timeout=max(60, STARTED + (JOB_MAX_MIN - 8) * 60 - time.time()))
+        acache = az_box.get("c", acache)
+    build(by_jan, cache, watch, rcache, acache)
 
 
 if __name__ == "__main__":

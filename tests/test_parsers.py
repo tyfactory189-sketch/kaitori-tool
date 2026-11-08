@@ -286,3 +286,23 @@ def test_kaikyo():
 if __name__ == "__main__":
     test_kaikyo()
     print("ok test_kaikyo")
+
+
+def test_amazon_parse():
+    import amazon
+    res = {"searchResult": {"items": [{"asin": "B0TEST", "itemInfo": {"title": {"displayValue": "ソニー WH-1000XM5 ブラック"}},
+        "offersV2": {"listings": [{"price": {"money": {"amount": 41800, "currency": "JPY"}}, "condition": {"value": "New"},
+                                   "merchantInfo": {"name": "Amazon.co.jp"}, "availability": {"type": "IN_STOCK"}, "isBuyBoxWinner": True},
+                                  {"price": {"money": {"amount": 30000}}, "condition": {"value": "Used"}}]}}]}}
+    rows = amazon.parse(res)
+    assert len(rows) == 2 and rows[0]["price"] == 41800 and rows[0]["merchant"] == "Amazon.co.jp"
+    class A:
+        def search(self, kw, page=1):
+            return res
+    o = amazon.search_jan(A(), "4548736132610", 40000, names=["SONY WH-1000XM5"])
+    assert [x["p"] for x in o] == [41800] and o[0]["u"].endswith("/dp/B0TEST") and o[0]["src"] == "a"
+
+
+if __name__ == "__main__":
+    test_amazon_parse()
+    print("ok test_amazon_parse")

@@ -4,3 +4,4 @@ __pycache__/
 .env
 data/yahoo_cache.json
 data/rakuten_cache.json
+data/amazon_cache.json
