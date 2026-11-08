@@ -38,7 +38,10 @@ def parse_list(html: str):
             continue
         titles = [_html.unescape(t).strip() for t in RE_LABEL.findall(body)]
         name = " ".join(t for t in titles[:2] if t)
-        items.append({"jan": jan.group(1), "name": name, "price": int(price.group(1).replace(",", ""))})
+        j = jan.group(1)
+        if len(j) == 12:  # UPC（Google製品など）は先頭0の13桁にそろえる（他の買取サイトと同じ形）
+            j = "0" + j
+        items.append({"jan": j, "name": name, "price": int(price.group(1).replace(",", ""))})
     return items
 
 

@@ -54,7 +54,7 @@ jobs:
           if [ "${{ inputs.skip_buyback }}" = "true" ]; then
             python run.py --skip-buyback
           else
-            python run.py --sources shouten
+            python run.py --sources shouten,kaikyo
           fi
 
       - name: Yahoo照合キャッシュを保存
@@ -72,7 +72,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git rm --cached -q --ignore-unmatch data/yahoo_cache.json data/rakuten_cache.json
-          git add data/status.json data/run_log.json data/buyback_shouten.json 2>/dev/null || true
+          git add data/status.json data/run_log.json data/buyback_shouten.json data/buyback_kaikyo.json 2>/dev/null || true
           for f in docs/data.json docs/data.enc.json; do git add -A -- "$f" 2>/dev/null || true; done
           git diff --cached --quiet && exit 0
           git commit -q -m "価格データ更新 $(TZ=Asia/Tokyo date '+%Y-%m-%d %H:%M')"

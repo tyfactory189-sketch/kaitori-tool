@@ -523,7 +523,7 @@ def build(by_jan, cache, watch, rcache=None):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sources", default="shouten", help="取得する買取サイト（カンマ区切り）")
+    ap.add_argument("--sources", default="shouten,kaikyo", help="取得する買取サイト（カンマ区切り）")
     ap.add_argument("--skip-buyback", action="store_true")
     ap.add_argument("--skip-yahoo", action="store_true")
     args = ap.parse_args()
