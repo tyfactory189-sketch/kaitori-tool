@@ -3,7 +3,7 @@ const DEFAULT_SETTINGS = {
   token: '',
   repo: 'tyfactory189-sketch/kaitori-tool',
   times: ['11:00', '14:00', '20:00'],
-  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true, sedori: true },
+  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true, sedori: true, stores: true },
   startYahoo: true,
   sedori: { url: 'https://docs.google.com/spreadsheets/d/1IPd1p5gbUS98Qt017o2cVC6a-RFAYqDYB_UI8zpCFzU/edit', tab: '商品管理' },
   sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4, skip: 'an3,an4,an5,an6' },
@@ -114,6 +114,16 @@ async function startJob(trigger) {
   }
   await setStatus({ running: true, startedAt: Date.now(), trigger, text: '開始しました', pct: 0 });
   report({ event: '開始（' + trigger + '）' });
+  // 家電量販店のボット対策（確認画面）の合格クッキーを、実際のタブで開いて取っておく
+  if ((await getSettings()).sites.stores !== false) {
+    for (const url of ['https://www.kojima.net/ec/prod_list.html?keyword=4902370553024', 'https://www.biccamera.com/bc/category/?q=MFHP4J%2FA']) {
+      try {
+        const tab = await chrome.tabs.create({ url, active: false });
+        await new Promise(r => setTimeout(r, 12000));
+        await chrome.tabs.remove(tab.id);
+      } catch (e) { /* 失敗しても続ける */ }
+    }
+  }
   await ensureOffscreen();
   chrome.runtime.sendMessage({ target: 'offscreen', cmd: 'run', settings });
   return { ok: true };

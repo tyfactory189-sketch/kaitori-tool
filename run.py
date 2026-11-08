@@ -535,7 +535,13 @@ def drop_excluded(offers):
     return [o for o in offers if (o.get("u") or "").split("?")[0] not in ex] if ex else offers
 
 
+STORE_LABELS = {"kojima": "コジマネット", "nojima": "ノジマオンライン", "bic": "ビックカメラ.com"}
+STORES: dict = {}
+
+
 def build(by_jan, cache, watch, rcache=None, acache=None):
+    global STORES
+    STORES = load(DATA / "stores.json", {})
     yu, yu_updated = load_yahoo_user()
     yahoo_names = {j: [o.get("n", "") for o in (c.get("o") or [])] for j, c in cache.items()}
     RUN_LOG["variants_fixed"] = apply_variants(by_jan, yahoo_names)
@@ -549,6 +555,13 @@ def build(by_jan, cache, watch, rcache=None, acache=None):
         import rakuten as _rk
         rko = [o for o in drop_excluded(rk.get("o", [])) if _rk.name_ok(o.get("n", ""), rec.get("names", ()))]
         offers += trim_offers(rko, top_buy(rec), watched)[:2]  # 楽天の出品（型番が合うものだけ）
+        # 家電量販店（拡張機能が data/stores.json に保存）
+        for stk, sv in (STORES.get("items", {}).get(jan) or {}).items():
+            if sv.get("none") or not sv.get("p") or sv.get("ng"):
+                continue
+            offers.append({"src": "s", "st": stk, "s": STORE_LABELS.get(stk, stk), "n": (sv.get("n") or rec.get("name") or "")[:200],
+                           "p": int(sv["p"]), "pt": int(sv.get("pt") or 0), "cp": int(sv.get("cp") or 0), "sh": 2,
+                           "u": sv.get("u", ""), "at": sv.get("at", "")})
         az = (acache or {}).get(jan) or {}
         azo = [o for o in drop_excluded(az.get("o", [])) if _rk.name_ok(o.get("n", ""), rec.get("names", ()))]
         offers += trim_offers(azo, top_buy(rec), watched)[:2]  # Amazonの出品

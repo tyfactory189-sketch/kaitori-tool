@@ -83,6 +83,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 .budget td.bn,.budget th:first-child{text-align:left;white-space:normal}
 .budget-login{padding:16px}.budget-login form{margin-top:10px}.budget-login input{font:inherit;padding:6px 8px}
 .budget-ctl{margin-bottom:10px;padding:8px 12px;font-size:13px}.budget-ctl button{margin-right:4px}
+.chip.st{background:#0b6e4f;color:#fff;border-color:#0b6e4f;font-size:11px;padding:0 6px}
 .chip.az{background:#232f3e;color:#fff;border-color:#232f3e;font-size:11px;padding:0 6px}
 .chip.rk{background:#bf0000;color:#fff;border-color:#bf0000;font-size:11px;padding:0 6px}
 .exc{border:0;background:none;color:var(--sub);cursor:pointer;padding:0 6px 0 0;font-size:12px}
@@ -122,6 +123,11 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
     <div class="row">買いまわり <input type="number" id="mShops" min="1" max="10" step="1"> ショップ（最大10）</div>
     <div class="row">特典の残り上限 <input type="number" id="mCap" min="0" step="500"> P</div>
     <div class="hint">税込1,000円以上の買い物をしたショップ数。2店目から+1倍ずつ、10店で+9倍（通常分と合わせて10倍）。特典は税抜価格に付き、期間中の合計で上限7,000P。既にもらえる予定の特典を引いた残りを入れると、上限を超える分は計算しません</div>
+  </fieldset>
+  <fieldset>
+    <legend>家電量販店</legend>
+    <label><input type="checkbox" id="stCoupon"> 一覧に出ているクーポン（ノジマ等）を差し引く</label>
+    <div class="hint">ウォッチリストの商品だけ、拡張機能がコジマ・ノジマ・ビックカメラの価格とポイントを調べます</div>
   </fieldset>
   <fieldset>
     <legend>ポイント還元（Amazon）</legend>
@@ -170,7 +176,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 </aside>
 <section>
   <div class="toolbar">
-    <div class="btns" id="mktBtns" style="margin-bottom:6px"><button data-mkt="yahoo">Yahoo!ショッピング</button><button data-mkt="rakuten">楽天市場</button><button data-mkt="amazon">Amazon</button></div>
+    <div class="btns" id="mktBtns" style="margin-bottom:6px"><button data-mkt="yahoo">Yahoo!ショッピング</button><button data-mkt="rakuten">楽天市場</button><button data-mkt="amazon">Amazon</button><button data-mkt="store">家電量販店</button></div>
     <div class="btns" id="sortBtns">
       <button data-sort="profit" class="on">お得額順</button>
       <button data-sort="rate">お得率順</button>
@@ -193,7 +199,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 // 新品以外・別物の出品を除外（yahoo.py の EXCLUDE と同じ。データ更新前でもすぐ効くように画面側でも適用）
 const EXCLUDE=/フラストレーション|\bFFP\b|ＦＦＰ|簡易箱|簡易パッケージ|簡易パック|白箱|バルク|キットばらし|キットバラシ|キットばらし品|キット分解|キットから|ばらし品|バラし品|片方|[LRＬＲ]\s?のみ|左のみ|右のみ|L\s?or\s?R|左右選べる|左右どちらか|バンドのみ|ベルトのみ|専用バンド|替えバンド|交換バンド|交換ベルト|ストラップのみ|リモコンのみ|セットばらし|セットバラシ|セットバラ|本体同梱品|左または右|左右どちらか|福袋|オリパ|(?<!レビュー)くじ|ガチャ|中身ランダム|ランダム発送|ランダム封入|PSA\s?\d+|鑑定品|延長申込|延長申し込み|延長料金|延長プラン|無制限プラン|料金プラン|専用ページ|\d+\s*(?:日|日間|ヶ月|ケ月|カ月|か月|ヵ月)(?:間)?(?:レンタル|プラン|延長|利用)|貸出|貸し出し|サブスク|保証開始|箱不良|箱痛み|箱傷み|箱ダメージ|シュリンク破れ|保証期間開始|印付|印あり|印有り?|捺印|押印済|[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|美品|良品|使用感|傷あり|キズあり|難あり|パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|箱潰れ|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|海外版|並行輸入|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ/i;
-const DEFAULTS={azRate:0,market:'yahoo',rkRate:3,mOn:false,mShops:10,mCap:7000,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
+const DEFAULTS={stCoupon:false,azRate:0,market:'yahoo',rkRate:3,mOn:false,mShops:10,mCap:7000,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,sendCostL:0,sendCostT:0,sendCostC:0,carWords:'カー用品|カーナビ|ポータブルナビ|彩速ナビ|楽ナビ|サイバーナビ|ストラーダ|カロッツェリア|carrozzeria|ドライブレコーダー|ドラレコ|レーダー探知|レーザー探知|ETC(?:2\\.0|車載器|-|\\d)|カーオーディオ|ディスプレイオーディオ|カースピーカー|カーステレオ|車載|リアビジョン|ビッグX|オットキャスト|Ottocast|OttoAibox|CarPlay|バックカメラ|ジャンプスターター|カーメイト|コムテック|COMTEC|セルスター|CELLSTAR|ALPINE(?!\\s?LOOP)|アルパイン(?!ループ)|MDV-|AVIC-|DMH-|DEH-|MVH-|DPX-|DRV-|(?<!自転)車用',toolWords:'マキタ|makita|HiKOKI|ハイコーキ|日立工機|BOSCH|ボッシュ|Milwaukee|ミルウォーキー|DEWALT|デウォルト|京セラ インダストリアル|RYOBI|リョービ|インパクトドライバ|インパクトレンチ|ドリルドライバ|振動ドリル|ハンマドリル|ハンマードリル|丸ノコ|丸のこ|マルノコ|グラインダ|サンダ|ジグソー|レシプロソー|チェーンソー|チェンソー|草刈機|刈払機|ヘッジトリマ|ブロワ|マルチツール|高圧洗浄機|工進|KOSHIN|高儀|プロ用',largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,noMismatch:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
@@ -214,7 +220,7 @@ const hit=(re,it)=>!!(re&&(re.test(it.name)||(it.offers[0]&&re.test(it.offers[0]
 const kindOf=it=>hit(TOOL_RE,it)?'tool':hit(CAR_RE,it)?'car':hit(LARGE_RE,it)?'large':'normal';
 const isLarge=it=>kindOf(it)==='large';
 const sendCostOf=it=>({tool:S.sendCostT,car:S.sendCostC,large:S.sendCostL,normal:S.sendCost})[kindOf(it)];
-const BOOLS=['mOn','useUser','premium','freeOnly','noProof','noMulti','noMismatch'];
+const BOOLS=['stCoupon','mOn','useUser','premium','freeOnly','noProof','noMulti','noMismatch'];
 function syncForm(){
   NUMS.forEach(k=>$(k).value=S[k]);BOOLS.forEach(k=>$(k).checked=S[k]);
   $('cpType').value=S.cpType;$('q').value=S.q;$('largeWords').value=S.largeWords;$('toolWords').value=S.toolWords;$('carWords').value=S.carWords;largeRe();
@@ -274,8 +280,12 @@ function shipOf(o,base){
 }
 // 1つの出品について実質価格を計算
 // 選んでいる仕入先（Yahoo・楽天・Amazon）の出品か
-const inMarket=o=>({rakuten:o.src==='r',amazon:o.src==='a'})[S.market]??(o.src!=='r'&&o.src!=='a');
+const inMarket=o=>({rakuten:o.src==='r',amazon:o.src==='a',store:o.src==='s'})[S.market]??(!o.src||o.src==='y');
 function evalOffer(o){
+  if(o.src==='s'){ // 家電量販店：お店のポイント（1P=1円で評価）。クーポンは設定で差し引くか選ぶ
+    const base=o.p,cp=S.stCoupon?(o.cp||0):0,paid=base-cp,ship=0,pts=o.pt||0;
+    return {o,base,cp,paid,ship,storePt:pts,userPt:0,pts,eff:paid-pts*S.ptval/100,st:true};
+  }
   if(o.src==='a'){ // Amazon：送料無料扱い。ポイントは設定の％
     const base=o.p,paid=base,ship=0,userPt=Math.floor(paid*(S.azRate||0)/100);
     return {o,base,cp:0,paid,ship,storePt:0,userPt,pts:userPt,eff:paid-userPt*S.ptval/100,az:true};
@@ -398,7 +408,7 @@ function render(){
     const o=top.o;
     const chips=r.buys.sort((a,b)=>b.p-a.p).map(b=>`<a class="chip ${b===best?'best':''}" href="${esc(b.u)}" target="_blank" rel="noopener">${esc(L[b.k].label)} ${yen(b.p)}</a>${b.note?`<span class="chip warn">${esc(b.note)}</span>`:''}${b.m?`<span class="chip warn" title="買取wikiでは容量・色を選ぶ1商品として載っていて、この金額は一番高い仕様の買取価格の可能性があります。リンク先で仕様を選んで確認してください">容量・色で変動${b.r?`（${yen(b.r[0])}〜${yen(b.r[1])}）`:'（最高額の可能性）'}</span>`:''}${b.v?`<span class="chip" title="専用サイトで容量・色を選んだときの買取価格です">${esc(b.v)}の価格</span>`:''}`).join('')
       +((S.noMulti&&r.multi&&r.multi.length)?r.multi.map(b=>`<a class="chip" style="opacity:.55;text-decoration:line-through" href="${esc(b.u)}" target="_blank" rel="noopener" title="容量・色で価格が変わるため計算から除外中（左の絞り込みで切替）">${esc(L[b.k].label)} ${yen(b.p)}</a>`).join(''):'');
-    const others=r.offers.map(e=>`<tr><td><button class="exc" data-u="${esc(e.o.u)}" data-jan="${it.jan}" title="この出品を除外（以後の一覧・照合から外す）">✕</button><a href="${esc(e.o.u)}" target="_blank" rel="noopener">${esc(e.o.s)}</a>${e.o.src==='r'?' <span class="chip rk">楽天</span>':''}${e.o.bs?' ★':''}${e.o.pv?' <span class="chip warn">仕様で価格差</span>':''}${e.o.add?' <span class="chip warn">必須OP込</span>':''}</td><td>${yen(e.base)}</td><td>${e.cp?'-'+yen(e.cp):'—'}</td><td>${e.ship===0?(e.shipCond?'無料<small>（条件達成）</small>':'無料'):'+'+yen(e.ship)+(e.shipEst?'<small title="商品ページ未確認のため設定の想定送料">（想定）</small>':'')}</td><td>${e.pts.toLocaleString()}P</td><td><b>${yen(e.eff)}</b></td><td class="${best.p-e.eff-sendCostOf(it)>=0?'plus':'minus'}">${yen(best.p-e.eff-sendCostOf(it))}</td></tr>`).join('');
+    const others=r.offers.map(e=>`<tr><td><button class="exc" data-u="${esc(e.o.u)}" data-jan="${it.jan}" title="この出品を除外（以後の一覧・照合から外す）">✕</button><a href="${esc(e.o.u)}" target="_blank" rel="noopener">${esc(e.o.s)}</a>${e.o.src==='r'?' <span class="chip rk">楽天</span>':e.o.src==='s'?' <span class="chip st">量販店</span>':''}${e.o.bs?' ★':''}${e.o.pv?' <span class="chip warn">仕様で価格差</span>':''}${e.o.add?' <span class="chip warn">必須OP込</span>':''}</td><td>${yen(e.base)}</td><td>${e.cp?'-'+yen(e.cp):'—'}</td><td>${e.ship===0?(e.shipCond?'無料<small>（条件達成）</small>':'無料'):'+'+yen(e.ship)+(e.shipEst?'<small title="商品ページ未確認のため設定の想定送料">（想定）</small>':'')}</td><td>${e.pts.toLocaleString()}P</td><td><b>${yen(e.eff)}</b></td><td class="${best.p-e.eff-sendCostOf(it)>=0?'plus':'minus'}">${yen(best.p-e.eff-sendCostOf(it))}</td></tr>`).join('');
     const pc=r.profit>=0?'plus':'minus';
     return `<article class="item">
       ${o.img?`<img src="${esc(o.img)}" alt="" loading="lazy">`:'<div></div>'}
@@ -408,15 +418,15 @@ function render(){
         ${(()=>{const w=WATCH.get(it.jan);return w&&w.acct&&w.acct.length?`<div class="calc" title="${esc(w.memo||'')}">📦 仕入れたアカウント：${w.acct.map(a=>`<span class="chip" style="font-size:11px;padding:0 6px">${esc(a)}</span>`).join(' ')}${w.last?`　最終 ${esc(w.last)}`:''}</div>`:''})()}
         <div class="chips">${chips}</div>
         ${o.pv||o.add?`<div class="chips">${o.pv?`<span class="chip warn" title="商品ページで色・容量などを選ぶと価格が変わる出品です。JANに一致する選択肢が分からないため、高い方の価格で計算しています">仕様で価格差 ${yen(o.pv[0])}〜${yen(o.pv[1])}（高い方で計算）</span>`:''}${o.add?`<span class="chip warn" title="全ての選択肢に料金がかかるオプションの最低額を加えています">必須オプション +${yen(o.add)} 込み</span>`:''}</div>`:''}
-        <div class="offer">${o.src==='r'?'<span class="chip rk">楽天</span> 最安(実質)':o.src==='a'?'<span class="chip az">Amazon</span> 最安(実質)':'Yahoo最安(実質)'}: <a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.s)}</a>${o.bs?' ★優良':''}${o.chk&&!o.pv&&!o.add?' <span title="商品ページで仕様選択・必須オプションを確認済み">✓</span>':''} ${yen(top.base)}${top.cp?` − クーポン${yen(top.cp)}`:''}${top.ship?` ＋送料${yen(top.ship)}`:''} − ${top.pts.toLocaleString()}P
-          <div class="calc">${top.az?`Amazonポイント ${S.azRate||0}%（${top.userPt.toLocaleString()}P）${o.bb?' ／ カート獲得':''}`:top.rk?`ショップ ${o.ptr||1}倍（+${(o.pt||0).toLocaleString()}P）＋ 楽天 ${S.rkRate}%（${top.userPt.toLocaleString()}P）${top.mRate?` ＋ 買いまわり +${top.mRate}倍（${top.mPt.toLocaleString()}P${top.mPt<Math.floor(top.paid/1.1*top.mRate/100)?'・上限':''}）`:''}`:top.user?`<span title="ログイン状態で商品ページに表示された付与ポイント（${o.yu.capped&&o.yu.capped.length?'上限到達：'+esc(o.yu.capped.join('、')):'上限到達なし'}）">あなたの条件 ${o.yu.rate}%（${esc(o.yu.at.slice(5,16).replace('T',' '))}確認${o.yu.capped&&o.yu.capped.length?'・上限あり':''}）</span>`:`ストアP ${top.storePt.toLocaleString()} ＋ 還元 ${top.userPt.toLocaleString()}（設定の％で計算）`} ／ Yahoo確認 ${esc(it.at.slice(5,16).replace('T',' '))}</div></div>
+        <div class="offer">${o.src==='s'?`<span class="chip st">${esc(o.s)}</span> 最安(実質)`:o.src==='r'?'<span class="chip rk">楽天</span> 最安(実質)':o.src==='a'?'<span class="chip az">Amazon</span> 最安(実質)':'Yahoo最安(実質)'}: <a href="${esc(o.u)}" target="_blank" rel="noopener">${esc(o.s)}</a>${o.bs?' ★優良':''}${o.chk&&!o.pv&&!o.add?' <span title="商品ページで仕様選択・必須オプションを確認済み">✓</span>':''} ${yen(top.base)}${top.cp?` − クーポン${yen(top.cp)}`:''}${top.ship?` ＋送料${yen(top.ship)}`:''} − ${top.pts.toLocaleString()}P
+          <div class="calc">${top.st?`お店のポイント ${(top.pts||0).toLocaleString()}P${o.cp?`　クーポン ${o.cp.toLocaleString()}円${S.stCoupon?'（差し引き済み）':'（未計算）'}`:''}${o.at?` ／ 確認 ${esc(String(o.at).slice(5,16).replace('T',' '))}`:''}`:top.az?`Amazonポイント ${S.azRate||0}%（${top.userPt.toLocaleString()}P）${o.bb?' ／ カート獲得':''}`:top.rk?`ショップ ${o.ptr||1}倍（+${(o.pt||0).toLocaleString()}P）＋ 楽天 ${S.rkRate}%（${top.userPt.toLocaleString()}P）${top.mRate?` ＋ 買いまわり +${top.mRate}倍（${top.mPt.toLocaleString()}P${top.mPt<Math.floor(top.paid/1.1*top.mRate/100)?'・上限':''}）`:''}`:top.user?`<span title="ログイン状態で商品ページに表示された付与ポイント（${o.yu.capped&&o.yu.capped.length?'上限到達：'+esc(o.yu.capped.join('、')):'上限到達なし'}）">あなたの条件 ${o.yu.rate}%（${esc(o.yu.at.slice(5,16).replace('T',' '))}確認${o.yu.capped&&o.yu.capped.length?'・上限あり':''}）</span>`:`ストアP ${top.storePt.toLocaleString()} ＋ 還元 ${top.userPt.toLocaleString()}（設定の％で計算）`} ／ Yahoo確認 ${esc(it.at.slice(5,16).replace('T',' '))}</div></div>
       </div>
       <div class="profit">
         <div class="v ${pc}">${r.profit>=0?'+':''}${yen(r.profit)}</div>
         <div class="r">実質 ${yen(top.eff)} ・ ${(r.rate*100).toFixed(1)}%</div>
-        <div><a class="buy" href="${esc(o.u)}" target="_blank" rel="noopener">${o.src==='r'?'楽天で見る':o.src==='a'?'Amazonで見る':'Yahooで見る'}</a></div>
+        <div><a class="buy" href="${esc(o.u)}" target="_blank" rel="noopener">${o.src==='s'?'お店で見る':o.src==='r'?'楽天で見る':o.src==='a'?'Amazonで見る':'Yahooで見る'}</a></div>
         <div><button class="exc big" data-u="${esc(o.u)}" data-jan="${it.jan}" title="この出品（ショップのこのページ）だけを外します。同じ商品の別の出品は残ります">この出品を除外</button></div>
-        <div><button class="exci big" data-jan="${it.jan}" title="この商品そのものを、${({rakuten:'楽天',amazon:'Amazon'})[S.market]||'Yahoo'}の一覧から外します（別の出品が出てきても表示しません）">この商品を除外</button></div>
+        <div><button class="exci big" data-jan="${it.jan}" title="この商品そのものを、${({rakuten:'楽天',amazon:'Amazon',store:'量販店'})[S.market]||'Yahoo'}の一覧から外します（別の出品が出てきても表示しません）">この商品を除外</button></div>
         <div><a class="scan" href="${SCANNER}" target="_blank" rel="noopener" data-jan="${it.jan}" title="JANをコピーして買取スキャナーを開きます（検索欄に貼り付け）">買取スキャナー</a></div>
       </div>
       <details><summary>出品${r.offers.length}件を比較</summary>

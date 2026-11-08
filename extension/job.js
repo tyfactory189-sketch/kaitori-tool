@@ -477,6 +477,112 @@ const KTS = (() => {
     return aggregateSedori(parseCsv(t));
   }
 
+  // ---------- 家電量販店（ウォッチリストの商品だけ） ----------
+  const STORES = {
+    kojima: { label: 'コジマネット', base: 'https://www.kojima.net' },
+    nojima: { label: 'ノジマオンライン', base: 'https://online.nojima.co.jp' },
+    bic: { label: 'ビックカメラ.com', base: 'https://www.biccamera.com' },
+  };
+  const toNum = t => parseInt(String(t || '').replace(/[^\d]/g, ''), 10) || 0;
+  const SOLD = /在庫なし|売り切れ|完売|販売終了|販売を終了|取り扱い終了|入荷待ち|予約/;
+  // コジマ：JANで検索できる。一覧の li に mk2pcode（JAN）と mk2price が入っている
+  function parseKojima(html, jan) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    for (const li of doc.querySelectorAll('li[mk2pcode]')) {
+      if (li.getAttribute('mk2pcode') !== jan) continue;
+      const txt = li.textContent.replace(/\s+/g, ' ');
+      const a = li.querySelector('a[href*="prod_detail"]');
+      return { p: toNum(li.getAttribute('mk2price')) || toNum((li.querySelector('.price .number') || {}).textContent),
+        pt: toNum((li.querySelector('.point .number') || {}).textContent), ng: SOLD.test(txt) ? '在庫なし' : '',
+        n: li.getAttribute('mk2pname') || '', u: 'https://www.kojima.net' + (a ? a.getAttribute('href') : `/ec/prod_detail.html?prod=${jan}`) };
+    }
+    return null;
+  }
+  // ノジマ：JANで検索できる。商品URLが /commodity/1/<JAN>/
+  function parseNojima(html, jan) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    for (const li of doc.querySelectorAll('.commoditylistitem li')) {
+      const a = li.querySelector(`a[href^="/commodity/1/${jan}/"]`);
+      if (!a) continue;
+      const txt = li.textContent.replace(/\s+/g, ' ');
+      return { p: toNum((li.querySelector('.price') || {}).firstChild && li.querySelector('.price').firstChild.textContent),
+        pt: toNum((li.querySelector('.pointKangen') || {}).textContent), cp: toNum((li.querySelector('.couponlistnebiki') || {}).textContent),
+        ng: SOLD.test(txt) && !/在庫あり/.test(txt) ? '在庫なし' : '', n: (li.querySelector('.textOverflowShohinmei span') || {}).textContent || '',
+        u: `https://online.nojima.co.jp/commodity/1/${jan}/` };
+    }
+    return null;
+  }
+  // ビック：JANでは検索できないので型番で検索し、商品ページの goodsStkNo（JAN）で確かめる
+  function parseBicList(html) {
+    const doc = new DOMParser().parseFromString(html, 'text/html');
+    return [...doc.querySelectorAll('li.prod_box[data-item-id]')].map(li => ({
+      id: li.getAttribute('data-item-id'), n: li.getAttribute('data-item-name') || '',
+      p: toNum((li.querySelector('.bcs_price .val') || li.querySelector('.bcs_price') || {}).textContent),
+      pt: toNum((li.querySelector('.bcs_point') || {}).textContent),
+      ng: SOLD.test((li.querySelector('.bcs_nouki') || li).textContent) ? '在庫なし' : '',
+    }));
+  }
+  const modelTokens = name => [...new Set((String(name || '').normalize('NFKC').match(/[A-Za-z0-9][A-Za-z0-9\-\/]{3,}/g) || [])
+    .filter(t => /[A-Za-z]/.test(t) && /\d/.test(t) && t.replace(/[-\/]/g, '').length >= 5 && !/^\d+(GB|TB|MM|ML|W|V|MAH)$/i.test(t)))];
+  async function fetchSjis(url) {
+    const r = await fetch(url, { credentials: 'include', cache: 'no-store' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return new TextDecoder('shift_jis').decode(await r.arrayBuffer());
+  }
+  async function grabStores(watch, prev, opts = {}) {
+    const per = opts.per || 120; // 1回の実行で1店あたりに調べる商品数（古い順に回す）
+    const out = { updated: jstNow(), items: { ...(prev.items || {}) }, bicMap: { ...(prev.bicMap || {}) }, stats: {} };
+    const jans = watch.map(w => String(w.jan)).filter(j => /^\d{8,14}$/.test(j));
+    const names = Object.fromEntries(watch.map(w => [String(w.jan), String(w.memo || '').replace(/\s*\[.*$/, '')]));
+    const age = (jan, st) => Date.parse(((out.items[jan] || {})[st] || {}).at || 0) || 0;
+    const work = async st => {
+      const order = [...jans].sort((a, b) => age(a, st) - age(b, st)).slice(0, per);
+      let ok = 0, hit = 0, fail = 0;
+      for (const jan of order) {
+        try {
+          let r = null;
+          if (st === 'kojima') {
+            const res = await fetch(`${STORES.kojima.base}/ec/prod_list.html?keyword=${jan}`, { credentials: 'include' });
+            const html = await res.text();
+            if (res.status === 202 || !html) throw new Error('コジマの確認画面（ボット対策）');
+            r = parseKojima(html, jan);
+          }
+          else if (st === 'nojima') r = parseNojima(await (await fetch(`${STORES.nojima.base}/app/catalog/list/init?searchWord=${jan}`, { credentials: 'include' })).text(), jan);
+          else if (st === 'bic') {
+            const known = Object.entries(out.bicMap).find(([, j]) => j === jan);
+            const toks = modelTokens(names[jan]).slice(0, 2);
+            let cands = [];
+            const nz = x => String(x || '').normalize('NFKC').replace(/[\s\-\/]/g, '').toUpperCase();
+            for (const t of toks) {
+              // 価格のあるもの・店舗限定や海外仕様でないもの・型番が名前に入っているものだけ
+              cands = parseBicList(await fetchSjis(`${STORES.bic.base}/bc/category/?q=${encodeURIComponent(t)}`))
+                .filter(c => c.p > 0 && !/店舗のみ|海外仕様|ツーリスト|中古/.test(c.n) && nz(c.n).includes(nz(t)));
+              await sleep(2000);
+              if (cands.length) break;
+            }
+            if (known) cands = cands.filter(c => c.id === known[0]);
+            for (const c of cands.slice(0, 3)) {
+              let cj = out.bicMap[c.id];
+              if (!cj) {
+                const ih = await fetchSjis(`${STORES.bic.base}/bc/item/${c.id}/`);
+                cj = (ih.match(/"goodsStkNo"\s*:\s*"(\d{8,14})"/) || [])[1] || '';
+                out.bicMap[c.id] = cj;
+                await sleep(2000);
+              }
+              if (cj === jan) { r = { ...c, u: `${STORES.bic.base}/bc/item/${c.id}/` }; delete r.id; break; }
+            }
+          }
+          out.items[jan] = { ...(out.items[jan] || {}), [st]: r ? { ...r, at: jstNow() } : { none: 1, at: jstNow() } };
+          ok++; if (r) hit++;
+        } catch (e) { fail++; if (fail >= 8) break; }
+        await sleep(st === 'kojima' ? 3000 : 1800);
+      }
+      out.stats[st] = { checked: ok, found: hit, failed: fail };
+    };
+    await Promise.all((opts.stores || Object.keys(STORES)).map(work)); // 店ごとに並行（同じ店へは1.5秒間隔）
+    return out;
+  }
+
   // ---------- 全体 ----------
   async function run(settings) {
     const g = gh(settings);
@@ -534,6 +640,16 @@ const KTS = (() => {
         } else notes.push('ウォッチ 変更なし');
       } catch (e) { notes.push('せどり管理シート 失敗：' + e.message); }
     }
+    if (sites.stores !== false) {
+      try {
+        progress('家電量販店の価格を確認中…', 99);
+        const wl = await g.readJson('docs/watchlist.json').catch(() => null);
+        const prev = (await g.readJson('data/stores.json').catch(() => null)) || {};
+        const res = await grabStores((wl && wl.items) || [], prev, { per: settings.storesPer || 120 });
+        await g.write('data/stores.json', res, '家電量販店の価格を更新');
+        notes.push('量販店 ' + Object.entries(res.stats).map(([k, v]) => `${STORES[k].label.slice(0, 4)}${v.found}/${v.checked}`).join(' '));
+      } catch (e) { notes.push('家電量販店 失敗：' + e.message); }
+    }
     if (sites.budget !== false && settings.sheet && settings.sheet.url) {
       try {
         if (!sitePass) throw new Error('サイトのパスワードが未設定です（設定画面で入力してください）');
@@ -551,7 +667,7 @@ const KTS = (() => {
     return { ok: saved > 0 && !notes.some(n => n.includes('失敗')), summary: notes.join(' ／ ') || '取得対象がありません' };
   }
 
-  return { run, parseCsv, parseBudget, aggregateSedori, mergeWatch, encryptJson, decryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
+  return { run, parseKojima, parseNojima, parseBicList, modelTokens, parseCsv, parseBudget, aggregateSedori, mergeWatch, encryptJson, decryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
 })();
 
 // オフスクリーン文書として読み込まれたときだけ、バックグラウンドからの指示を待つ
