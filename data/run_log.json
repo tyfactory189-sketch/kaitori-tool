@@ -1,32 +1,39 @@
 {
- "started": "2026-11-08T21:44+09:00",
+ "started": "2026-11-09T03:38+09:00",
+ "amazon": {
+  "targets": 16635,
+  "done": 0,
+  "failed": 1,
+  "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
+  "stopped": "Amazon APIの利用資格がありません（403）"
+ },
  "rakuten": {
-  "targets": 760,
-  "done": 760,
+  "targets": 12546,
+  "done": 4283,
   "failed": 0,
   "last_error": "",
-  "stopped": ""
+  "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
-  "targets": 1232,
-  "done": 1232,
+  "targets": 9000,
+  "done": 2610,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
-  "stopped": "",
-  "skipped_not_due": 15273,
+  "stopped": "時間切れ（残りは次回）",
+  "skipped_not_due": 2101,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1860,
-  "changed": 13,
-  "failed": 1,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 1257,
+  "changed": 9,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-08T23:26+09:00",
- "items": 4574
+ "finished": "2026-11-09T06:18+09:00",
+ "items": 2484
 }
