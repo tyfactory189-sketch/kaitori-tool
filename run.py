@@ -279,9 +279,9 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     max_req = int(os.environ.get("YAHOO_MAX_REQ", "9000"))
     now = datetime.now(JST)
     targets = []
-    for jan in watch:  # ウォッチ商品は買取価格に関係なく毎回
+    for jan in watch:  # ウォッチ商品は買取価格に関係なく毎回（購入回数の多い順）
         top = top_buy(by_jan[jan]) if jan in by_jan else 0
-        targets.append((0, 0, "", jan, top))
+        targets.append((0, -int(watch[jan].get("n") or 0), "", jan, top))
     skipped = 0
     for jan, rec in by_jan.items():
         top = top_buy(rec)
@@ -393,7 +393,7 @@ def update_rakuten(by_jan, cache, app_id, access_key, min_buy, watch):
     targets = []
     for jan in watch:
         if jan in by_jan:
-            targets.append((0, 0, jan, top_buy(by_jan[jan])))
+            targets.append((0, -int(watch[jan].get("n") or 0), jan, top_buy(by_jan[jan])))
     for jan, rec in by_jan.items():
         top = top_buy(rec)
         if top < min_buy or jan in watch:

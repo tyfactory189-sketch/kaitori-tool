@@ -418,6 +418,65 @@ const KTS = (() => {
     return parseBudget(t, sheet);
   }
 
+  // ---------- せどり管理シート → ウォッチリスト ----------
+  const normJan = j => { const d = String(j || '').replace(/\D/g, ''); return d.length === 12 ? '0' + d : d; };
+  // シートの行（C:区分 D:仕入日 E:仕入先 F:アカウント G:ストア H:注文番号 I:JAN J:商品名 K:単価 L:数量）をJANごとに集計
+  function aggregateSedori(rows) {
+    const agg = new Map();
+    for (const r of rows) {
+      const [kubun, date, src, acct, , , janCell, name, , qty] = r.map(x => String(x || '').trim());
+      if (kubun !== '仕入') continue;
+      for (const raw of (janCell.match(/\d{8,14}/g) || [])) {
+        if (![8, 12, 13, 14].includes(raw.length)) continue;
+        const jan = normJan(raw);
+        const a = agg.get(jan) || { jan, name: '', acct: new Map(), src: [], n: 0, q: 0, last: '' };
+        a.n += 1; a.q += Math.max(1, parseInt(qty, 10) || 1);
+        if (name && (date >= a.last || !a.name)) a.name = name;
+        const lab = acct || src || '不明';
+        a.acct.set(lab, (a.acct.get(lab) || 0) + 1);
+        if (src && !a.src.includes(src)) a.src.push(src);
+        if (date > a.last) a.last = date;
+        agg.set(jan, a);
+      }
+    }
+    return agg;
+  }
+  // 既存のウォッチリストと合わせる：JANで重複をまとめ、シートの商品は購入回数の多い順に上へ
+  function mergeWatch(items, agg, now) {
+    const m = new Map();
+    for (const w of items || []) {
+      const jan = normJan(w.jan);
+      if (!jan) continue;
+      const cur = m.get(jan);
+      if (!cur) m.set(jan, { ...w, jan });
+      else { // 重複：先に登録した方を残し、メモを足す
+        if (w.added && (!cur.added || w.added < cur.added)) cur.added = w.added;
+        if (w.memo && !(cur.memo || '').includes(w.memo)) cur.memo = cur.memo ? cur.memo + ' / ' + w.memo : w.memo;
+      }
+    }
+    for (const a of agg.values()) {
+      const accts = [...a.acct.entries()].sort((x, y) => y[1] - x[1]);
+      const e = m.get(a.jan) || { jan: a.jan, added: now };
+      Object.assign(e, {
+        memo: `${a.name.slice(0, 60)} [${accts.map(([k, v]) => k + (v > 1 ? '×' + v : '')).join('・')}] 計${a.n}回${a.q !== a.n ? `（${a.q}個）` : ''} ${a.last}`,
+        acct: accts.map(([k]) => k), src: a.src, last: a.last, n: a.n, q: a.q, from: 'sheet',
+      });
+      m.set(a.jan, e);
+    }
+    const sheet = [...m.values()].filter(w => w.from === 'sheet').sort((x, y) => (y.n - x.n) || String(y.last).localeCompare(String(x.last)));
+    const other = [...m.values()].filter(w => w.from !== 'sheet');
+    return [...sheet, ...other];
+  }
+  async function grabSedori(sh) {
+    const m = String(sh.url || '').match(/\/spreadsheets\/d\/([\w-]+)/);
+    if (!m) throw new Error('せどり管理シートのURLが正しくありません');
+    const url = `https://docs.google.com/spreadsheets/d/${m[1]}/gviz/tq?tqx=out:csv&headers=0&sheet=${encodeURIComponent(sh.tab || '商品管理')}&range=C5:L20000`;
+    const r = await fetch(url, { credentials: 'include', cache: 'no-store' });
+    const t = await r.text();
+    if (!r.ok || /^\s*<(!doctype|html)/i.test(t)) throw new Error('せどり管理シートを開けません（このChromeでシートを見られるGoogleアカウントにログインしてください）');
+    return aggregateSedori(parseCsv(t));
+  }
+
   // ---------- 全体 ----------
   async function run(settings) {
     const g = gh(settings);
@@ -460,6 +519,21 @@ const KTS = (() => {
         notes.push(`Yahooポイント ${y.stats.ok}件` + (y.stats.premium ? '' : '（LYPプレミアム会員としてログインしていません）')); saved++;
       } catch (e) { notes.push('Yahooポイント 失敗：' + e.message); }
     }
+    if (sites.sedori !== false && settings.sedori && settings.sedori.url) {
+      try {
+        progress('せどり管理シートを読み込み中…', 98);
+        const agg = await grabSedori(settings.sedori);
+        if (!agg.size) throw new Error('仕入れ行が見つかりませんでした');
+        const cur = await g.readJson('docs/watchlist.json').catch(() => null);
+        const before = (cur && cur.items) || [];
+        const items = mergeWatch(before, agg, jstNow());
+        const strip = l => JSON.stringify(l.map(w => ({ ...w })));
+        if (strip(items) !== strip(before)) {
+          await g.write('docs/watchlist.json', { updated: jstNow(), items }, `せどり管理シートからウォッチリストを更新（${items.length}件）`);
+          notes.push(`ウォッチ ${items.length}件（シート ${agg.size}件）`);
+        } else notes.push('ウォッチ 変更なし');
+      } catch (e) { notes.push('せどり管理シート 失敗：' + e.message); }
+    }
     if (sites.budget !== false && settings.sheet && settings.sheet.url) {
       try {
         if (!sitePass) throw new Error('サイトのパスワードが未設定です（設定画面で入力してください）');
@@ -477,7 +551,7 @@ const KTS = (() => {
     return { ok: saved > 0 && !notes.some(n => n.includes('失敗')), summary: notes.join(' ／ ') || '取得対象がありません' };
   }
 
-  return { run, parseCsv, parseBudget, encryptJson, decryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
+  return { run, parseCsv, parseBudget, aggregateSedori, mergeWatch, encryptJson, decryptJson, setProgress, parseWiki, parseMori, parseOptions, combos, isCandidate, getPrice, grabVariants, parseYahooItem, pickCandidates, loginState };
 })();
 
 // オフスクリーン文書として読み込まれたときだけ、バックグラウンドからの指示を待つ

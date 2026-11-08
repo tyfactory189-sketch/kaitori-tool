@@ -3,15 +3,16 @@ const DEFAULT_SETTINGS = {
   token: '',
   repo: 'tyfactory189-sketch/kaitori-tool',
   times: ['11:00', '14:00', '20:00'],
-  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true },
+  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true, sedori: true },
   startYahoo: true,
+  sedori: { url: 'https://docs.google.com/spreadsheets/d/1IPd1p5gbUS98Qt017o2cVC6a-RFAYqDYB_UI8zpCFzU/edit', tab: '商品管理' },
   sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4, skip: 'an3,an4,an5,an6' },
 };
 const STALE_MS = 3 * 60 * 60e3; // 3時間以上「実行中」のままなら止まったとみなす
 
 async function getSettings() {
   const { settings } = await chrome.storage.local.get('settings');
-  return { ...DEFAULT_SETTINGS, ...(settings || {}), sites: { ...DEFAULT_SETTINGS.sites, ...((settings || {}).sites || {}) }, sheet: { ...DEFAULT_SETTINGS.sheet, ...((settings || {}).sheet || {}) } };
+  return { ...DEFAULT_SETTINGS, ...(settings || {}), sites: { ...DEFAULT_SETTINGS.sites, ...((settings || {}).sites || {}) }, sheet: { ...DEFAULT_SETTINGS.sheet, ...((settings || {}).sheet || {}) }, sedori: { ...DEFAULT_SETTINGS.sedori, ...((settings || {}).sedori || {}) } };
 }
 async function getStatus() {
   const { status } = await chrome.storage.local.get('status');

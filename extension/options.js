@@ -1,5 +1,5 @@
 const $ = id => document.getElementById(id);
-const DEF = { token: '', repo: 'tyfactory189-sketch/kaitori-tool', times: ['11:00', '14:00', '20:00'], sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true }, startYahoo: true, sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4, skip: 'an3,an4,an5,an6' } };
+const DEF = { token: '', repo: 'tyfactory189-sketch/kaitori-tool', times: ['11:00', '14:00', '20:00'], sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true, sedori: true }, startYahoo: true, sedori: { url: 'https://docs.google.com/spreadsheets/d/1IPd1p5gbUS98Qt017o2cVC6a-RFAYqDYB_UI8zpCFzU/edit', tab: '商品管理' }, sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4, skip: 'an3,an4,an5,an6' } };
 
 (async () => {
   const { settings } = await chrome.storage.local.get('settings');
@@ -8,7 +8,7 @@ const DEF = { token: '', repo: 'tyfactory189-sketch/kaitori-tool', times: ['11:0
   $('s_wiki').checked = s.sites.wiki; $('s_variants').checked = s.sites.variants; $('s_morimori').checked = s.sites.morimori; $('s_yahoo').checked = s.sites.yahooUser;
   $('startYahoo').checked = s.startYahoo;
   const sh = { ...DEF.sheet, ...(s.sheet || {}) };
-  $('s_budget').checked = s.sites.budget !== false; $('sheetUrl').value = sh.url; $('nameCol').value = sh.nameCol; $('amtCol').value = sh.amtCol; $('startRow').value = sh.startRow; $('skipNames').value = sh.skip == null ? 'an3,an4,an5,an6' : sh.skip; $('sheetPass').value = s.sitePass || sh.pass || '';
+  $('s_budget').checked = s.sites.budget !== false; $('s_sedori').checked = s.sites.sedori !== false; $('sedoriUrl').value = ({ ...DEF.sedori, ...(s.sedori || {}) }).url; $('sheetUrl').value = sh.url; $('nameCol').value = sh.nameCol; $('amtCol').value = sh.amtCol; $('startRow').value = sh.startRow; $('skipNames').value = sh.skip == null ? 'an3,an4,an5,an6' : sh.skip; $('sheetPass').value = s.sitePass || sh.pass || '';
 })();
 
 $('save').onclick = async () => {
@@ -21,8 +21,8 @@ $('save').onclick = async () => {
   const repo = $('repo').value.trim();
   if (!/^[\w.-]+\/[\w.-]+$/.test(repo)) return msg('リポジトリは「ユーザー名/リポジトリ名」の形で入力してください', false);
   const token = $('token').value.trim();
-  const settings = { token, repo, times: [...new Set(times)].sort(), sites: { wiki: $('s_wiki').checked, variants: $('s_variants').checked, morimori: $('s_morimori').checked, yahooUser: $('s_yahoo').checked, budget: $('s_budget').checked }, startYahoo: $('startYahoo').checked,
-    sheet: { url: $('sheetUrl').value.trim(), nameCol: ($('nameCol').value.trim() || 'B').toUpperCase(), amtCol: ($('amtCol').value.trim() || 'L').toUpperCase(), startRow: Math.max(1, parseInt($('startRow').value, 10) || 4), skip: $('skipNames').value.trim() }, sitePass: $('sheetPass').value };
+  const settings = { token, repo, times: [...new Set(times)].sort(), sites: { wiki: $('s_wiki').checked, variants: $('s_variants').checked, morimori: $('s_morimori').checked, yahooUser: $('s_yahoo').checked, budget: $('s_budget').checked, sedori: $('s_sedori').checked }, startYahoo: $('startYahoo').checked,
+    sheet: { url: $('sheetUrl').value.trim(), nameCol: ($('nameCol').value.trim() || 'B').toUpperCase(), amtCol: ($('amtCol').value.trim() || 'L').toUpperCase(), startRow: Math.max(1, parseInt($('startRow').value, 10) || 4), skip: $('skipNames').value.trim() }, sitePass: $('sheetPass').value, sedori: { url: $('sedoriUrl').value.trim(), tab: '商品管理' } };
   if (settings.sitePass && settings.sitePass.length < 8) return msg('サイトのパスワードは8文字以上にしてください', false);
   await chrome.storage.local.set({ settings });
   $('times').value = settings.times.join(', ');
