@@ -1,0 +1,15 @@
+{
+ "at": "2026-11-08 14:11",
+ "has": {
+  "AMAZON_CREDENTIAL_ID": true,
+  "AMAZON_CREDENTIAL_SECRET": true,
+  "AMAZON_CREDENTIAL_VERSION": true,
+  "AMAZON_PARTNER_TAG": true
+ },
+ "version_ok": false,
+ "version_len": 4,
+ "id_looks_like_secret": false,
+ "tag_ok": false,
+ "results": [],
+ "error": "AMAZON_CREDENTIAL_VERSION が正しくありません（3.3 や 2.3 のような数字を入れてください）"
+}
