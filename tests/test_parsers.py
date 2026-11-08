@@ -267,3 +267,22 @@ def test_rakuten():
 if __name__ == "__main__":
     test_rakuten()
     print("ok test_rakuten")
+
+
+KAIKYO = '''<form action="/" data-ajax="true" id="G01_ProdutShow_searchForm" method="post"> <input type="hidden" id="g01Search" name="g01Search" /> <input type="hidden" id="g01tagNameLevel1" name="g01tagNameLevel1" value="家電買取" /> </form>
+<div class="card-body text-center py-1 px-0"> <label class="hideText mb-0 px-2 w-100" data-toggle="tooltip" data-placement="top" title="Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション" style="height:21px"> x </label> <label class="hideText mb-0 px-2 w-100" data-toggle="tooltip" data-placement="top" title="ディスプレイスタンド付き" style="height:21px"> x </label> <small class="text-muted my-1"> JAN:4902370554564 </small> <label class="hideText mb-0 px-5 w-100" data-toggle="tooltip" data-placement="top" title=""> </label> <label class="mb-0">新品</label> <label style="color:orangered" for="New_S013814" class="mb-0 text-right" id="NewPrice_S013814"> 13,000円 </label> <input type="button" id="BtnAdd_S013814" value="カートに入れる" disabled></div>
+<div class="card-body text-center py-1 px-0"> <label class="hideText mb-0 px-2 w-100" title="iPhone Duo 256GB" > x </label> <label class="mb-0">新品</label> <label id="NewPrice_S1"> 368,000円 </label> <input type="button" id="BtnAdd_S1"></div>
+<ul class="pagination my-pagination" data-pagecount="13" data-urlformat="/G01_ProdutShow/Index/__id__?kid=2&amp;bid=01&amp;fromPager=abc" id="bootstrappager"></ul>'''
+
+
+def test_kaikyo():
+    from scrapers import kaikyo
+    items = kaikyo.parse_list(KAIKYO)
+    assert items == [{"jan": "4902370554564", "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション ディスプレイスタンド付き", "price": 13000}], items
+    assert kaikyo.parse_pager(KAIKYO) == ("/G01_ProdutShow/Index/__id__?kid=2&bid=01&fromPager=abc", 13)
+    assert kaikyo.form_data(KAIKYO) == {"g01Search": "", "g01tagNameLevel1": "家電買取"}
+
+
+if __name__ == "__main__":
+    test_kaikyo()
+    print("ok test_kaikyo")

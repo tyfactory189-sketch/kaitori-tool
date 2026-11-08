@@ -58,3 +58,21 @@ class Client:
                 last_err = e
                 time.sleep(5 * (attempt + 1))
         raise RuntimeError(f"GET失敗 {url}: {last_err}")
+
+    def post(self, url: str, data=None, headers=None):
+        last_err = None
+        for attempt in range(self.retries):
+            self._wait()
+            try:
+                r = self.session.post(url, data=data, timeout=30, headers=headers, **_IMPERSONATE)
+                if r.status_code >= 400:
+                    last_err = f"HTTP {r.status_code} {r.text[:200]!r}"
+                    if r.status_code in (429, 500, 502, 503, 504):
+                        time.sleep(self.backoff * (attempt + 1))
+                        continue
+                    break
+                return r.text
+            except Exception as e:  # noqa: BLE001
+                last_err = e
+                time.sleep(5 * (attempt + 1))
+        raise RuntimeError(f"POST失敗 {url}: {last_err}")

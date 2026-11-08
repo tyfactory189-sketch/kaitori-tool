@@ -1,0 +1,31 @@
+name: 買取サイト 取得テスト
+
+on:
+  workflow_dispatch:
+    inputs:
+      source:
+        description: "買取サイトのキー（kaikyo など）"
+        default: kaikyo
+
+permissions:
+  contents: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python tools_scraper_test.py "${{ inputs.source }}"
+      - name: 結果をコミット
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/scraper_test.json
+          git commit -q -m "買取サイト 取得テスト（${{ inputs.source }}）"
+          for i in 1 2 3; do git pull -q --rebase origin main && git push -q && exit 0; sleep 5; done
