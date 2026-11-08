@@ -7,8 +7,10 @@ env = {k: os.environ.get(k, "").strip() for k in ("AMAZON_CREDENTIAL_ID", "AMAZO
 # 認証情報の中身は絶対に書き出さない（リポジトリは公開）。形式が正しいかだけ確かめる
 ver = env["AMAZON_CREDENTIAL_VERSION"]
 out = {"at": time.strftime("%Y-%m-%d %H:%M"), "has": {k: bool(v) for k, v in env.items()},
-       "version_ok": ver in amazon.TOKEN_URLS, "version_len": len(ver),
+       "version_ok": bool(__import__("re").search(r"[23]\s*[.．]\s*[123]", ver)), "version_len": len(ver),
        "id_looks_like_secret": env["AMAZON_CREDENTIAL_ID"].startswith("amzn1.oa2-cs"),
+       "version_shape": __import__("re").sub(r"[A-Za-z]", "a", __import__("re").sub(r"\d", "9", ver)),
+       "tag_shape": __import__("re").sub(r"[A-Za-z]", "a", env["AMAZON_PARTNER_TAG"])[-6:],
        "tag_ok": bool(__import__("re").fullmatch(r"[\w-]+-2[0-9]", env["AMAZON_PARTNER_TAG"])), "results": []}
 try:
     api = amazon.Creators(env["AMAZON_CREDENTIAL_ID"], env["AMAZON_CREDENTIAL_SECRET"], env["AMAZON_CREDENTIAL_VERSION"] or "3.3", env["AMAZON_PARTNER_TAG"])

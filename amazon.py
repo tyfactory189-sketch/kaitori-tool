@@ -39,7 +39,9 @@ RESOURCES = [
 
 class Creators:
     def __init__(self, cred_id: str, secret: str, version: str, partner_tag: str):
-        self.cred_id, self.secret, self.version, self.tag = cred_id, secret, (version or "3.3").strip(), partner_tag
+        m = re.search(r"([23])\s*[.．]\s*([123])", version or "")  # 「v3.3」「3.3 」なども受け付ける
+        self.cred_id, self.secret, self.tag = cred_id.strip(), secret.strip(), partner_tag.strip()
+        self.version = f"{m.group(1)}.{m.group(2)}" if m else (version or "3.3").strip()
         self.client = Client(delay=float(os.environ.get("AMAZON_DELAY", "1.2")), retries=2, backoff=10)
         self._token, self._exp = None, 0.0
 
