@@ -49,7 +49,9 @@ class Creators:
         v3 = self.version.startswith("3")
         body = {"grant_type": "client_credentials", "client_id": self.cred_id, "client_secret": self.secret,
                 "scope": "creatorsapi::default" if v3 else "creatorsapi/default"}
-        url = TOKEN_URLS.get(self.version) or TOKEN_URLS["3.3"]
+        if self.version not in TOKEN_URLS:
+            raise RuntimeError("AMAZON_CREDENTIAL_VERSION が正しくありません（3.3 や 2.3 のような数字を入れてください）")
+        url = TOKEN_URLS[self.version]
         s = self.client.session
         r = s.post(url, json=body, timeout=30) if v3 else s.post(url, data=body, timeout=30)
         if r.status_code >= 400 and v3:  # 形式違いで失敗することがあるので、もう一方も試す

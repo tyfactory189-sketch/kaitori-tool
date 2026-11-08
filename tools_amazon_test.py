@@ -4,7 +4,12 @@ from pathlib import Path
 import amazon
 
 env = {k: os.environ.get(k, "").strip() for k in ("AMAZON_CREDENTIAL_ID", "AMAZON_CREDENTIAL_SECRET", "AMAZON_CREDENTIAL_VERSION", "AMAZON_PARTNER_TAG")}
-out = {"at": time.strftime("%Y-%m-%d %H:%M"), "has": {k: bool(v) for k, v in env.items()}, "version": env["AMAZON_CREDENTIAL_VERSION"] or "(3.3)", "results": []}
+# 認証情報の中身は絶対に書き出さない（リポジトリは公開）。形式が正しいかだけ確かめる
+ver = env["AMAZON_CREDENTIAL_VERSION"]
+out = {"at": time.strftime("%Y-%m-%d %H:%M"), "has": {k: bool(v) for k, v in env.items()},
+       "version_ok": ver in amazon.TOKEN_URLS, "version_len": len(ver),
+       "id_looks_like_secret": env["AMAZON_CREDENTIAL_ID"].startswith("amzn1.oa2-cs"),
+       "tag_ok": bool(__import__("re").fullmatch(r"[\w-]+-2[0-9]", env["AMAZON_PARTNER_TAG"])), "results": []}
 try:
     api = amazon.Creators(env["AMAZON_CREDENTIAL_ID"], env["AMAZON_CREDENTIAL_SECRET"], env["AMAZON_CREDENTIAL_VERSION"] or "3.3", env["AMAZON_PARTNER_TAG"])
     api.token()
@@ -18,5 +23,9 @@ try:
         except Exception as e:  # noqa: BLE001
             out["results"].append({"jan": jan, "error": str(e)[:400]})
 except Exception as e:  # noqa: BLE001
-    out["error"] = str(e)[:500]
+    msg = str(e)
+    for v in env.values():
+        if v:
+            msg = msg.replace(v, "***")
+    out["error"] = msg[:500]
 Path("data/amazon_test.json").write_text(json.dumps(out, ensure_ascii=False, indent=1), encoding="utf-8")
