@@ -1,10 +1,10 @@
 {
  "version": "1.9.1",
- "reportedAt": "2026-11-09T10:37:53.363Z",
- "running": false,
- "text": "前回の実行は Chrome の終了で中断されました",
+ "reportedAt": "2026-11-09T10:37:58.570Z",
+ "running": true,
+ "text": "開始しました",
  "trigger": "手動",
- "startedAt": "2026-11-09T07:35:44.508Z",
+ "startedAt": "2026-11-09T10:37:58.522Z",
  "last": {
   "at": "2026-11-09T05:40:27.376Z",
   "ok": false,
@@ -57,5 +57,5 @@
   "stores": true
  },
  "next": "2026-11-09T11:00:00.000Z",
- "event": "Chrome起動"
+ "event": "開始（手動）"
 }
