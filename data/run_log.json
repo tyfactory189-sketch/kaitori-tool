@@ -1,41 +1,39 @@
 {
- "started": "2026-11-09T20:40+09:00",
+ "started": "2026-11-09T22:04+09:00",
  "amazon": {
-  "targets": 16640,
+  "targets": 16633,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 420,
-  "done": 420,
+  "targets": 380,
+  "done": 380,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 1861,
-  "done": 1627,
-  "failed": 234,
-  "errors": {
-   "HTTP 400": 234
-  },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "first_400": "85126206659: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "targets": 690,
+  "done": 690,
+  "failed": 0,
+  "errors": {},
+  "last_error": "",
+  "first_400": "",
   "stopped": "",
-  "skipped_not_due": 14831,
+  "skipped_not_due": 15994,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1833,
-  "changed": 12,
-  "failed": 1,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 874,
+  "changed": 8,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-09T21:55+09:00",
- "items": 4614
+ "finished": "2026-11-09T23:26+09:00",
+ "items": 4610
 }
