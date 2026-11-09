@@ -1,5 +1,5 @@
 {
- "started": "2026-11-10T02:37+09:00",
+ "started": "2026-11-10T03:51+09:00",
  "amazon": {
   "targets": 16633,
   "done": 0,
@@ -8,32 +8,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 561,
-  "done": 561,
+  "targets": 406,
+  "done": 406,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 1131,
-  "done": 1131,
+  "targets": 685,
+  "done": 685,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 15553,
+  "skipped_not_due": 15999,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1498,
-  "changed": 8,
-  "failed": 1,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 870,
+  "changed": 7,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-10T03:23+09:00",
+ "finished": "2026-11-10T05:14+09:00",
  "items": 4608
 }
