@@ -24,7 +24,9 @@ window.KTS_GH = (() => {
     return t;
   }
   async function api(path, opt = {}) {
+    // GET はブラウザのキャッシュを使わない（古いshaのまま保存すると「同時に更新されました」になる）
     const r = await fetch('https://api.github.com/repos/' + repo() + path, {
+      cache: 'no-store',
       ...opt,
       headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + opt.token, 'X-GitHub-Api-Version': '2022-11-28', ...(opt.body ? { 'Content-Type': 'application/json' } : {}) },
     });
@@ -95,8 +97,9 @@ window.KTS_GH = (() => {
   async function saveList(path, mutate, message) {
     const token = askToken();
     if (!token) throw new Error('合鍵が入力されなかったので保存していません。');
-    for (let attempt = 0; attempt < 3; attempt++) {
-      const cur = await api('/contents/' + path + '?ref=main', { token });
+    for (let attempt = 0; attempt < 5; attempt++) {
+      if (attempt) await new Promise(r => setTimeout(r, 1500 * attempt));
+      const cur = await api('/contents/' + path + '?ref=main&t=' + Date.now(), { token });
       let sha, items = [];
       if (cur.ok) { const j = await cur.json(); sha = j.sha; try { items = JSON.parse(b64dec(j.content)).items || []; } catch (e) { items = []; } }
       items = mutate(items);

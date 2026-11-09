@@ -324,7 +324,7 @@ const KTS = (() => {
 
   // ---------- GitHub ----------
   function gh(settings) {
-    const api = (path, opt = {}) => fetch('https://api.github.com/repos/' + settings.repo + path, {
+    const api = (path, opt = {}) => fetch('https://api.github.com/repos/' + settings.repo + path, { cache: 'no-store',
       ...opt,
       headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + settings.token, 'X-GitHub-Api-Version': '2022-11-28', ...(opt.body ? { 'Content-Type': 'application/json' } : {}) },
     });
