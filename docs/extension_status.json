@@ -1,8 +1,8 @@
 {
  "version": "1.9.1",
- "reportedAt": "2026-11-09T10:37:52.548Z",
- "running": true,
- "text": "森森買取 34/608ページ（1,546件）",
+ "reportedAt": "2026-11-09T10:37:53.363Z",
+ "running": false,
+ "text": "前回の実行は Chrome の終了で中断されました",
  "trigger": "手動",
  "startedAt": "2026-11-09T07:35:44.508Z",
  "last": {
@@ -57,5 +57,5 @@
   "stores": true
  },
  "next": "2026-11-09T11:00:00.000Z",
- "event": "インストール・更新"
+ "event": "Chrome起動"
 }
