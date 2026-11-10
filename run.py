@@ -265,6 +265,51 @@ def top_buy(rec):
 
 
 XHOT: dict = {}
+X_INDEX: dict = {}
+
+
+def post_jans(p, by_jan, idx):
+    """投稿の文章から、買取データにある商品のJANを拾う（JANそのもの、または1つに決まる型番）。"""
+    text = "\n".join([p.get("text", "")] + list(p.get("cards", [])) + list(p.get("alts", [])))
+    jans = {j if len(j) == 13 else "0" + j for j in re.findall(r"(?<!\d)(\d{13}|\d{12})(?!\d)", text)}
+    jans = {j for j in jans if j in by_jan}
+    for t in yahoo._model_tokens([text]):
+        c = idx.get(t)
+        if c and len(c) == 1:
+            jans |= c
+    return jans
+
+
+def x_candidates(by_jan):
+    """X検索の結果（data/x_search.json）から、具体的な商品を投稿している新しいアカウントの候補を作る。"""
+    raw = load(DATA / "x_search.json", {})
+    cfg = load(DATA / "x_config.json", {})
+    have = {a.lower() for a in cfg.get("accounts", [])}
+    idx = X_INDEX.get("idx") or {}
+    if not idx:
+        for jan, rec in by_jan.items():
+            for t in yahoo._model_tokens(rec.get("names", ()) or [rec.get("name", "")]):
+                idx.setdefault(t, set()).add(jan)
+    per = {}
+    for p in raw.get("posts") or []:
+        a = (p.get("author") or "").strip()
+        if not a or a.lower() in have:
+            continue
+        e = per.setdefault(a, {"a": a, "posts": 0, "hits": 0, "items": set(), "samples": [], "qs": set()})
+        if any(x.get("u") == p.get("url") for x in e["samples"]):
+            continue
+        e["posts"] += 1
+        e["qs"].add(p.get("q", ""))
+        js = post_jans(p, by_jan, idx)
+        if js:
+            e["hits"] += 1
+            e["items"] |= js
+            if len(e["samples"]) < 3:
+                e["samples"].append({"u": p.get("url", ""), "s": re.sub(r"\s+", " ", p.get("text", ""))[:100], "t": str(p.get("time", ""))[:10]})
+    out = [{"a": e["a"], "posts": e["posts"], "hits": e["hits"], "items": len(e["items"]), "samples": e["samples"], "qs": sorted(q for q in e["qs"] if q)}
+           for e in per.values() if e["hits"] >= 1]
+    out.sort(key=lambda e: (e["items"], e["hits"]), reverse=True)
+    return {"updated": raw.get("updated"), "accounts": cfg.get("accounts", []), "candidates": out[:30]}
 
 
 def load_x_hot(by_jan, days=365):
@@ -280,16 +325,11 @@ def load_x_hot(by_jan, days=365):
             idx.setdefault(t, set()).add(jan)
     cutoff = (datetime.now(JST) - timedelta(days=days)).isoformat()
     hot = {}
+    X_INDEX["idx"] = idx
     for p in posts:
         if str(p.get("time", "")) < cutoff[:19]:
             continue
-        text = "\n".join([p.get("text", "")] + list(p.get("cards", [])) + list(p.get("alts", [])))
-        jans = {j if len(j) == 13 else "0" + j for j in re.findall(r"(?<!\d)(\d{13}|\d{12})(?!\d)", text)}
-        jans = {j for j in jans if j in by_jan}
-        for t in yahoo._model_tokens([text]):
-            c = idx.get(t)
-            if c and len(c) == 1:
-                jans |= c
+        jans = post_jans(p, by_jan, idx)
         for j in jans:
             hot.setdefault(j, []).append({"a": p.get("acct", ""), "t": str(p.get("time", ""))[:16], "u": p.get("url", ""),
                                            "s": re.sub(r"\s+", " ", p.get("text", ""))[:120]})
@@ -664,7 +704,11 @@ def build(by_jan, cache, watch, rcache=None, acache=None):
         if watched:
             item["w"] = 1
         items.append(item)
-    out = {"updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated, "rakuten": RUN_LOG.get("rakuten"), "amazon": RUN_LOG.get("amazon")}
+    try:
+        xc = x_candidates(by_jan)
+    except Exception as e:  # noqa: BLE001
+        xc = {"error": str(e)[:200]}
+    out = {"x": xc, "updated": now_iso(), "sources": source_status(), "items": items, "yahoo": RUN_LOG.get("yahoo"), "yahoo_user": yu_updated, "rakuten": RUN_LOG.get("rakuten"), "amazon": RUN_LOG.get("amazon")}
     pw = os.environ.get("SITE_PASSWORD", "")
     if pw:
         # サイト全体をパスワードで保護：暗号化した data.enc.json だけを公開し、平文は消す

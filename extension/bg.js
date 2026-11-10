@@ -131,7 +131,8 @@ function scrapeTimeline(scrolls) { // ページの中で動く（chrome.scriptin
       const text = [...a.querySelectorAll('[data-testid="tweetText"]')].map(e => e.innerText).join('\n');
       const cards = [...a.querySelectorAll('[data-testid="card.wrapper"], a[href*="t.co"]')].map(e => (e.innerText || e.getAttribute('aria-label') || '').trim()).filter(Boolean);
       const alts = [...a.querySelectorAll('img[alt]')].map(i => i.alt).filter(t => t && t.length > 4 && !/^Image$|^画像$/.test(t));
-      seen.set(url, { url, time: a.querySelector('time').getAttribute('datetime'), text, cards: cards.slice(0, 4), alts: alts.slice(0, 4),
+      const au = a.querySelector('[data-testid="User-Name"] a[href^="/"]');
+      seen.set(url, { url, author: au ? au.getAttribute('href').replace(/^\//, '').split('/')[0] : '', time: a.querySelector('time').getAttribute('datetime'), text, cards: cards.slice(0, 4), alts: alts.slice(0, 4),
         pinned: /固定|Pinned/.test(a.innerText.slice(0, 40)) });
     });
     let idle = 0;
@@ -146,7 +147,9 @@ function scrapeTimeline(scrolls) { // ページの中で動く（chrome.scriptin
 }
 async function grabX() {
   const settings = await getSettings();
-  const accts = (settings.xAccounts || []).map(a => a.replace(/^@/, '').trim()).filter(Boolean);
+  // 参考アカウントは「設定画面の欄」と「GitHubの data/x_config.json（ツール画面から追加できる）」を合わせたもの
+  const cfg = (await ghRead('data/x_config.json').catch(() => null)) || {};
+  const accts = [...new Set([...(settings.xAccounts || []), ...(cfg.accounts || [])].map(a => String(a).replace(/^@/, '').trim()).filter(Boolean))];
   if (!accts.length) return null;
   const prev = (await ghRead('data/x_posts.json').catch(() => null)) || { posts: [] };
   const byUrl = new Map((prev.posts || []).map(p => [p.url, p]));
@@ -172,6 +175,24 @@ async function grabX() {
     posts.push(...[...byUrl.values()].filter(p => p.acct === acct).sort((a, b) => String(b.time).localeCompare(String(a.time))).slice(0, 2000));
   }
   await ghWrite('data/x_posts.json', { updated: new Date().toISOString(), stats, posts }, 'Xの参考アカウントの投稿を更新');
+  // 新しいアカウント探し：X検索の「最新」を読み、投稿者ごとに集める（1日1回）
+  const last = (await chrome.storage.local.get('xSearchAt')).xSearchAt || 0;
+  if ((cfg.queries || []).length && Date.now() - last > 20 * 3600e3) {
+    const found = [];
+    for (const q of cfg.queries.slice(0, 10)) {
+      let tab;
+      try {
+        tab = await chrome.tabs.create({ url: 'https://x.com/search?f=live&q=' + encodeURIComponent(q), active: false });
+        await new Promise(r => setTimeout(r, 9000));
+        const [res] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeTimeline, args: [12] });
+        ((res && res.result && res.result.posts) || []).forEach(p => found.push({ ...p, q }));
+      } catch (e) { /* 次の検索へ */ }
+      finally { if (tab) try { await chrome.tabs.remove(tab.id); } catch (e) { /* noop */ } }
+    }
+    await ghWrite('data/x_search.json', { updated: new Date().toISOString(), posts: found }, 'Xの検索結果（アカウント探し）を更新');
+    await chrome.storage.local.set({ xSearchAt: Date.now() });
+    stats._search = found.length;
+  }
   return stats;
 }
 

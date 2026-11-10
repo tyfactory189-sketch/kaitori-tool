@@ -84,6 +84,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 .budget-login{padding:16px}.budget-login form{margin-top:10px}.budget-login input{font:inherit;padding:6px 8px}
 .budget-ctl{margin-bottom:10px;padding:8px 12px;font-size:13px}.budget-ctl button{margin-right:4px}
 .chip.st{background:#0b6e4f;color:#fff;border-color:#0b6e4f;font-size:11px;padding:0 6px}
+.xcand{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}.xcand td,.xcand th{border-top:1px solid var(--line,#ddd);padding:4px 6px;text-align:left;vertical-align:top}
 .chip.xc{background:#111;color:#fff;border-color:#111;font-size:11px;padding:0 6px;text-decoration:none}
 .chip.az{background:#232f3e;color:#fff;border-color:#232f3e;font-size:11px;padding:0 6px}
 .chip.rk{background:#bf0000;color:#fff;border-color:#bf0000;font-size:11px;padding:0 6px}
@@ -389,12 +390,26 @@ function renderBudget(rows){
   $('bLogout').onclick=()=>{try{localStorage.removeItem(PASS_KEY)}catch(_){}BUDGET=null;render()};
 }
 
+// 𝕏 話題：参考アカウントと、新しいアカウントの候補
+function xPanel(){
+  const x=DATA.x||{};const acc=x.accounts||[];const cs=x.candidates||[];
+  const accHtml=acc.map(a=>`<a class="chip xc" href="https://x.com/${esc(a)}" target="_blank" rel="noopener">@${esc(a)}</a>`).join(' ');
+  const cand=cs.length?`<table class="xcand"><tr><th>候補</th><th>商品の投稿</th><th>例</th><th></th></tr>${cs.slice(0,15).map(c=>`<tr><td><a href="https://x.com/${esc(c.a)}" target="_blank" rel="noopener">@${esc(c.a)}</a></td><td>${c.items}商品 / ${c.posts}投稿</td><td class="calc">${c.samples.map(p=>`<a href="${esc(p.u)}" target="_blank" rel="noopener">${esc(p.s.slice(0,40))}</a>`).join('<br>')}</td><td><button class="xadd" data-a="${esc(c.a)}">参考に追加</button></td></tr>`).join('')}</table>`:'<div class="calc">候補はまだありません（もう1台のPCの拡張機能が1日1回Xを検索して探します）</div>';
+  return `<div class="panel" style="padding:10px 12px;margin-bottom:10px"><div><b>参考にしているアカウント</b> ${accHtml||'—'}</div><div style="margin-top:8px"><b>新しいアカウントの候補</b>（Xの検索で、買取データにある商品を投稿していた人）</div>${cand}</div>`;
+}
+async function addXAccount(a){
+  if(!confirm('@'+a+' を参考アカウントに追加しますか？（次の取得から投稿を読みます）'))return;
+  try{await KTS_GH.saveJson('data/x_config.json',o=>({...o,accounts:[...new Set([...(o.accounts||[]),a])]}),'参考アカウントを追加 @'+a);
+    DATA.x.accounts=[...(DATA.x.accounts||[]),a];DATA.x.candidates=(DATA.x.candidates||[]).filter(c=>c.a!==a);render();toast('@'+a+' を追加しました');}catch(e){toast(e.message||String(e))}
+}
+
 function render(){
   if(!DATA)return;
   const rows=compute();
   if(S.budget&&(S.market||'yahoo')==='yahoo')return renderBudget(rows); // 残高別はYahoo版だけ
   $('count').textContent=`${rows.length.toLocaleString()}件 / 全${DATA.items.length.toLocaleString()}件`;
   const L=DATA.sources;
+  const xp=S.xOnly&&DATA.x?xPanel():'';
   $('list').innerHTML=rows.length?rows.slice(0,shown).map(r=>{
     const {it,top,best}=r;
     const star=`<button class="star ${WATCH.has(it.jan)?'on':''}" data-star="${it.jan}" title="ウォッチリストに登録／解除">${WATCH.has(it.jan)?'★':'☆'}</button>`;
@@ -438,6 +453,7 @@ function render(){
         <table><tr><th>ストア</th><th>価格</th><th>クーポン</th><th>送料</th><th>ポイント</th><th>実質</th><th>差額</th></tr>${others}</table>
       </details>
     </article>`}).join(''):(S.watchOnly?'<div class="empty panel">ウォッチリストが空です。商品の☆を押すか、<a href="watch.html">ウォッチリスト管理</a>でJANを登録してください。</div>':'<div class="empty panel">条件に合う商品がありません。還元率や絞り込みを見直してください。</div>');
+  if(xp)$('list').insertAdjacentHTML('afterbegin',xp);
   $('more').hidden=rows.length<=shown;
 }
 
@@ -542,7 +558,7 @@ async function excludeItem(jan){
     toast('この商品を除外しました');
   }catch(e){toast(e.message||String(e))}
 }
-$('list').addEventListener('click',e=>{const xi=e.target.closest('.exci');if(xi){excludeItem(xi.dataset.jan);return}const ex=e.target.closest('.exc');if(ex){excludeOffer(ex.dataset.u,ex.dataset.jan);return}const st=e.target.closest('.star');if(st){toggleStar(st.dataset.star);return}const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
+$('list').addEventListener('click',e=>{const xa=e.target.closest('.xadd');if(xa){addXAccount(xa.dataset.a);return}const xi=e.target.closest('.exci');if(xi){excludeItem(xi.dataset.jan);return}const ex=e.target.closest('.exc');if(ex){excludeOffer(ex.dataset.u,ex.dataset.jan);return}const st=e.target.closest('.star');if(st){toggleStar(st.dataset.star);return}const sc=e.target.closest('.scan');if(sc){try{navigator.clipboard.writeText(sc.dataset.jan)}catch(_){}sc.textContent='JANをコピー済';setTimeout(()=>sc.textContent='買取スキャナー',1500);return}const j=e.target.closest('.jan');if(j){navigator.clipboard&&navigator.clipboard.writeText(j.dataset.jan);j.textContent='コピーしました';setTimeout(()=>j.textContent='JAN '+j.dataset.jan,1000)}});
 
 KTS_GH.loadWatch().then(w=>{WATCH=new Map(w.items.map(x=>[x.jan,x]));if(DATA)render()});
 const SKIP_ITEM=/ポケモンカード|ポケカ|pok[eé]mone?\s*cards?|ポケモン.{0,30}(?:拡張パック|ハイクラスパック|スターターデッキ|スタートデッキ|デッキビルド|プレミアムトレーナー|スペシャルBOX|カードセット|\bBOX\b)|\bsv\d+[a-z]?\s*box\b|カードゲーム|トレーディングカード|トレカ|\bTCG\b|ブースターパック|プレミアムブースター|エクストラブースター|ブースター\s*(?:BOX|ボックス)|アドバンスパック|スタートデッキ|構築済みデッキ|ONE\s*PIECE\s*CARD|ワンピースカード|遊戯王|デュエル・?マスターズ|デュエマ|ヴァイス・?シュヴァルツ|ユニオンアリーナ|UNION\s*ARENA|ドラゴンボール.{0,20}(?:ダイバーズ|ヒーローズ|フュージョンワールド|カード)|バトルスピリッツ|バトスピ|シャドウバース\s*エボルヴ|ビルディバイド|マジック[：:・]?\s*ザ[・ ]?ギャザリング|ロルカナ|ラッシュデュエル/i;

@@ -93,6 +93,24 @@ window.KTS_GH = (() => {
     throw new Error('保存に失敗しました（同時に更新されました）。もう一度お試しください。');
   }
 
+  // 任意のJSONを保存（最新を読み直して mutate で変更を重ねる）
+  async function saveJson(path, mutate, message) {
+    const token = askToken();
+    if (!token) throw new Error('合鍵が入力されなかったので保存していません。');
+    for (let attempt = 0; attempt < 5; attempt++) {
+      if (attempt) await new Promise(r => setTimeout(r, 1500 * attempt));
+      const cur = await api('/contents/' + path + '?ref=main&t=' + Date.now(), { token });
+      let sha, obj = {};
+      if (cur.ok) { const j = await cur.json(); sha = j.sha; try { obj = JSON.parse(b64dec(j.content)); } catch (e) { obj = {}; } }
+      obj = mutate(obj);
+      const r = await api('/contents/' + path, { method: 'PUT', token, body: JSON.stringify({ message, content: await b64enc(JSON.stringify(obj, null, 1)), sha, branch: 'main' }) });
+      if (r.ok) return obj;
+      if (r.status === 403 || r.status === 404) throw new Error('保存する権限がありません（HTTP ' + r.status + '）。');
+      if (r.status !== 409 && r.status !== 422) throw new Error('保存に失敗しました（HTTP ' + r.status + '）');
+    }
+    throw new Error('保存に失敗しました（同時に更新されました）。もう一度お試しください。');
+  }
+
   // 任意のリスト（{updated, items}）を保存。最新を読み直して mutate で変更を重ねる
   async function saveList(path, mutate, message) {
     const token = askToken();
@@ -144,5 +162,5 @@ window.KTS_GH = (() => {
     return out;
   }
 
-  return { repo, getToken, setToken, loadWatch, saveWatch, saveList, startYahoo, parseInput };
+  return { repo, getToken, setToken, loadWatch, saveWatch, saveList, saveJson, startYahoo, parseInput };
 })();
