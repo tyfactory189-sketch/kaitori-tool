@@ -1,39 +1,39 @@
 {
- "started": "2026-11-10T11:54+09:00",
+ "started": "2026-11-10T14:49+09:00",
  "amazon": {
-  "targets": 16633,
+  "targets": 16638,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 850,
-  "done": 850,
+  "targets": 2215,
+  "done": 2215,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 912,
-  "done": 912,
+  "targets": 2140,
+  "done": 2140,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 15772,
+  "skipped_not_due": 14549,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 952,
-  "changed": 11,
+  "checked": 2263,
+  "changed": 19,
   "failed": 2,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/best-tecc/6791089019.html: HTTP 404 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/",
+  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-10T12:31+09:00",
- "items": 4590
+ "finished": "2026-11-10T16:16+09:00",
+ "items": 4575
 }
