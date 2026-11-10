@@ -264,6 +264,42 @@ def top_buy(rec):
     return max((b["p"] for b in rec["buys"].values()), default=0)
 
 
+XHOT: dict = {}
+
+
+def load_x_hot(by_jan, days=30):
+    """Xの参考アカウントの投稿（拡張機能が data/x_posts.json に保存）から、話題の商品のJANを拾う。
+    投稿にJANが書かれていればそのまま、無ければ型番から（型番が1つのJANにだけ当てはまるとき）。"""
+    raw = load(DATA / "x_posts.json", {})
+    posts = raw.get("posts") or []
+    if not posts:
+        return {}
+    idx = {}
+    for jan, rec in by_jan.items():
+        for t in yahoo._model_tokens(rec.get("names", ()) or [rec.get("name", "")]):
+            idx.setdefault(t, set()).add(jan)
+    cutoff = (datetime.now(JST) - timedelta(days=days)).isoformat()
+    hot = {}
+    for p in posts:
+        if str(p.get("time", "")) < cutoff[:19]:
+            continue
+        text = "\n".join([p.get("text", "")] + list(p.get("cards", [])) + list(p.get("alts", [])))
+        jans = {j if len(j) == 13 else "0" + j for j in re.findall(r"(?<!\d)(\d{13}|\d{12})(?!\d)", text)}
+        jans = {j for j in jans if j in by_jan}
+        for t in yahoo._model_tokens([text]):
+            c = idx.get(t)
+            if c and len(c) == 1:
+                jans |= c
+        for j in jans:
+            hot.setdefault(j, []).append({"a": p.get("acct", ""), "t": str(p.get("time", ""))[:16], "u": p.get("url", ""),
+                                           "s": re.sub(r"\s+", " ", p.get("text", ""))[:120]})
+    for j in hot:
+        hot[j] = sorted(hot[j], key=lambda x: x["t"], reverse=True)[:3]
+    RUN_LOG["x_hot"] = {"posts": len(posts), "items": len(hot), "updated": raw.get("updated"), "stats": raw.get("stats")}
+    log(f"[x] 投稿 {len(posts)}件 → 話題の商品 {len(hot)}件")
+    return hot
+
+
 def load_watch():
     """ウォッチリスト（過去に買った商品など）。画面から docs/watchlist.json に保存される。"""
     raw = load(DOCS / "watchlist.json", {})
@@ -623,6 +659,8 @@ def build(by_jan, cache, watch, rcache=None, acache=None):
         if not offers and not watched:
             continue
         item = {"jan": jan, "name": name, "buys": rec["buys"], "offers": offers, "at": y.get("at", "") or rk.get("at", "")}
+        if jan in XHOT:
+            item["x"] = XHOT[jan]
         if watched:
             item["w"] = 1
         items.append(item)
@@ -656,6 +694,16 @@ def main():
     cache = load(DATA / "yahoo_cache.json", {})
     rcache = load(DATA / "rakuten_cache.json", {})
     watch = load_watch()
+    # Xで話題の商品も、ウォッチと同じく優先して照合する
+    global XHOT
+    try:
+        XHOT = load_x_hot(by_jan)
+    except Exception as e:  # noqa: BLE001
+        log(f"[x] 読み込みエラー: {e}")
+        XHOT = {}
+    for j, posts in XHOT.items():
+        if j not in watch:
+            watch[j] = {"jan": j, "memo": "X @" + posts[0]["a"], "n": 0, "x": 1}
     log(f"ウォッチリスト {len(watch)}件")
     # 楽天は別スレッドで同時に照合（APIの利用制限はYahooと別）
     rk_id, rk_key = os.environ.get("RAKUTEN_APP_ID", "").strip(), os.environ.get("RAKUTEN_ACCESS_KEY", "").strip()

@@ -3,8 +3,9 @@ const DEFAULT_SETTINGS = {
   token: '',
   repo: 'tyfactory189-sketch/kaitori-tool',
   times: ['11:00', '14:00', '20:00'],
-  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true, sedori: true, stores: true },
+  sites: { wiki: true, variants: true, morimori: true, yahooUser: true, budget: true, sedori: true, stores: true, x: true },
   startYahoo: true,
+  xAccounts: ['momonnusan', 'MATCHANFIRE'],
   sedori: { url: 'https://docs.google.com/spreadsheets/d/1IPd1p5gbUS98Qt017o2cVC6a-RFAYqDYB_UI8zpCFzU/edit', tab: '商品管理' },
   sheet: { url: 'https://docs.google.com/spreadsheets/d/14RAmHsswRyA3yekaeUlINFWQ7Mt8jR1GPT0jfBn1Mks/edit?gid=0#gid=0', nameCol: 'B', amtCol: 'L', startRow: 4, skip: 'an3,an4,an5,an6' },
 };
@@ -94,6 +95,78 @@ async function report(extra = {}) {
   } catch (e) { /* 報告の失敗は無視（取得そのものには影響させない） */ }
 }
 
+// ---------- X（旧Twitter）の参考アカウントの投稿を集める ----------
+// 実際のタブでプロフィールを開き、表示された投稿の文章を読む（このPCのChromeでXにログインしておく）
+async function ghWrite(path, obj, message) {
+  const settings = await getSettings();
+  const api = (p, opt = {}) => fetch('https://api.github.com/repos/' + settings.repo + p, { cache: 'no-store', ...opt,
+    headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + settings.token, 'X-GitHub-Api-Version': '2022-11-28' } });
+  const bytes = new TextEncoder().encode(JSON.stringify(obj, null, 1));
+  let bin = ''; bytes.forEach(c => { bin += String.fromCharCode(c); });
+  for (let i = 0; i < 4; i++) {
+    const cur = await api('/contents/' + path + '?ref=main&t=' + Date.now());
+    const sha = cur.ok ? (await cur.json()).sha : undefined;
+    const r = await api('/contents/' + path, { method: 'PUT', body: JSON.stringify({ message, content: btoa(bin), sha, branch: 'main' }) });
+    if (r.ok) return true;
+    await new Promise(res => setTimeout(res, 2000 * (i + 1)));
+  }
+  return false;
+}
+async function ghRead(path) {
+  const settings = await getSettings();
+  const r = await fetch('https://api.github.com/repos/' + settings.repo + '/contents/' + path + '?ref=main&t=' + Date.now(), { cache: 'no-store',
+    headers: { Accept: 'application/vnd.github+json', Authorization: 'Bearer ' + settings.token } });
+  if (!r.ok) return null;
+  const j = await r.json();
+  return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), c => c.charCodeAt(0))));
+}
+function scrapeTimeline(scrolls) { // ページの中で動く（chrome.scripting で注入）
+  return (async () => {
+    const seen = new Map();
+    const grab = () => document.querySelectorAll('article').forEach(a => {
+      const link = a.querySelector('a[href*="/status/"] time') ? a.querySelector('a[href*="/status/"] time').closest('a') : null;
+      if (!link) return;
+      const url = link.href.split('?')[0];
+      if (seen.has(url)) return;
+      const text = [...a.querySelectorAll('[data-testid="tweetText"]')].map(e => e.innerText).join('\n');
+      const cards = [...a.querySelectorAll('[data-testid="card.wrapper"], a[href*="t.co"]')].map(e => (e.innerText || e.getAttribute('aria-label') || '').trim()).filter(Boolean);
+      const alts = [...a.querySelectorAll('img[alt]')].map(i => i.alt).filter(t => t && t.length > 4 && !/^Image$|^画像$/.test(t));
+      seen.set(url, { url, time: a.querySelector('time').getAttribute('datetime'), text, cards: cards.slice(0, 4), alts: alts.slice(0, 4),
+        pinned: /固定|Pinned/.test(a.innerText.slice(0, 40)) });
+    });
+    for (let i = 0; i < scrolls; i++) { grab(); window.scrollBy(0, 2500); await new Promise(r => setTimeout(r, 1800)); }
+    grab();
+    return { posts: [...seen.values()], login: !document.querySelector('a[href="/login"]') };
+  })();
+}
+async function grabX() {
+  const settings = await getSettings();
+  const accts = (settings.xAccounts || []).map(a => a.replace(/^@/, '').trim()).filter(Boolean);
+  if (!accts.length) return null;
+  const prev = (await ghRead('data/x_posts.json').catch(() => null)) || { posts: [] };
+  const byUrl = new Map((prev.posts || []).map(p => [p.url, p]));
+  const stats = {};
+  for (const acct of accts) {
+    let tab;
+    try {
+      tab = await chrome.tabs.create({ url: 'https://x.com/' + acct, active: false });
+      await new Promise(r => setTimeout(r, 9000));
+      const [res] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeTimeline, args: [settings.xScrolls || 8] });
+      const out = (res && res.result) || { posts: [] };
+      out.posts.forEach(p => byUrl.set(p.url, { ...p, acct }));
+      stats[acct] = out.login ? out.posts.length : 'ログインが必要';
+    } catch (e) { stats[acct] = 'エラー: ' + String(e.message || e).slice(0, 80); }
+    finally { if (tab) try { await chrome.tabs.remove(tab.id); } catch (e) { /* noop */ } }
+  }
+  // アカウントごとに新しい順300件まで残す
+  const posts = [];
+  for (const acct of new Set([...byUrl.values()].map(p => p.acct))) {
+    posts.push(...[...byUrl.values()].filter(p => p.acct === acct).sort((a, b) => String(b.time).localeCompare(String(a.time))).slice(0, 300));
+  }
+  await ghWrite('data/x_posts.json', { updated: new Date().toISOString(), stats, posts }, 'Xの参考アカウントの投稿を更新');
+  return stats;
+}
+
 // ---------- ジョブ ----------
 async function ensureOffscreen() {
   if (await chrome.offscreen.hasDocument()) return;
@@ -123,6 +196,13 @@ async function startJob(trigger) {
         await chrome.tabs.remove(tab.id);
       } catch (e) { /* 失敗しても続ける */ }
     }
+  }
+  if (settings.sites.x !== false && (settings.xAccounts || []).length) {
+    try {
+      await setStatus({ running: true, startedAt: Date.now(), trigger, text: 'Xの投稿を読み込み中…', pct: 1 });
+      const xs = await grabX();
+      if (xs) await chrome.storage.local.set({ xStats: xs });
+    } catch (e) { /* Xが読めなくても本体は続ける */ }
   }
   await ensureOffscreen();
   chrome.runtime.sendMessage({ target: 'offscreen', cmd: 'run', settings });

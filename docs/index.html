@@ -84,6 +84,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 .budget-login{padding:16px}.budget-login form{margin-top:10px}.budget-login input{font:inherit;padding:6px 8px}
 .budget-ctl{margin-bottom:10px;padding:8px 12px;font-size:13px}.budget-ctl button{margin-right:4px}
 .chip.st{background:#0b6e4f;color:#fff;border-color:#0b6e4f;font-size:11px;padding:0 6px}
+.chip.xc{background:#111;color:#fff;border-color:#111;font-size:11px;padding:0 6px;text-decoration:none}
 .chip.az{background:#232f3e;color:#fff;border-color:#232f3e;font-size:11px;padding:0 6px}
 .chip.rk{background:#bf0000;color:#fff;border-color:#bf0000;font-size:11px;padding:0 6px}
 .exc{border:0;background:none;color:var(--sub);cursor:pointer;padding:0 6px 0 0;font-size:12px}
@@ -182,6 +183,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
       <button data-sort="rate">お得率順</button>
       <button data-sort="buy">買取価格順</button>
       <span class="btns" id="sizeBtns"><button data-size="all">全部</button><button data-size="normal">通常</button><button data-size="large">大型</button><button data-size="tool">電動工具</button><button data-size="car">カー用品</button></span>
+      <button class="wbtn" id="xOnly" title="Xの参考アカウントが最近取り上げた商品だけ表示">𝕏 話題</button>
       <button class="wbtn" id="watchOnly" title="ウォッチリストの商品だけ表示（差益がマイナスでも表示）">★ ウォッチのみ</button>
       <button class="wbtn" id="budgetView" title="残高シートの金額ごとに、その金額で買える利益の出る商品を表示">💴 残高別</button>
       <a href="watch.html" style="align-self:center;font-size:13px">ウォッチリスト管理</a>
@@ -227,6 +229,7 @@ function syncForm(){
   document.querySelectorAll('#sizeBtns button').forEach(b=>b.classList.toggle('on',b.dataset.size===S.size));
   document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
   $('watchOnly').classList.toggle('on',!!S.watchOnly);
+  $('xOnly').classList.toggle('on',!!S.xOnly);
   $('budgetView').classList.toggle('on',!!S.budget);
   $('budgetView').hidden=(S.market||'yahoo')!=='yahoo';
   document.querySelectorAll('#mktBtns button').forEach(b=>b.classList.toggle('on',b.dataset.mkt===(S.market||'yahoo')));
@@ -327,7 +330,7 @@ function compute(){
   const rows=[];
   const W=!!S.watchOnly;
   const pool0=W?[...WATCH.keys()].map(j=>BYJAN[j]||{jan:j,name:WATCH.get(j).memo||'（まだ照合されていません）',buys:{},offers:[],at:''}):DATA.items;
-  const pool=W?pool0:pool0.filter(it=>!EXCL_ITEM.has(mkey(it.jan,S.market)));
+  const pool=(W?pool0:pool0.filter(it=>!EXCL_ITEM.has(mkey(it.jan,S.market)))).filter(it=>!S.xOnly||(it.x&&it.x.length));
   for(const it of pool){
     const allBuys=srcs.map(k=>it.buys[k]&&{k,...it.buys[k]}).filter(Boolean);
     const buys=S.noMulti?allBuys.filter(b=>!b.m):allBuys;
@@ -400,6 +403,7 @@ function render(){
       return `<article class="item"><div></div><div>
         <div class="name">${star}${esc(it.name)}</div>
         <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
+        ${it.x&&it.x.length?`<div class="calc">${it.x.map(p=>`<a class="chip xc" href="${esc(p.u)}" target="_blank" rel="noopener" title="${esc(p.s)}">𝕏 @${esc(p.a)} ${esc(String(p.t).slice(5,10).replace('-','/'))}</a>`).join(' ')}</div>`:''}
         ${w.acct&&w.acct.length?`<div class="calc">📦 仕入れたアカウント：${w.acct.map(x=>`<span class="chip" style="font-size:11px;padding:0 6px">${esc(x)}</span>`).join(' ')}${w.last?`　最終 ${esc(w.last)}`:''}</div>`:w.memo&&w.memo!==it.name?`<div class="calc">${esc(w.memo)}</div>`:''}
         <div class="nodata">${best?`${esc(L[best.k].label)} ${yen(best.p)}`:'買取データなし'} ／ ${top?`Yahoo実質 ${yen(top.eff)}（<a href="${esc(top.o.u)}" target="_blank" rel="noopener">${esc(top.o.s)}</a>）`:it.at?'Yahooに在庫なし':'Yahoo未照合（次の照合で最優先に調べます）'}</div>
       </div><div class="profit"><div class="r">差益 —</div>
@@ -415,6 +419,7 @@ function render(){
       <div>
         <div class="name">${star}${r.lg==='large'?'<span class="chip warn" style="margin-right:6px" title="大型商品（発送費は「大型の発送費」で計算）">大型</span>':r.lg==='tool'?'<span class="chip warn" style="margin-right:6px" title="電動工具（発送費は「電動工具の発送費」で計算）">工具</span>':r.lg==='car'?'<span class="chip warn" style="margin-right:6px" title="カー用品（発送費は「カー用品の発送費」で計算）">カー</span>':''}${esc(it.name)}</div>
         <div class="jan" title="クリックでコピー" data-jan="${it.jan}">JAN ${it.jan}</div>
+        ${it.x&&it.x.length?`<div class="calc">${it.x.map(p=>`<a class="chip xc" href="${esc(p.u)}" target="_blank" rel="noopener" title="${esc(p.s)}">𝕏 @${esc(p.a)} ${esc(String(p.t).slice(5,10).replace('-','/'))}</a>`).join(' ')}</div>`:''}
         ${(()=>{const w=WATCH.get(it.jan);return w&&w.acct&&w.acct.length?`<div class="calc" title="${esc(w.memo||'')}">📦 仕入れたアカウント：${w.acct.map(a=>`<span class="chip" style="font-size:11px;padding:0 6px">${esc(a)}</span>`).join(' ')}${w.last?`　最終 ${esc(w.last)}`:''}</div>`:''})()}
         <div class="chips">${chips}</div>
         ${o.pv||o.add?`<div class="chips">${o.pv?`<span class="chip warn" title="商品ページで色・容量などを選ぶと価格が変わる出品です。JANに一致する選択肢が分からないため、高い方の価格で計算しています">仕様で価格差 ${yen(o.pv[0])}〜${yen(o.pv[1])}（高い方で計算）</span>`:''}${o.add?`<span class="chip warn" title="全ての選択肢に料金がかかるオプションの最低額を加えています">必須オプション +${yen(o.add)} 込み</span>`:''}</div>`:''}
@@ -481,6 +486,7 @@ document.addEventListener('change',e=>{if(e.target.closest('#settings'))readForm
 $('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-sort]');if(!b)return;S.sort=b.dataset.sort;store.set(S);syncForm();shown=100;render()});
 $('more').onclick=()=>{shown+=100;render()};
 $('sizeBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-size]');if(!b)return;S.size=b.dataset.size;store.set(S);syncForm();shown=100;render()});
+$('xOnly').onclick=()=>{S.xOnly=!S.xOnly;store.set(S);syncForm();shown=100;render()};
 $('watchOnly').onclick=()=>{S.watchOnly=!S.watchOnly;store.set(S);syncForm();shown=100;render()};
 $('mktBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-mkt]');if(!b)return;S.market=b.dataset.mkt;store.set(S);syncForm();shown=100;render()});
 $('budgetView').onclick=()=>{S.budget=!S.budget;store.set(S);syncForm();render()};
