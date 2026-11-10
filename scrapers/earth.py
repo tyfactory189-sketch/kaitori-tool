@@ -15,7 +15,6 @@ BASE = "https://bakusokukaitori.com"
 SOURCE = "earth"
 NEEDS_JAN_MATCH = True  # JANが無いので型番で照合する
 
-RE_ROW = re.compile(r"<tr>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>\s*<td[^>]*>\s*¥\s*<span>([\d,]+)</span>\s*</td>\s*<td[^>]*>\s*<a href=\"(/products/detail/\d+)\"", re.S)
 RE_TOTAL = re.compile(r"<span>([\d,]+)</span>\s*件\s*</span>\s*の商品が見つかりました")
 
 
@@ -23,13 +22,25 @@ def _txt(s: str) -> str:
     return re.sub(r"\s+", " ", _html.unescape(re.sub(r"<[^>]+>", " ", s))).strip()
 
 
+RE_TR = re.compile(r"<tr[^>]*>(.*?)</tr>", re.S)
+RE_TD = re.compile(r"<td[^>]*>(.*?)</td>", re.S)
+RE_HREF = re.compile(r'href="(/products/detail/\d+)"')
+
+
 def parse_list(html: str):
+    """表の1行ずつ読む（行ごとに区切るので、列の書き方が少し違っても列がずれない）。"""
     items = []
-    for maker, cat, name, price, href in RE_ROW.findall(html):
-        p = int(price.replace(",", ""))
+    table = html[html.find('class="product_list'):] if 'class="product_list' in html else html
+    for tr in RE_TR.findall(table):
+        tds = RE_TD.findall(tr)
+        href = RE_HREF.search(tr)
+        if len(tds) < 4 or not href:
+            continue
+        price = re.sub(r"[^\d]", "", _txt(tds[3]))
+        p = int(price) if price else 0
         if p <= 0:
             continue
-        items.append({"name": _txt(name), "maker": _txt(maker), "cat": _txt(cat), "price": p, "url": BASE + href})
+        items.append({"name": _txt(tds[2]), "maker": _txt(tds[0]), "cat": _txt(tds[1]), "price": p, "url": BASE + href.group(1)})
     total = RE_TOTAL.search(html)
     return items, int(total.group(1).replace(",", "")) if total else None
 
