@@ -190,11 +190,55 @@ def apply_variants(by_jan, extra_names=None):
     return fixed
 
 
+def _norm_model(t: str) -> str:
+    import unicodedata
+    return re.sub(r"[\s\-_/・]", "", unicodedata.normalize("NFKC", t or "")).upper()
+
+
+def match_by_model(by_jan):
+    """JANの無い買取サイト（爆速買取のアースなど）を、型番でJANに結び付ける。
+    他の買取サイトの商品名とYahooの出品名から「型番→JAN」の対応表を作り、
+    型番が1つのJANだけに当てはまるときだけ採用する（色違いなどで複数あれば使わない）。"""
+    idx = {}
+    ycache = load(DATA / "yahoo_cache.json", {})
+    for jan, rec in by_jan.items():
+        names = set(rec.get("names", ())) | {o.get("n", "") for o in (ycache.get(jan, {}).get("o") or [])}
+        for t in yahoo._model_tokens(names):
+            idx.setdefault(t, set()).add(jan)
+    stats = {}
+    for key, mod in SCRAPERS.items():
+        if not getattr(mod, "NEEDS_JAN_MATCH", False):
+            continue
+        items, _ = load_buyback(key)
+        hit = amb = 0
+        for it in items:
+            toks = yahoo._model_tokens([it.get("name", "")])
+            jans = set()
+            for t in toks:
+                c = idx.get(t)
+                if c and len(c) == 1:
+                    jans |= c
+            if len(jans) != 1:
+                amb += bool(jans)
+                continue
+            jan = jans.pop()
+            rec = by_jan[jan]
+            cur = rec["buys"].get(key)
+            if not cur or it["price"] > cur["p"]:
+                rec["buys"][key] = {"p": int(it["price"]), "u": it.get("url", ""), "note": "型番で照合"}
+            hit += 1
+        stats[key] = {"items": len(items), "matched": hit, "ambiguous": amb}
+    RUN_LOG["model_match"] = stats
+    return stats
+
+
 def merged_buyback():
     """JANごとに各買取サイトの価格をまとめる。"""
     by_jan = {}
     for key in SCRAPERS:
         items, _ = load_buyback(key)
+        if getattr(SCRAPERS[key], "NEEDS_JAN_MATCH", False):
+            continue  # JANの無いサイトは後で型番から照合する
         for it in items:
             jan, price = str(it.get("jan", "")), it.get("price")
             if not jan or not isinstance(price, (int, float)) or price <= 0:
@@ -208,6 +252,7 @@ def merged_buyback():
             if len(it.get("name", "")) > len(rec["name"]):
                 rec["name"] = it["name"]
             rec.setdefault("names", set()).add(it.get("name", ""))
+    match_by_model(by_jan)
     # 扱わないジャンル（ポケモンカード）は商品ごと外す（Yahooの照合もしない）
     for jan in [j for j, r in by_jan.items() if any(yahoo.SKIP_ITEM.search(n or "") for n in r.get("names", ()))]:
         del by_jan[jan]
@@ -597,7 +642,7 @@ def build(by_jan, cache, watch, rcache=None, acache=None):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--sources", default="shouten,kaikyo", help="取得する買取サイト（カンマ区切り）")
+    ap.add_argument("--sources", default="shouten,kaikyo,earth", help="取得する買取サイト（カンマ区切り）")
     ap.add_argument("--skip-buyback", action="store_true")
     ap.add_argument("--skip-yahoo", action="store_true")
     args = ap.parse_args()

@@ -306,3 +306,32 @@ def test_amazon_parse():
 if __name__ == "__main__":
     test_amazon_parse()
     print("ok test_amazon_parse")
+
+
+EARTH = '''<div class="text-center mt-2 fs-20"> <span class="bd "> <span>1,119</span> 件 </span> の商品が見つかりました。 </div>
+<table class="product_list bd fs-14 mb-4"> <tbody> <tr> <th>メーカー</th> </tr>
+<tr> <td>Amazon</td> <td> <span></span> <span>家電</span> </td> <td>Fire TV Stick 4K Select</td> <td class="text-nowrap text-right fs-20 fc-red"> ¥ <span>0</span> </td> <td class="text-center text-nowrap"> <a href="/products/detail/5785">詳しく<br>見る</a> </td> </tr>
+<tr> <td>パナソニック</td> <td> <span>家電</span> <span> / </span> <span>FAX</span> </td> <td>KX-PD750DW-N</td> <td class="text-nowrap text-right fs-20 fc-red"> ¥ <span>33,700</span> </td> <td class="text-center text-nowrap"> <a href="/products/detail/2417">詳しく<br>見る</a> </td> </tr>'''
+
+
+def test_earth():
+    from scrapers import earth
+    items, total = earth.parse_list(EARTH)
+    assert total == 1119 and items == [{"name": "KX-PD750DW-N", "maker": "パナソニック", "cat": "家電 / FAX", "price": 33700, "url": "https://bakusokukaitori.com/products/detail/2417"}], items
+
+
+def test_match_by_model():
+    import run
+    from unittest import mock
+    by = {"4549980000001": {"jan": "4549980000001", "name": "パナソニック FAX KX-PD750DW-N", "names": {"パナソニック FAX KX-PD750DW-N"}, "buys": {"wiki": {"p": 30000}}},
+          "4549980000002": {"jan": "4549980000002", "name": "パナソニック FAX KX-PD750DW-W", "names": {"パナソニック FAX KX-PD750DW-W"}, "buys": {}}}
+    earth_items = [{"name": "KX-PD750DW-N", "price": 33700, "url": "u1"}, {"name": "Fire TV Stick", "price": 3000, "url": "u2"}]
+    with mock.patch.object(run, "load_buyback", lambda k: (earth_items, None) if k == "earth" else ([], None)), mock.patch.object(run, "load", lambda p, d: {}):
+        st = run.match_by_model(by)
+    assert by["4549980000001"]["buys"]["earth"]["p"] == 33700 and "earth" not in by["4549980000002"]["buys"], by
+    assert st["earth"]["matched"] == 1
+
+
+if __name__ == "__main__":
+    test_earth(); test_match_by_model()
+    print("ok test_earth / test_match_by_model")
