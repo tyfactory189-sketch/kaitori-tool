@@ -267,7 +267,7 @@ def top_buy(rec):
 XHOT: dict = {}
 
 
-def load_x_hot(by_jan, days=30):
+def load_x_hot(by_jan, days=365):
     """Xの参考アカウントの投稿（拡張機能が data/x_posts.json に保存）から、話題の商品のJANを拾う。
     投稿にJANが書かれていればそのまま、無ければ型番から（型番が1つのJANにだけ当てはまるとき）。"""
     raw = load(DATA / "x_posts.json", {})
@@ -294,7 +294,7 @@ def load_x_hot(by_jan, days=30):
             hot.setdefault(j, []).append({"a": p.get("acct", ""), "t": str(p.get("time", ""))[:16], "u": p.get("url", ""),
                                            "s": re.sub(r"\s+", " ", p.get("text", ""))[:120]})
     for j in hot:
-        hot[j] = sorted(hot[j], key=lambda x: x["t"], reverse=True)[:3]
+        hot[j] = sorted(hot[j], key=lambda x: x["t"], reverse=True)[:5]
     RUN_LOG["x_hot"] = {"posts": len(posts), "items": len(hot), "updated": raw.get("updated"), "stats": raw.get("stats")}
     log(f"[x] 投稿 {len(posts)}件 → 話題の商品 {len(hot)}件")
     return hot

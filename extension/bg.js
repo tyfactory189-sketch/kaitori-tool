@@ -134,7 +134,12 @@ function scrapeTimeline(scrolls) { // ページの中で動く（chrome.scriptin
       seen.set(url, { url, time: a.querySelector('time').getAttribute('datetime'), text, cards: cards.slice(0, 4), alts: alts.slice(0, 4),
         pinned: /固定|Pinned/.test(a.innerText.slice(0, 40)) });
     });
-    for (let i = 0; i < scrolls; i++) { grab(); window.scrollBy(0, 2500); await new Promise(r => setTimeout(r, 1800)); }
+    let idle = 0;
+    for (let i = 0; i < scrolls && idle < 6; i++) {
+      const before = seen.size; grab(); window.scrollBy(0, 2500);
+      await new Promise(r => setTimeout(r, 1800));
+      idle = seen.size === before ? idle + 1 : 0; // 新しい投稿が出なくなったら（いちばん古いところまで来たら）終わり
+    }
     grab();
     return { posts: [...seen.values()], login: !document.querySelector('a[href="/login"]') };
   })();
@@ -151,17 +156,20 @@ async function grabX() {
     try {
       tab = await chrome.tabs.create({ url: 'https://x.com/' + acct, active: false });
       await new Promise(r => setTimeout(r, 9000));
-      const [res] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeTimeline, args: [settings.xScrolls || 8] });
+      // 初回（まだ投稿をあまり持っていないアカウント）は、過去の投稿までさかのぼって読む
+      const have = [...byUrl.values()].filter(p => p.acct === acct).length;
+      const deep = have < 100;
+      const [res] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeTimeline, args: [deep ? (settings.xDeepScrolls || 150) : (settings.xScrolls || 8)] });
       const out = (res && res.result) || { posts: [] };
       out.posts.forEach(p => byUrl.set(p.url, { ...p, acct }));
-      stats[acct] = out.login ? out.posts.length : 'ログインが必要';
+      stats[acct] = out.login ? (deep ? '初回 ' : '') + out.posts.length + '件' : 'ログインが必要';
     } catch (e) { stats[acct] = 'エラー: ' + String(e.message || e).slice(0, 80); }
     finally { if (tab) try { await chrome.tabs.remove(tab.id); } catch (e) { /* noop */ } }
   }
-  // アカウントごとに新しい順300件まで残す
+  // アカウントごとに新しい順2000件まで残す（過去の投稿のリスト用）
   const posts = [];
   for (const acct of new Set([...byUrl.values()].map(p => p.acct))) {
-    posts.push(...[...byUrl.values()].filter(p => p.acct === acct).sort((a, b) => String(b.time).localeCompare(String(a.time))).slice(0, 300));
+    posts.push(...[...byUrl.values()].filter(p => p.acct === acct).sort((a, b) => String(b.time).localeCompare(String(a.time))).slice(0, 2000));
   }
   await ghWrite('data/x_posts.json', { updated: new Date().toISOString(), stats, posts }, 'Xの参考アカウントの投稿を更新');
   return stats;
