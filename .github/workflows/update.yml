@@ -3,7 +3,7 @@ name: 価格データ更新
 on:
   schedule:
     # 日本時間 3:07 / 9:07 / 15:07 / 21:07（UTCで書く）
-    - cron: "7 0,6,12,18 * * *"
+    - cron: "7 */3 * * *"
   workflow_dispatch:
     inputs:
       skip_buyback:
@@ -53,7 +53,7 @@ jobs:
           AMAZON_CREDENTIAL_SECRET: ${{ secrets.AMAZON_CREDENTIAL_SECRET }}
           AMAZON_CREDENTIAL_VERSION: ${{ secrets.AMAZON_CREDENTIAL_VERSION }}
           AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
-          MIN_BUY: ${{ vars.MIN_BUY || '3000' }}
+          MIN_BUY: ${{ vars.MIN_BUY || '2000' }}
           YAHOO_BUDGET_MIN: ${{ vars.YAHOO_BUDGET_MIN || '300' }}
         run: |
           if [ "${{ inputs.skip_buyback }}" = "true" ]; then

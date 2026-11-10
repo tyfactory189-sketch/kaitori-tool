@@ -11,7 +11,7 @@
 
 環境変数:
   YAHOO_APPID       Yahoo!デベロッパーのClient ID（必須）
-  MIN_BUY           Yahoo照合する最低買取価格（既定 3000）
+  MIN_BUY           Yahoo照合する最低買取価格（既定 2000）
   YAHOO_BUDGET_MIN  1回の実行でYahoo照合に使う最大分数（既定 240）
 """
 import argparse
@@ -261,12 +261,14 @@ def due_hours(entry):
     Yahoo API は1日の利用回数に上限があるので、利益の見込みが薄い商品はたまにしか調べない。"""
     r = entry.get("r")
     if r is None:
-        return 24
-    if r <= 1.15:   # 実質価格が買取価格の1.15倍以内：毎回
-        return 4
-    if r <= 1.4:
-        return 24
-    return 72       # 見込みが薄い・Yahooに出品なし
+        return 12
+    if r <= 1.15:   # 実質価格が買取価格の1.15倍以内：ほぼ毎回（3時間おきの実行）
+        return 2
+    if r <= 1.3:
+        return 6
+    if r <= 1.6:
+        return 12
+    return 24       # 見込みが薄い・出品なし（それでも1日1回は見直す）
 
 
 # Yahoo API の 429（短時間にアクセスが多いと一時的に利用制限）を受けたときの待ち時間（秒）
@@ -619,7 +621,7 @@ def main():
         import threading as _th
         def _az():
             try:
-                az_box["c"] = update_amazon(by_jan, acache, (az[0], az[1], az[2] or "3.3", az[3]), int(os.environ.get("MIN_BUY", "3000")), watch)
+                az_box["c"] = update_amazon(by_jan, acache, (az[0], az[1], az[2] or "3.3", az[3]), int(os.environ.get("MIN_BUY", "2000")), watch)
             except Exception as e:  # noqa: BLE001
                 log(f"[amazon] エラー: {e}")
                 RUN_LOG["amazon"] = {"error": str(e)[:300]}
@@ -630,7 +632,7 @@ def main():
         import threading
         def _rk():
             try:
-                rk_box["c"] = update_rakuten(by_jan, rcache, rk_id, rk_key, int(os.environ.get("MIN_BUY", "3000")), watch)
+                rk_box["c"] = update_rakuten(by_jan, rcache, rk_id, rk_key, int(os.environ.get("MIN_BUY", "2000")), watch)
             except Exception as e:  # noqa: BLE001
                 log(f"[rakuten] エラー: {e}")
                 RUN_LOG["rakuten"] = {"error": str(e)[:300]}
@@ -644,7 +646,7 @@ def main():
                      "Settings → Secrets and variables → Actions に登録してください")
         cache = update_yahoo(
             by_jan, cache, appid,
-            int(os.environ.get("MIN_BUY", "3000")),
+            int(os.environ.get("MIN_BUY", "2000")),
             int(os.environ.get("YAHOO_BUDGET_MIN", "160")),
             watch,
         )

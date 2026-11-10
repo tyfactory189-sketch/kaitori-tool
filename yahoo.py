@@ -99,6 +99,19 @@ SKIP_ITEM = re.compile(r"ポケモンカード|ポケカ|pok[eé]mone?\s*cards?|
 RE_BARA = re.compile(r"バラ売り|ばら売り|(?<!す)ばらし|バラし|バラシ|分けて(?:単体|単品|販売)|(?:左|右)または(?:右|左)|左右どちらか|片方のみ|外箱(?:は|が)?(?:付属(?:でき|しませ|なし|無し)|なし|無し|ありません)|本体同梱品|同梱品(?:を|の)(?:ばら|バラ|単品)|セット(?:品)?(?:から|を)(?:取り出|ばら|バラ|分解)")
 
 
+def _int(v, default=0):
+    """数値・文字列・{"value":..}/{"price":..} などを整数にする（ページの形式違いで落ちないように）。"""
+    if isinstance(v, dict):
+        for k in ("value", "price", "amount", "fee"):
+            if k in v:
+                return _int(v[k], default)
+        return default
+    try:
+        return int(float(str(v).replace(",", ""))) if v not in (None, "") else default
+    except (TypeError, ValueError):
+        return default
+
+
 def _model_tokens(names):
     """商品名から型番らしい語（英字と数字を含む5文字以上）を取り出す。"""
     import unicodedata
@@ -130,13 +143,13 @@ def parse_item_page(html: str, jan: str, names=()):
         item = props["item"]
     except (KeyError, ValueError, TypeError):
         return None
-    base = int(item.get("applicablePrice") or 0)
+    base = _int(item.get("applicablePrice"))
     if base <= 0:
         return None
     prices, jp, jstock = [], None, None
     choices = list(_choices(item))
     for _name, price, sku, ok in choices:
-        p = int(price) if price else base
+        p = _int(price) or base
         prices.append(p)
         if sku and (sku == jan or sku.endswith(jan)):
             jp, jstock = p, ok
@@ -145,7 +158,7 @@ def parse_item_page(html: str, jan: str, names=()):
         text = _nz(" ".join(names))
         hit = [c for c in choices if all(_nz(w) in text for w in c[0].split() if w)]
         if len(hit) == 1:
-            jp = int(hit[0][1]) if hit[0][1] else base
+            jp = _int(hit[0][1]) or base
             jstock = hit[0][3]
     # 全ての選択肢に料金がかかるオプション（保証・付属品の有無など）は必ず上乗せされる
     # ただし「種類を選べる」型の選択肢で、型番からこのJANの選択肢が分かる場合はその選択肢で判断する
@@ -186,7 +199,7 @@ def _postage(pg):
     if not isinstance(pg, dict) or pg.get("fee") is None and not pg.get("isPostageFree"):
         return {}
     import unicodedata
-    out = {"sf": 0 if pg.get("isPostageFree") else int(pg.get("fee") or 0)}
+    out = {"sf": 0 if pg.get("isPostageFree") else _int(pg.get("fee"))}
     m = re.search(r"([\d,]+)\s*円以上", unicodedata.normalize("NFKC", pg.get("conditionFreeText") or ""))
     if m and out["sf"]:
         out["sfc"] = int(m.group(1).replace(",", ""))
