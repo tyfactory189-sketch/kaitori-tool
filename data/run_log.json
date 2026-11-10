@@ -1,39 +1,39 @@
 {
- "started": "2026-11-10T14:49+09:00",
+ "started": "2026-11-10T18:46+09:00",
  "amazon": {
-  "targets": 16638,
+  "targets": 16637,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 2215,
-  "done": 2215,
+  "targets": 381,
+  "done": 381,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
-  "targets": 2140,
-  "done": 2140,
+  "targets": 894,
+  "done": 894,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "",
-  "skipped_not_due": 14549,
+  "skipped_not_due": 15794,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2263,
-  "changed": 19,
-  "failed": 2,
-  "last_error": "int() argument must be a string, a bytes-like object or a real number, not 'dict'",
+  "checked": 914,
+  "changed": 7,
+  "failed": 5,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/gamedarake-store/4948872417402.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-10T16:16+09:00",
- "items": 4575
+ "finished": "2026-11-10T19:22+09:00",
+ "items": 4561
 }
