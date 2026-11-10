@@ -2,19 +2,25 @@
  {
   "jan": "0840353956209",
   "name": "Google Pixel 11 256GB SIMフリー Frost",
-  "price": 106000,
+  "price": 107000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038872511",
   "name": "OPPO A5 5G SIMフリー [ホワイト]",
-  "price": 18000,
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "6932554438258",
-  "name": "REDMI 15 5G 128GB SIMフリー [ミッドナイトブラック]",
-  "price": 20000,
+  "jan": "4986773243522",
+  "name": "Galaxy A25 5G SM-A253Q 4G+64G SIMフリー [ブラック]",
+  "price": 16500,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4942857251746",
+  "name": "arrows We3 F-52G 4G+64G docomo [ホワイト]",
+  "price": 20500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -30,27 +36,21 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "4549995560077",
-  "name": "iPad 11インチ 第11世代 Wi-Fi 128GB MD3Y4J/A [シルバー]",
-  "price": 66000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "0840353956308",
   "name": "Google Pixel 11 256GB SIMフリー Hibiscus",
-  "price": 106000,
+  "price": 107000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "0840353956254",
   "name": "Google Pixel 11 256GB SIMフリー Pistachio",
-  "price": 106000,
+  "price": 107000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "0840353955875",
   "name": "Google Pixel 11 256GB SIMフリー Obsidian",
-  "price": 106000,
+  "price": 107000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -182,7 +182,7 @@
  {
   "jan": "0840353963924",
   "name": "Google Pixel 11 Pro Fold 256GB SIMフリー Olive",
-  "price": 211000,
+  "price": 209000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -422,7 +422,7 @@
  {
   "jan": "4580038879725",
   "name": "OPPO A79 5G SIMフリー [グローグリーン]",
-  "price": 15000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -440,37 +440,37 @@
  {
   "jan": "4580038872061",
   "name": "OPPO Reno13 A SIMフリー アイスブルー",
-  "price": 30500,
+  "price": 31000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038872122",
   "name": "OPPO A5x SIMフリー [ホワイト]",
-  "price": 14000,
+  "price": 15000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038873099",
   "name": "OPPO Reno15 A 128GB SIMフリー [トワイライトネイビー]",
-  "price": 42000,
+  "price": 43000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038873082",
   "name": "OPPO Reno15 A 128GB SIMフリー [オーロラブルー]",
-  "price": 42000,
+  "price": 43000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038873204",
   "name": "OPPO Reno15 A 256GB SIMフリー [オーロラブルー]",
-  "price": 48000,
+  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038873198",
   "name": "OPPO Reno15 A 256GB SIMフリー [アフターグロウピンク]",
-  "price": 47000,
+  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -540,6 +540,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
+  "jan": "6932554438258",
+  "name": "REDMI 15 5G 128GB SIMフリー [ミッドナイトブラック]",
+  "price": 20000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
   "jan": "4550556131292",
   "name": "AQUOS wish4 SH-M27 SIMフリー [ブルー]",
   "price": 18000,
@@ -560,25 +566,25 @@
  {
   "jan": "4550556144384",
   "name": "AQUOS sense9 SH-M29 256GB SIMフリー [ブラック]",
-  "price": 45500,
+  "price": 47000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144322",
   "name": "AQUOS sense9 SH-M29 128GB SIMフリー [ブラック]",
-  "price": 40000,
+  "price": 43000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144315",
   "name": "AQUOS sense9 SH-M29 128GB SIMフリー [ホワイト]",
-  "price": 40000,
+  "price": 43000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144285",
   "name": "AQUOS sense9 SH-M29 128GB SIMフリー [ブルー]",
-  "price": 40000,
+  "price": 43000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -590,7 +596,7 @@
  {
   "jan": "4550556178846",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [フルブラック]",
-  "price": 51500,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -602,7 +608,7 @@
  {
   "jan": "4582239433652",
   "name": "moto g66j 5G SIMフリー PANTONE Black Oyster",
-  "price": 28000,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -632,12 +638,6 @@
  {
   "jan": "4986773243508",
   "name": "Galaxy A25 5G SM-A253Q 4G+64G SIMフリー [ライト ブルー]",
-  "price": 16500,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
-  "jan": "4986773243522",
-  "name": "Galaxy A25 5G SM-A253Q 4G+64G SIMフリー [ブラック]",
   "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
@@ -704,13 +704,13 @@
  {
   "jan": "4549046156198",
   "name": "REDMI 15 5G 4GB+128GB Softbank [ミッドナイトブラック]",
-  "price": 17000,
+  "price": 18000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046156204",
   "name": "REDMI 15 5G 4GB+128GB Softbank [チタングレー]",
-  "price": 17000,
+  "price": 18000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -764,19 +764,19 @@
  {
   "jan": "4941787149536",
   "name": "OPPO A5 5G 4GB+128GB au [ホワイト]",
-  "price": 18500,
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4941787149543",
   "name": "OPPO A5 5G 4GB+128GB au [グリーン]",
-  "price": 18500,
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4941787147013",
   "name": "OPPO Reno13 A 8GB+128GB アイスブルー AU",
-  "price": 26500,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1040,7 +1040,7 @@
  {
   "jan": "4942857251739",
   "name": "arrows We3 F-52G 4G+64G docomo [ブラック]",
-  "price": 20000,
+  "price": 20500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1296,6 +1296,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
+  "jan": "4549995560077",
+  "name": "iPad 11インチ 第11世代 Wi-Fi 128GB MD3Y4J/A [シルバー]",
+  "price": 66000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
   "jan": "4549995560084",
   "name": "iPad 11インチ 第11世代 Wi-Fi 128GB MD4A4J/A [ブルー]",
   "price": 66000,
@@ -1352,25 +1358,25 @@
  {
   "jan": "4580038872078",
   "name": "OPPO Reno13 A SIMフリー チャコールグレー",
-  "price": 30500,
+  "price": 31000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038872054",
   "name": "OPPO Reno13 A SIMフリー ルミナスネイビー",
-  "price": 30500,
+  "price": 31000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038872504",
   "name": "OPPO A5 5G SIMフリー [グリーン]",
-  "price": 18000,
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038872115",
   "name": "OPPO A5x SIMフリー [ブルー]",
-  "price": 14000,
+  "price": 15000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1544,79 +1550,121 @@
  {
   "jan": "6932554424527",
   "name": "Xiaomi 17T 256GB SIMフリー [ブルー]",
-  "price": 67000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554456870",
   "name": "Xiaomi 17T 256GB SIMフリー [ブラック]",
-  "price": 67000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554463847",
   "name": "Xiaomi 17T 256GB SIMフリー [バイオレット]",
-  "price": 67000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554497897",
   "name": "Xiaomi 17T Pro 256GB SIMフリー [ディープバイオレット]",
-  "price": 90000,
+  "price": 91500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554497613",
   "name": "Xiaomi 17T Pro 256GB SIMフリー [ディープブルー]",
-  "price": 90000,
+  "price": 91500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554470647",
   "name": "Xiaomi 17T Pro 256GB SIMフリー [ブラック]",
-  "price": 90000,
+  "price": 91500,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554497705",
+  "name": "Xiaomi 17T Pro 512GB SIMフリー [ディープブルー]",
+  "price": 101000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6939093046333",
   "name": "Xiaomi REDMI 17 128GB SIMフリー [オークグリーン]",
-  "price": 21000,
+  "price": 23000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6939093046296",
   "name": "Xiaomi REDMI 17 128GB SIMフリー [ロータスパープル] (SIMフリー)",
-  "price": 21000,
+  "price": 23000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6939093012307",
+  "name": "REDMI Note 17 Pro Max 5G 512GB SIMフリー [クラウドブラッシュ]",
+  "price": 61000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554422592",
+  "name": "Xiaomi 17T Pro 512GB SIMフリー [ディープバイオレット]",
+  "price": 101000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554498382",
+  "name": "Xiaomi 17T Pro 512GB SIMフリー [ブラック]",
+  "price": 101000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554423544",
+  "name": "Xiaomi 17T 512GB SIMフリー [ブルー]",
+  "price": 80000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554485092",
+  "name": "Xiaomi 17T 512GB SIMフリー [ブラック]",
+  "price": 80000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554423520",
+  "name": "Xiaomi 17T 512GB SIMフリー [バイオレット]",
+  "price": 80000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556149945",
   "name": "AQUOS sense9 SH-M29 256GB SIMフリー [グレージュ]",
-  "price": 45500,
+  "price": 47000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144353",
   "name": "AQUOS sense9 SH-M29 256GB SIMフリー [コーラル]",
-  "price": 45500,
+  "price": 47000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144377",
   "name": "AQUOS sense9 SH-M29 256GB SIMフリー [ホワイト]",
-  "price": 45500,
+  "price": 47000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144346",
   "name": "AQUOS sense9 SH-M29 256GB SIMフリー [ブルー]",
-  "price": 45500,
+  "price": 47000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556144292",
   "name": "AQUOS sense9 SH-M29 128GB SIMフリー [コーラル]",
-  "price": 40000,
+  "price": 43000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1664,67 +1712,67 @@
  {
   "jan": "4550556178822",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [ペールピンク]",
-  "price": 51500,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178853",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [ライトシルバー]",
-  "price": 51500,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178808",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [デニムネイビー]",
-  "price": 51500,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178815",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [カーキグリーン]",
-  "price": 51500,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556183444",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [ペールミント]",
-  "price": 51500,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178907",
   "name": "AQUOS sense10 SH-M33 256GB SIMフリー [フルブラック]",
-  "price": 58500,
+  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178884",
   "name": "AQUOS sense10 SH-M33 256GB SIMフリー [ペールピンク]",
-  "price": 58500,
+  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178914",
   "name": "AQUOS sense10 SH-M33 256GB SIMフリー [ライトシルバー]",
-  "price": 58500,
+  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178860",
   "name": "AQUOS sense10 SH-M33 256GB SIMフリー [デニムネイビー]",
-  "price": 58500,
+  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556178877",
   "name": "AQUOS sense10 SH-M33 256GB SIMフリー [カーキグリーン]",
-  "price": 58500,
+  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556183451",
   "name": "AQUOS sense10 SH-M33 256GB SIMフリー [ペールミント]",
-  "price": 58500,
+  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1826,13 +1874,13 @@
  {
   "jan": "4582239433621",
   "name": "moto g66j 5G SIMフリー PANTONE Gray Mist",
-  "price": 28000,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239433614",
   "name": "moto g66j 5G SIMフリー PANTONE Dill",
-  "price": 27500,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1862,13 +1910,13 @@
  {
   "jan": "4582239436882",
   "name": "moto g64 5G 8GB+128GB SIMフリー [シルバーブルー]",
-  "price": 19500,
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239436875",
   "name": "moto g64 5G 8GB+128GB 5G SIMフリー [スペースブラック]",
-  "price": 19500,
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1886,19 +1934,19 @@
  {
   "jan": "4582239433669",
   "name": "motorola edge 60 pro 12G+256G SIMフリー [シャドーグリーン]",
-  "price": 45000,
+  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239433676",
   "name": "motorola edge 60 pro 12G+256G SIMフリー [ダーズブルー]",
-  "price": 46000,
+  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239433782",
   "name": "motorola edge 60 pro 12G+256G SIMフリー [カルサイトホワイト]",
-  "price": 46000,
+  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2168,7 +2216,7 @@
  {
   "jan": "4549046156181",
   "name": "REDMI 15 5G 4GB+128GB Softbank [リップルグリーン]",
-  "price": 17000,
+  "price": 18000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2306,7 +2354,19 @@
  {
   "jan": "4941787137007",
   "name": "OPPO Reno13 A 8GB+128GB ルミナスネイビー AU",
-  "price": 26500,
+  "price": 27000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4941787156428",
+  "name": "OPPO Reno15 A 8G+128G AU [トワイライトネイビー]",
+  "price": 39000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4941787156411",
+  "name": "OPPO Reno15 A 8G+128G AU [オーロラブルー]",
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2466,15 +2526,9 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "4942857251746",
-  "name": "arrows We3 F-52G 4G+64G docomo [ホワイト]",
-  "price": 20000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "4942857251722",
   "name": "arrows We3 F-52G 4G+64G docomo [ライトブルー]",
-  "price": 20000,
+  "price": 20500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2486,37 +2540,37 @@
  {
   "jan": "4549046151926",
   "name": "OPPO Reno13 A 8GB+128GB Y!mobile アイスブルー",
-  "price": 26500,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046151919",
   "name": "OPPO Reno13 A 8GB+128GB Y!mobile チャコールグレー",
-  "price": 26500,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046151902",
   "name": "OPPO Reno13 A 8GB+128GB Y!mobile ルミナスネイビー",
-  "price": 26500,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046155917",
   "name": "OPPO A5 5G 4GB+128GB Y!mobile [ホワイト]",
-  "price": 18000,
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046155900",
   "name": "OPPO A5 5G 4GB+128GB Y!mobile [グリーン]",
-  "price": 18000,
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046158451",
   "name": "OPPO Reno15 A 8G+128G Y!mobile [トワイライトネイビー]",
-  "price": 35000,
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3230,7 +3284,13 @@
  {
   "jan": "4902370542929",
   "name": "Nintendo Switch Lite グレー",
-  "price": 26500,
+  "price": 26600,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4948872417419",
+  "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
+  "price": 50900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3254,13 +3314,13 @@
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 137000,
+  "price": 137300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
-  "price": 7200,
+  "price": 7300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3270,15 +3330,9 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "6941565969873",
-  "name": "DJI OSMO POCKET 3",
-  "price": 41000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "0850049670302",
   "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
-  "price": 37000,
+  "price": 36000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3326,7 +3380,7 @@
  {
   "jan": "4902370554205",
   "name": "Nintendo Switch Joy-Con 2 (L)/(R)  ブルー/ライトイエロー BEE-A-JACAC",
-  "price": 7800,
+  "price": 8000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3338,7 +3392,7 @@
  {
   "jan": "4902370553871",
   "name": "Nintendo Switch Joy-Con 2 (L)/(R) ライトパープル/ライトグリーン BEE-A-JABAB",
-  "price": 7800,
+  "price": 8000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3422,13 +3476,13 @@
  {
   "jan": "4902370542943",
   "name": "Nintendo Switch Lite ターコイズ",
-  "price": 26400,
+  "price": 26500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370545302",
   "name": "Nintendo Switch Lite コーラル",
-  "price": 26500,
+  "price": 26600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3522,12 +3576,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4948872417419",
-  "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 50900,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4948872850391",
   "name": "PlayStation 5 Ghost of Yoteiゴールド リミテッドエディション CFIJ-10029",
   "price": 118200,
@@ -3548,7 +3596,7 @@
  {
   "jan": "4948872416030",
   "name": "PS5 ディスクドライブ(Slimモデル用) CFI-ZDD1J",
-  "price": 9500,
+  "price": 9300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3864,6 +3912,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4549576282695",
+  "name": "XBOX Nano コントローラー",
+  "price": 6500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4549576194172",
   "name": "Xbox ワイヤレス コントローラー Starfield 限定エディション",
   "price": 9500,
@@ -3884,7 +3938,7 @@
  {
   "jan": "4549576126906",
   "name": "Xbox Elite ワイヤレス コントローラー シリーズ 2 FST-00009",
-  "price": 19100,
+  "price": 19200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3956,7 +4010,7 @@
  {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 163300,
+  "price": 163600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4010,7 +4064,7 @@
  {
   "jan": "4902370553260",
   "name": "マリオカート ワールド/Switch 2",
-  "price": 7400,
+  "price": 7500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4034,7 +4088,7 @@
  {
   "jan": "4902370553352",
   "name": "スーパー マリオパーティ ジャンボリー Edition＋ジャンボリーTV /Switch 2",
-  "price": 6500,
+  "price": 6400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4448,7 +4502,7 @@
  {
   "jan": "4547410377224",
   "name": "FUJIFILM チェキ用フィルム 10枚入 INSTAX MINI JP 1",
-  "price": 1260,
+  "price": 1250,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4586,19 +4640,19 @@
  {
   "jan": "4547410441536",
   "name": "instax SQUARE SQ1 チェキスクエア [チョークホワイト]",
-  "price": 18600,
+  "price": 18400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410441512",
   "name": "instax SQUARE SQ1 チェキスクエア [テラコッタオレンジ]",
-  "price": 18600,
+  "price": 18400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410441529",
   "name": "instax SQUARE SQ1 チェキスクエア [グレイシャーブルー]",
-  "price": 18600,
+  "price": 18400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4934,7 +4988,7 @@
  {
   "jan": "4549292119060",
   "name": "Canon PowerShot SX740 HS シルバー",
-  "price": 72500,
+  "price": 73000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4952,7 +5006,7 @@
  {
   "jan": "4549292119008",
   "name": "CANON PowerShot SX740 HS ブラック",
-  "price": 80000,
+  "price": 80500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4988,7 +5042,7 @@
  {
   "jan": "4549212303739",
   "name": "RICOH GR IIIx",
-  "price": 187300,
+  "price": 186000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5304,6 +5358,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "6941565969873",
+  "name": "DJI OSMO POCKET 3",
+  "price": 41000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "6941565969903",
   "name": "DJI OSMO POCKET 3 クリエイターコンボ",
   "price": 52000,
@@ -5360,31 +5420,31 @@
  {
   "jan": "0840353961715",
   "name": "Google Fitbit Edge GA11585-AU Satin Pyrite アルミケースアクティブ バンド Olive",
-  "price": 25000,
+  "price": 24800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353961753",
   "name": "Google Fitbit Edge GA11584-AU Silver アルミケースアクティブ バンド Fog",
-  "price": 25000,
+  "price": 24800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353961678",
   "name": "Google Fitbit Edge GA11586-AU Champagne Gold アルミケースアクティブ バンド Canyon",
-  "price": 25000,
+  "price": 24800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353961791",
   "name": "Google Fitbit Edge GA11583-AU Matte Black アルミケースアクティブ バンド Obsidian",
-  "price": 25000,
+  "price": 24800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353970458",
   "name": "Google Fitbit Air Sleepy Blue",
-  "price": 16800,
+  "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5642,19 +5702,19 @@
  {
   "jan": "4549995725049",
   "name": "AirPods 5 MKFW4J/A",
-  "price": 18500,
+  "price": 18000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995725025",
   "name": "AirPods 5 ワイヤレス充電ケース付き MKFT4J/A",
-  "price": 22500,
+  "price": 21500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995635232",
   "name": "AirPods Pro 3 MFHP4J/A",
-  "price": 33000,
+  "price": 32500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5672,31 +5732,31 @@
  {
   "jan": "4549995687149",
   "name": "AirPods Max 2 MHWK4ZA/A ミッドナイト",
-  "price": 62000,
+  "price": 63000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995687163",
   "name": "AirPods Max 2 MHWM4ZA/A ブルー",
-  "price": 62000,
+  "price": 63000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995687156",
   "name": "AirPods Max 2 MHWL4ZA/A スターライト",
-  "price": 62000,
+  "price": 63000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995687170",
   "name": "AirPods Max 2 MHWN4ZA/A オレンジ",
-  "price": 62000,
+  "price": 63000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995687187",
   "name": "AirPods Max 2 MHWP4ZA/A パープル",
-  "price": 62000,
+  "price": 63000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5822,25 +5882,25 @@
  {
   "jan": "0840414689626",
   "name": "Amazon Kindle 16GB ウベパープル 2026年発売",
-  "price": 27000,
+  "price": 25000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414601390",
   "name": "Amazon Kindle 16GB グラファイト 2026年発売",
-  "price": 27000,
+  "price": 25000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414603783",
   "name": "Amazon Kindle 32GB アルペンスカイブルー 2026年発売",
-  "price": 30000,
+  "price": 28000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414659148",
   "name": "Amazon Kindle 32GB シーグラスグリーン 2026年発売",
-  "price": 30000,
+  "price": 28000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5852,7 +5912,7 @@
  {
   "jan": "0840414617858",
   "name": "New Kindle 16GB ブラック(2024年発売)",
-  "price": 17300,
+  "price": 17000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5948,19 +6008,19 @@
  {
   "jan": "4549980975022",
   "name": "Panasonic ナノケア EH-NA0K-K [チャコールブラック]",
-  "price": 28200,
+  "price": 28000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549980975039",
   "name": "Panasonic ナノケア EH-NA0K-P [さくらピンク]",
-  "price": 28200,
+  "price": 28000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549980975046",
   "name": "Panasonic ナノケア EH-NA0K-H [ミストグレー]",
-  "price": 28200,
+  "price": 28000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5972,7 +6032,7 @@
  {
   "jan": "4550719162293",
   "name": "パナソニック ナノケア EH-NB70-P [ミスティローズ]",
-  "price": 34000,
+  "price": 33000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6002,7 +6062,7 @@
  {
   "jan": "0810037291285",
   "name": "Google TV Streamer 4K  GA05662JP",
-  "price": 12300,
+  "price": 13000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6122,7 +6182,7 @@
  {
   "jan": "4974305230492",
   "name": "象印 豪熱大火力 NW-YC10-WA [ホワイト]",
-  "price": 28000,
+  "price": 26500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -7068,12 +7128,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4548736079717",
-  "name": "SONY α7 III ILCE-7M3K ズームレンズキット",
-  "price": 185000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4548736058330",
   "name": "SONY FE 85mm F1.8 SEL85F18",
   "price": 44000,
@@ -7994,55 +8048,55 @@
  {
   "jan": "4549995737073",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJED4X/A [ライトゴールド・サンドスポーツバンド S/M]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737080",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEE4X/A [ライトゴールド・サンドスポーツバンド M/L]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737059",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEA4X/A [ブラック・ブラックスポーツバンド S/M]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737066",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEC4X/A [ブラック・ブラックスポーツバンド M/L]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737035",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJE74X/A [スペースグレイ・ネイビーブルースポーツバンド S/M]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737042",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJE94X/A [スペースグレイ・ネイビーブルースポーツバンド M/L]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737097",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEF4X/A [ダークブロンズ・オリーブスポーツバンド S/M]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737103",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEG4X/A [ダークブロンズ・オリーブスポーツバンド M/L]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737875",
   "name": "Apple Watch Series 12 GPSモデル 42mm MKDC4X/A [ダークブロンズ・ダークブロンズミラネーゼループ]",
-  "price": 60500,
+  "price": 59500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11215,8 +11269,8 @@
  },
  {
   "jan": "4974305232281",
-  "name": "象印 豪熱大火力 NW-BC10-BA [ブラック]",
-  "price": 35000,
+  "name": "象印 豪熱大火力 NW-BC10-BA ブラック",
+  "price": 34000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11624,7 +11678,7 @@
  {
   "jan": "4550719178409",
   "name": "パナソニック ラムダッシュ パームイン PRO ES-P650U-W [マーブルホワイト]",
-  "price": 43000,
+  "price": 42500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
