@@ -542,7 +542,7 @@
  {
   "jan": "6932554438258",
   "name": "REDMI 15 5G 128GB SIMフリー [ミッドナイトブラック]",
-  "price": 20000,
+  "price": 22500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -588,12 +588,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "4550556170246",
-  "name": "AQUOS R10 SH-M31 12G+256G SIMフリー [トレンチベージュ]",
-  "price": 65000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "4550556178846",
   "name": "AQUOS sense10 SH-M33 128GB SIMフリー [フルブラック]",
   "price": 52000,
@@ -602,7 +596,7 @@
  {
   "jan": "4550556201575",
   "name": "AQUOS wish6 SH-M36 SIMフリー [スミ]",
-  "price": 33000,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -650,31 +644,31 @@
  {
   "jan": "4580527850884",
   "name": "arrows We2 Plus M06 SIMフリー [シャンパンシルバー]",
-  "price": 19000,
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580527850877",
   "name": "arrows We2 Plus M06 SIMフリー [スレートグレイ]",
-  "price": 19000,
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580527850846",
   "name": "arrows We2 M07 SIMフリー [ライトオレンジ]",
-  "price": 15000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580527850839",
   "name": "arrows We2 M07 SIMフリー [ネイビーグリーン]",
-  "price": 15000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580527850822",
   "name": "arrows We2 M07 SIMフリー [ライトブルー]",
-  "price": 15000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -758,7 +752,7 @@
  {
   "jan": "4549046148025",
   "name": "arrows We2 A402FC Softbank [ミストホワイト]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -878,19 +872,19 @@
  {
   "jan": "4941787128326",
   "name": "arrows We2 FCG02 au [ライトオレンジ]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4941787128302",
   "name": "arrows We2 FCG02 au [ライトブルー]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4941787128319",
   "name": "arrows We2 FCG02 au [ネイビーグリーン]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -980,19 +974,19 @@
  {
   "jan": "4942857244205",
   "name": "AQUOS wish5 SH-52F 4G+64G docomo ミソラ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4942857244229",
   "name": "AQUOS wish5 SH-52F 4G+64G docomo ユキ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4942857244236",
   "name": "AQUOS wish5 SH-52F 4G+64G docomo スミ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1022,19 +1016,31 @@
  {
   "jan": "4942857239133",
   "name": "arrows We2 F-52E docomo [ライトオレンジ]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4942857239126",
   "name": "arrows We2 F-52E docomo [ネイビーグリーン]",
-  "price": 13000,
+  "price": 15500,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4942857239089",
+  "name": "arrows We2 Plus F-51E docomo [シャンパンシルバー]",
+  "price": 20000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4942857239072",
+  "name": "arrows We2 Plus F-51E docomo [スレートグレイ]",
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4942857239119",
   "name": "arrows We2 F-52E docomo [ライトブルー]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1076,7 +1082,7 @@
  {
   "jan": "4549046150363",
   "name": "AQUOS wish5 A502SH 4G+128G Y!mobile ミソラ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1430,121 +1436,121 @@
  {
   "jan": "6932554437244",
   "name": "Xiaomi 15 12G+256G SIMフリー [ブラック]",
-  "price": 67000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554437220",
   "name": "Xiaomi 15 12G+256G SIMフリー [ホワイト]",
-  "price": 67000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554437213",
   "name": "Xiaomi 15 12G+256G SIMフリー [グリーン]",
-  "price": 67000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554402730",
   "name": "Redmi Note 14 Pro 5G 8G+256G SIMフリー [コーラルグリーン]",
-  "price": 31000,
+  "price": 32000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6941812757734",
   "name": "Redmi Note 14 Pro 5G 8G+256G SIMフリー [ミッドナイトブラック]",
-  "price": 31000,
+  "price": 32000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554402426",
   "name": "Redmi Note 14 Pro 5G 8G+256G SIMフリー [ラベンダーパープル]",
-  "price": 31000,
+  "price": 32000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554402310",
   "name": "Redmi Note 14 Pro 5G 12G+512G SIMフリー [コーラルグリーン]",
-  "price": 35000,
+  "price": 36000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6941812757642",
   "name": "Redmi Note 14 Pro 5G 12G+512G SIMフリー [ミッドナイトブラック]",
-  "price": 35000,
+  "price": 36000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554402334",
   "name": "Redmi Note 14 Pro 5G 12G+512G SIMフリー [ラベンダーパープル]",
-  "price": 35000,
+  "price": 36000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554454265",
   "name": "REDMI 15 5G 128GB SIMフリー [チタングレー]",
-  "price": 20000,
+  "price": 22500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554454548",
   "name": "REDMI 15 5G 128GB SIMフリー [リップルグリーン]",
-  "price": 20000,
+  "price": 22500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554452902",
   "name": "REDMI 15 5G 256GB SIMフリー [ミッドナイトブラック]",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554454418",
   "name": "REDMI 15 5G 256GB SIMフリー [チタングレー]",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554454395",
   "name": "REDMI 15 5G 256GB SIMフリー [リップルグリーン]",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554442088",
   "name": "Redmi Note 15 5G 8G+256G SIMフリー [ブラック]",
-  "price": 32000,
+  "price": 34000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554441975",
   "name": "Redmi Note 15 5G 8G+256G SIMフリー [ミストパーブル]",
-  "price": 32000,
+  "price": 34000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554442040",
   "name": "Redmi Note 15 5G 8G+256G SIMフリー [グレイシャーブルー]",
-  "price": 32000,
+  "price": 34000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554471408",
   "name": "REDMI Note 15 Pro 5G 256GB SIMフリー [ブラック]",
-  "price": 38000,
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554470050",
   "name": "REDMI Note 15 Pro 5G 256GB SIMフリー [チタングレー]",
-  "price": 38000,
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "6932554470043",
   "name": "REDMI Note 15 Pro 5G 256GB SIMフリー [グレイシャーブルー]",
-  "price": 38000,
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1638,6 +1644,42 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
+  "jan": "6932554483913",
+  "name": "REDMI Note 15 5G 512GB SIMフリー [ブラック]",
+  "price": 35000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554484460",
+  "name": "REDMI Note 15 5G 512GB SIMフリー [ミストパープル]",
+  "price": 35000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554480066",
+  "name": "REDMI Note 15 5G 512GB SIMフリー [グレイシャーブルー]",
+  "price": 35000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554478490",
+  "name": "REDMI Note 15 Pro 5G 512GB SIMフリー [ブラック]",
+  "price": 43000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554485146",
+  "name": "REDMI Note 15 Pro 5G 512GB SIMフリー [チタングレー]",
+  "price": 43000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "6932554478407",
+  "name": "REDMI Note 15 Pro 5G 512GB SIMフリー [グレイシャーブルー]",
+  "price": 43000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
   "jan": "4550556149945",
   "name": "AQUOS sense9 SH-M29 256GB SIMフリー [グレージュ]",
   "price": 47000,
@@ -1670,43 +1712,31 @@
  {
   "jan": "4550556170550",
   "name": "AQUOS wish5 SH-M32 4G+128G SIMフリー ミソラ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556170574",
   "name": "AQUOS wish5 SH-M32 4G+128G SIMフリー ナデシコ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556170581",
   "name": "AQUOS wish5 SH-M32 4G+128G SIMフリー ワカバ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556170598",
   "name": "AQUOS wish5 SH-M32 4G+128G SIMフリー ユキ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556170567",
   "name": "AQUOS wish5 SH-M32 4G+128G SIMフリー スミ",
-  "price": 23000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
-  "jan": "4550556170253",
-  "name": "AQUOS R10 SH-M31 12G+256G SIMフリー [カシミヤホワイト]",
-  "price": 65000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
-  "jan": "4550556170260",
-  "name": "AQUOS R10 SH-M31 12G+256G SIMフリー [チャコールブラック]",
-  "price": 65000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1778,13 +1808,13 @@
  {
   "jan": "4550556201605",
   "name": "AQUOS wish6 SH-M36 SIMフリー [キヌ]",
-  "price": 33000,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4550556201568",
   "name": "AQUOS wish6 SH-M36 SIMフリー [ソラ]",
-  "price": 33000,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1982,25 +2012,43 @@
  {
   "jan": "4582239434253",
   "name": "moto g37j SIMフリー [PANTONE Impenetrable(インペネトラブルグレイ)]",
-  "price": 25500,
+  "price": 26000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239434260",
   "name": "moto g37j SIMフリー [PANTONE Nautical Blue(ノーティカルブルー)]",
-  "price": 25500,
+  "price": 26000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239434277",
   "name": "moto g37j SIMフリー [PANTONE Capri(カプリシアン)]",
-  "price": 25500,
+  "price": 26000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4582239434284",
   "name": "moto g37j SIMフリー [PANTONE Fuchsia Red(フューシャレッド)]",
-  "price": 25500,
+  "price": 26000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4582239434659",
+  "name": "motorola edge 70 fusion SIMフリー [PANTONE Silhouette(シルエットブラック)]",
+  "price": 55000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4582239434666",
+  "name": "motorola edge 70 fusion SIMフリー [PANTONE Country Air(カントリーエアホワイト)]",
+  "price": 55000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4582239434673",
+  "name": "motorola edge 70 fusion SIMフリー [PANTONE Orient Blue(オリエントブルー)]",
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2130,21 +2178,33 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
+  "jan": "4571537802147",
+  "name": "nubia Neo 5 GT SIMフリー [ブラック]",
+  "price": 36000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4571537802161",
+  "name": "nubia Neo 5 GT SIMフリー [シルバー]",
+  "price": 36000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
   "jan": "4580527850891",
   "name": "FCNT らくらくスマートフォン Lite MR01 SIMフリー [マゼンタ]",
-  "price": 17000,
+  "price": 14000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580527850914",
   "name": "FCNT らくらくスマートフォン Lite MR01 SIMフリー [ディープブルー]",
-  "price": 17000,
+  "price": 14000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580527850907",
   "name": "FCNT らくらくスマートフォン Lite MR01 SIMフリー [ゴールド]",
-  "price": 17000,
+  "price": 14000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2336,13 +2396,13 @@
  {
   "jan": "4549046148032",
   "name": "arrows We2 A402FC Softbank [ネイビーグリーン]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046148049",
   "name": "arrows We2 A402FC Softbank [ライトオレンジ]",
-  "price": 13000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2486,13 +2546,13 @@
  {
   "jan": "4942857244212",
   "name": "AQUOS wish5 SH-52F 4G+64G docomo ナデシコ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4942857244243",
   "name": "AQUOS wish5 SH-52F 4G+64G docomo ワカバ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2594,7 +2654,7 @@
  {
   "jan": "4549046150394",
   "name": "AQUOS wish5 A502SH 4G+128G Y!mobile スミ",
-  "price": 23000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3260,13 +3320,13 @@
  {
   "jan": "4902370554564",
   "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション ディスプレイスタンド付き",
-  "price": 13000,
+  "price": 13100,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370553024",
   "name": "Nintendo Switch 2 国内版",
-  "price": 52000,
+  "price": 52400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3290,13 +3350,13 @@
  {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
-  "price": 207200,
+  "price": 207700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0815820024170",
   "name": "Meta Quest 3 512GB",
-  "price": 92000,
+  "price": 92100,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3308,13 +3368,13 @@
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 137300,
+  "price": 137500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
-  "price": 7300,
+  "price": 7450,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3326,7 +3386,7 @@
  {
   "jan": "0850049670302",
   "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
-  "price": 36000,
+  "price": 35000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3386,7 +3446,7 @@
  {
   "jan": "4902370553871",
   "name": "Nintendo Switch Joy-Con 2 (L)/(R) ライトパープル/ライトグリーン BEE-A-JABAB",
-  "price": 8000,
+  "price": 8100,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3410,7 +3470,7 @@
  {
   "jan": "4902370548495",
   "name": "Nintendo Switch (有機ELモデル) ホワイト",
-  "price": 41800,
+  "price": 41500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3578,7 +3638,7 @@
  {
   "jan": "4948872416320",
   "name": "PlayStation 5 Pro CFI-7000B01 2TB",
-  "price": 207200,
+  "price": 207700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3590,7 +3650,7 @@
  {
   "jan": "4948872416030",
   "name": "PS5 ディスクドライブ(Slimモデル用) CFI-ZDD1J",
-  "price": 9300,
+  "price": 9400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3638,13 +3698,13 @@
  {
   "jan": "4948872017084",
   "name": "PlayStation Portal リモートプレーヤー CFIJ-18000",
-  "price": 32800,
+  "price": 32900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872017251",
   "name": "PlayStation Portal リモートプレーヤー ミッドナイト ブラック CFIJ-18001",
-  "price": 33000,
+  "price": 33200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3962,7 +4022,7 @@
  {
   "jan": "0815820025238",
   "name": "Meta Quest 3S 128GB",
-  "price": 47700,
+  "price": 47800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4094,13 +4154,13 @@
  {
   "jan": "4902370553321",
   "name": "ゼルダの伝説 ティアーズ オブ ザ キングダム/Switch 2",
-  "price": 6900,
+  "price": 7000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370553291",
   "name": "ゼルダの伝説 ブレス オブ ザ ワイルド/Switch 2",
-  "price": 6700,
+  "price": 6800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4118,13 +4178,13 @@
  {
   "jan": "4902370553413",
   "name": "ドンキーコング バナンザ /Switch 2",
-  "price": 6700,
+  "price": 6800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4988615211102",
   "name": "ゼルダ無双 封印戦記/Switch 2",
-  "price": 6700,
+  "price": 6750,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4184,7 +4244,7 @@
  {
   "jan": "4902370553611",
   "name": "スーパーマリオギャラクシー+スーパーマリオギャラクシー 2",
-  "price": 5700,
+  "price": 5600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4442,31 +4502,31 @@
  {
   "jan": "4547410564648",
   "name": "instax mini 13 キャンディピンク",
-  "price": 11200,
+  "price": 11000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410564679",
   "name": "instax mini 13 ドリーミーパープル",
-  "price": 11200,
+  "price": 11000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410564631",
   "name": "instax mini 13 フロストブルー",
-  "price": 11200,
+  "price": 11000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410564655",
   "name": "instax mini 13 ラグーングリーン",
-  "price": 11200,
+  "price": 11000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410564662",
   "name": "instax mini 13 クレイホワイト",
-  "price": 11200,
+  "price": 11000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4922,7 +4982,7 @@
  {
   "jan": "4549292137743",
   "name": "CANON PowerShot G7 X Mark III ブラック",
-  "price": 165500,
+  "price": 166000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4982,7 +5042,7 @@
  {
   "jan": "4549292119060",
   "name": "Canon PowerShot SX740 HS シルバー",
-  "price": 73000,
+  "price": 73500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5000,7 +5060,7 @@
  {
   "jan": "4549292119008",
   "name": "CANON PowerShot SX740 HS ブラック",
-  "price": 80500,
+  "price": 81000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5366,7 +5426,7 @@
  {
   "jan": "6937224133082",
   "name": "DJI OSMO POCKET 4 クリエイターコンボ",
-  "price": 74500,
+  "price": 73000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5756,7 +5816,7 @@
  {
   "jan": "4548736171763",
   "name": "SONY WF-1000XM6 BZ ブラック",
-  "price": 34000,
+  "price": 33800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5876,49 +5936,49 @@
  {
   "jan": "0840414689626",
   "name": "Amazon Kindle 16GB ウベパープル 2026年発売",
-  "price": 25000,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414601390",
   "name": "Amazon Kindle 16GB グラファイト 2026年発売",
-  "price": 25000,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414603783",
   "name": "Amazon Kindle 32GB アルペンスカイブルー 2026年発売",
-  "price": 28000,
+  "price": 27500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414659148",
   "name": "Amazon Kindle 32GB シーグラスグリーン 2026年発売",
-  "price": 28000,
+  "price": 27500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414673731",
   "name": "New Kindle 16GB マッチャ(2024年発売)",
-  "price": 17300,
+  "price": 16800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414617858",
   "name": "New Kindle 16GB ブラック(2024年発売)",
-  "price": 17000,
+  "price": 16800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840268942847",
   "name": "New Kindle Paperwhite 16GB ブラック 2024年発売",
-  "price": 24500,
+  "price": 24600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840268918132",
   "name": "New Kindle Paperwhite シグニチャーエディション 32GB メタリックジェード 2024年発売",
-  "price": 30000,
+  "price": 30200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5948,7 +6008,7 @@
  {
   "jan": "5025155106518",
   "name": "Dyson V12 Detect Slim Fluffy SV46 FF",
-  "price": 42000,
+  "price": 41000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6032,7 +6092,7 @@
  {
   "jan": "0850049670180",
   "name": "SpaceX 2534013 Starlink Standard kit V4",
-  "price": 51000,
+  "price": 50000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -8618,13 +8678,13 @@
  {
   "jan": "4549995684728",
   "name": "MHWT4J/A MacBook Pro 14.2インチ Liquid Retina XDRディスプレイ スペースブラック 16G+1TB M6",
-  "price": 288000,
+  "price": 285000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995684780",
   "name": "MHWW4J/A MacBook Pro 14.2インチ Liquid Retina XDRディスプレイ シルバー 16G+1TB M6",
-  "price": 288000,
+  "price": 285000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9434,7 +9494,7 @@
  {
   "jan": "0840268929282",
   "name": "New Kindle Paperwhite シグニチャーエディション 32GB メタリックブラック 2024年発売",
-  "price": 30000,
+  "price": 30200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11114,13 +11174,13 @@
  {
   "jan": "4904710451816",
   "name": "タイガー魔法瓶 土鍋ご泡火炊き JRT-A100-KS [墨黒]",
-  "price": 90000,
+  "price": 89000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4904710451823",
   "name": "タイガー魔法瓶 土鍋ご泡火炊き JRT-A100-WG [月白]",
-  "price": 90000,
+  "price": 89000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -12140,7 +12200,7 @@
  {
   "jan": "4974305231147",
   "name": "象印 EE-RU35-WA [ホワイト]",
-  "price": 10500,
+  "price": 9500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
