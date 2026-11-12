@@ -26,7 +26,7 @@
  {
   "jan": "4549046149268",
   "name": "nubia Flip 2 A404ZT Y!mobile ブラック",
-  "price": 21500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1154,13 +1154,13 @@
  {
   "jan": "4549046149251",
   "name": "nubia Flip 2 A404ZT Y!mobile ホワイト",
-  "price": 21500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046149275",
   "name": "nubia Flip 2 A404ZT Y!mobile ブルー",
-  "price": 21500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3320,7 +3320,7 @@
  {
   "jan": "4902370554564",
   "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション ディスプレイスタンド付き",
-  "price": 13100,
+  "price": 13300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3344,49 +3344,49 @@
  {
   "jan": "4948872417419",
   "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 50900,
+  "price": 51000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
-  "price": 207700,
+  "price": 208500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0815820025238",
+  "name": "Meta Quest 3S 128GB",
+  "price": 48300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0815820024170",
   "name": "Meta Quest 3 512GB",
-  "price": 92100,
+  "price": 92300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0814585022803",
   "name": "Steam Controller",
-  "price": 21800,
+  "price": 22000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 137500,
+  "price": 137600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
-  "price": 7450,
+  "price": 7500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410550955",
   "name": "FUJIFILM 写ルンです シンプルエース 27枚撮り 2025版",
   "price": 2580,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "0850049670302",
-  "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
-  "price": 35000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3440,7 +3440,7 @@
  {
   "jan": "4902370552744",
   "name": "Nintendo Switch Joy-Con 2 (L)/(R) ライトブルー/ライトレッド BEE-A-JAAAA",
-  "price": 7800,
+  "price": 7900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3530,7 +3530,7 @@
  {
   "jan": "4902370542943",
   "name": "Nintendo Switch Lite ターコイズ",
-  "price": 26500,
+  "price": 26600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3542,13 +3542,13 @@
  {
   "jan": "4902370542936",
   "name": "Nintendo Switch Lite イエロー",
-  "price": 26500,
+  "price": 26600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370547672",
   "name": "Nintendo Switch Lite ブルー",
-  "price": 26500,
+  "price": 26600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3638,7 +3638,7 @@
  {
   "jan": "4948872416320",
   "name": "PlayStation 5 Pro CFI-7000B01 2TB",
-  "price": 207700,
+  "price": 208500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3650,7 +3650,7 @@
  {
   "jan": "4948872416030",
   "name": "PS5 ディスクドライブ(Slimモデル用) CFI-ZDD1J",
-  "price": 9400,
+  "price": 9200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4020,12 +4020,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "0815820025238",
-  "name": "Meta Quest 3S 128GB",
-  "price": 47800,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "0815820025290",
   "name": "Meta Quest 3S 256GB",
   "price": 62300,
@@ -4064,7 +4058,7 @@
  {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 163600,
+  "price": 164000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4548,21 +4542,9 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4547410377231",
-  "name": "FUJIFILM チェキ用フィルム 20枚入 INSTAX MINI JP 2",
-  "price": 2700,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4547410377224",
   "name": "FUJIFILM チェキ用フィルム 10枚入 INSTAX MINI JP 1",
   "price": 1250,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4547410369137",
-  "name": "FUJIFILM 写ルンです シンプルエース 27枚撮り",
-  "price": 2500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6092,7 +6074,13 @@
  {
   "jan": "0850049670180",
   "name": "SpaceX 2534013 Starlink Standard kit V4",
-  "price": 50000,
+  "price": 47000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0850049670302",
+  "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
+  "price": 32000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6302,7 +6290,7 @@
  {
   "jan": "4549980885512",
   "name": "パナソニック ラムダッシュ パームイン LITE ES-P330U-H [ミストグレー]",
-  "price": 14800,
+  "price": 14000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -8943,6 +8931,12 @@
   "jan": "4981254072905",
   "name": "バッファロー AirStation WSR6500BE6P/DBK [ブラック]",
   "price": 18000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4941787132262",
+  "name": "Speed Wi-Fi DOCK 5G 01 [ブラック]",
+  "price": 8000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
