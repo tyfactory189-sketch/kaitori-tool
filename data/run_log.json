@@ -1,22 +1,23 @@
 {
- "started": "2026-11-12T07:40+09:00",
+ "started": "2026-11-12T13:02+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1838,
+   "matched": 1836,
    "ambiguous": 0
   }
  },
  "x_hot": {
-  "posts": 1193,
-  "items": 18,
-  "updated": "2026-11-11T11:02:20.725Z",
+  "posts": 1232,
+  "items": 19,
+  "updated": "2026-11-12T03:12:28.408Z",
   "stats": {
    "momonnusan": "初回 5件",
-   "MATCHANFIRE": "5件",
+   "MATCHANFIRE": "13件",
    "TKC_sedori": "初回 5件",
-   "kitagawaKeikoji": "初回 5件",
-   "mappy_fukugyo": "初回 6件"
+   "kitagawaKeikoji": "初回 2件",
+   "mappy_fukugyo": "初回 13件",
+   "sedori_osaka": "初回 4件"
   }
  },
  "amazon": {
@@ -27,32 +28,34 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 6546,
-  "done": 4218,
+  "targets": 3040,
+  "done": 3040,
   "failed": 0,
   "last_error": "",
-  "stopped": "時間切れ（残りは次回）"
+  "stopped": ""
  },
  "yahoo": {
-  "targets": 8703,
-  "done": 2488,
-  "failed": 0,
-  "errors": {},
-  "last_error": "",
-  "first_400": "",
+  "targets": 8805,
+  "done": 3974,
+  "failed": 1,
+  "errors": {
+   "HTTP 400": 1
+  },
+  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "first_400": "10458977962789: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 8533,
+  "skipped_not_due": 8431,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2232,
-  "changed": 21,
+  "checked": 1181,
+  "changed": 8,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-12T10:20+09:00",
- "items": 4654
+ "finished": "2026-11-12T15:42+09:00",
+ "items": 4656
 }
