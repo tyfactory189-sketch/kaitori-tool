@@ -1,4 +1,19 @@
 {
- "accounts": ["momonnusan", "MATCHANFIRE", "TKC_sedori", "kitagawaKeikoji", "mappy_fukugyo"],
- "queries": ["買取 利益 JAN", "買取 利益 型番", "ヤフショ 買取 利益", "楽天 買取 利益", "森森買取", "買取wiki 利益", "買取商店 利益"]
+ "accounts": [
+  "momonnusan",
+  "MATCHANFIRE",
+  "TKC_sedori",
+  "kitagawaKeikoji",
+  "mappy_fukugyo",
+  "sedori_osaka"
+ ],
+ "queries": [
+  "買取 利益 JAN",
+  "買取 利益 型番",
+  "ヤフショ 買取 利益",
+  "楽天 買取 利益",
+  "森森買取",
+  "買取wiki 利益",
+  "買取商店 利益"
+ ]
 }
