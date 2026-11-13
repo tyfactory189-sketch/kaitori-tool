@@ -20,7 +20,7 @@
  {
   "jan": "4942857251746",
   "name": "arrows We3 F-52G 4G+64G docomo [ホワイト]",
-  "price": 20500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1046,7 +1046,7 @@
  {
   "jan": "4942857251739",
   "name": "arrows We3 F-52G 4G+64G docomo [ブラック]",
-  "price": 20500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2582,7 +2582,7 @@
  {
   "jan": "4942857251722",
   "name": "arrows We3 F-52G 4G+64G docomo [ライトブルー]",
-  "price": 20500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3338,13 +3338,13 @@
  {
   "jan": "4902370542929",
   "name": "Nintendo Switch Lite グレー",
-  "price": 26600,
+  "price": 26700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872417419",
   "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 51000,
+  "price": 51200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3360,21 +3360,21 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "0815820024170",
-  "name": "Meta Quest 3 512GB",
-  "price": 92300,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 137600,
+  "price": 137800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
   "price": 7500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4902370553291",
+  "name": "ゼルダの伝説 ブレス オブ ザ ワイルド/Switch 2",
+  "price": 6800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3428,7 +3428,7 @@
  {
   "jan": "4902370554205",
   "name": "Nintendo Switch Joy-Con 2 (L)/(R)  ブルー/ライトイエロー BEE-A-JACAC",
-  "price": 8000,
+  "price": 8100,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3524,25 +3524,25 @@
  {
   "jan": "4902370542943",
   "name": "Nintendo Switch Lite ターコイズ",
-  "price": 26600,
+  "price": 26700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370545302",
   "name": "Nintendo Switch Lite コーラル",
-  "price": 26600,
+  "price": 26700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370542936",
   "name": "Nintendo Switch Lite イエロー",
-  "price": 26600,
+  "price": 26700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370547672",
   "name": "Nintendo Switch Lite ブルー",
-  "price": 26600,
+  "price": 26700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4020,6 +4020,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "0815820024170",
+  "name": "Meta Quest 3 512GB",
+  "price": 92300,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "0814585023510",
   "name": "Steam Machine 512GB",
   "price": 160000,
@@ -4046,7 +4052,7 @@
  {
   "jan": "0814585022803",
   "name": "Steam Controller",
-  "price": 22000,
+  "price": 22200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4058,7 +4064,7 @@
  {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 164000,
+  "price": 164200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4094,7 +4100,7 @@
  {
   "jan": "4902370554472",
   "name": "ファイアーエムブレム 万紫千紅/Switch 2",
-  "price": 7800,
+  "price": 7900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4118,7 +4124,7 @@
  {
   "jan": "4521329460420",
   "name": "ぽこ あ ポケモン/Switch 2",
-  "price": 6800,
+  "price": 6900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4136,25 +4142,19 @@
  {
   "jan": "4902370553352",
   "name": "スーパー マリオパーティ ジャンボリー Edition＋ジャンボリーTV /Switch 2",
-  "price": 6400,
+  "price": 6500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370554113",
   "name": "スーパーマリオブラザーズ ワンダー Nintendo Switch 2 Edition + みんなでリンリンパーク /Switch 2",
-  "price": 6300,
+  "price": 6400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370553321",
   "name": "ゼルダの伝説 ティアーズ オブ ザ キングダム/Switch 2",
   "price": 7000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370553291",
-  "name": "ゼルダの伝説 ブレス オブ ザ ワイルド/Switch 2",
-  "price": 6800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4184,7 +4184,7 @@
  {
   "jan": "4902370553901",
   "name": "あつまれ どうぶつの森 /Switch 2",
-  "price": 5400,
+  "price": 5500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4485,6 +4485,24 @@
   "jan": "4948872017305",
   "name": "Ghost of Yotei/PS5",
   "price": 6100,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4547410581881",
+  "name": "instax SQUARE 2 チェキ ミスティホワイト",
+  "price": 13000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4547410581911",
+  "name": "instax SQUARE 2 チェキ ブリックレッド",
+  "price": 13000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4547410581942",
+  "name": "instax SQUARE 2 チェキ スレートブルー",
+  "price": 13000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6068,19 +6086,19 @@
  {
   "jan": "4550719162293",
   "name": "パナソニック ナノケア EH-NB70-P [ミスティローズ]",
-  "price": 33000,
+  "price": 29000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0850049670180",
   "name": "SpaceX 2534013 Starlink Standard kit V4",
-  "price": 44000,
+  "price": 42000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0850049670302",
   "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
-  "price": 31000,
+  "price": 30000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10364,13 +10382,13 @@
  {
   "jan": "4550719162286",
   "name": "パナソニック ナノケア EH-NB70-K [アンバーブラック]",
-  "price": 33000,
+  "price": 29000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4550719162279",
   "name": "パナソニック ナノケア EH-NB70-E [シアーベージュ]",
-  "price": 33000,
+  "price": 29000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
