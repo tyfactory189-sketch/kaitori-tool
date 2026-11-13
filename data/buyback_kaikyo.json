@@ -32,7 +32,7 @@
  {
   "jan": "4549995695557",
   "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 128GB MJ6J4J/A スターライト",
-  "price": 103000,
+  "price": 105000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1226,7 +1226,7 @@
  {
   "jan": "4549995662009",
   "name": "iPad Air 11インチ Wi-Fi 128GB 第8世代 MH314J/A ブルー",
-  "price": 98000,
+  "price": 102000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2780,43 +2780,43 @@
  {
   "jan": "4549995661996",
   "name": "iPad Air 11インチ Wi-Fi 128GB 第8世代 MH304J/A スペースグレイ",
-  "price": 98000,
+  "price": 102000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995662016",
   "name": "iPad Air 11インチ Wi-Fi 128GB 第8世代 MH334J/A スターライト",
-  "price": 98000,
+  "price": 102000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995662023",
   "name": "iPad Air 11インチ Wi-Fi 128GB 第8世代 MH344J/A パープル",
-  "price": 98000,
+  "price": 102000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995662047",
   "name": "iPad Air 11インチ Wi-Fi 256GB 第8世代 MH364J/A ブルー",
-  "price": 111000,
+  "price": 115000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995662030",
   "name": "iPad Air 11インチ Wi-Fi 256GB 第8世代 MH354J/A スペースグレイ",
-  "price": 111000,
+  "price": 115000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995662054",
   "name": "iPad Air 11インチ Wi-Fi 256GB 第8世代 MH374J/A スターライト",
-  "price": 111000,
+  "price": 115000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995662061",
   "name": "iPad Air 11インチ Wi-Fi 256GB 第8世代 MH394J/A パープル",
-  "price": 111000,
+  "price": 115000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2912,19 +2912,19 @@
  {
   "jan": "4549995695540",
   "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 128GB MJ6F4J/A ミッドナイト",
-  "price": 103000,
+  "price": 105000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995695588",
   "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 256GB MJ6Q4J/A ミッドナイト",
-  "price": 110000,
+  "price": 115000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549995695595",
   "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 256GB MJ6R4J/A スターライト",
-  "price": 110000,
+  "price": 115000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3363,12 +3363,6 @@
   "jan": "0815820024170",
   "name": "Meta Quest 3 512GB",
   "price": 92300,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "0814585022803",
-  "name": "Steam Controller",
-  "price": 22000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4047,6 +4041,12 @@
   "jan": "0814585023527",
   "name": "Steam Machine 2TB + Steam Controller",
   "price": 280000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0814585022803",
+  "name": "Steam Controller",
+  "price": 22000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4970,7 +4970,7 @@
  {
   "jan": "4549292137804",
   "name": "CANON PowerShot G7 X Mark III シルバー",
-  "price": 149500,
+  "price": 150000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5942,13 +5942,13 @@
  {
   "jan": "0840414673731",
   "name": "New Kindle 16GB マッチャ(2024年発売)",
-  "price": 16800,
+  "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414617858",
   "name": "New Kindle 16GB ブラック(2024年発売)",
-  "price": 16800,
+  "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6074,13 +6074,13 @@
  {
   "jan": "0850049670180",
   "name": "SpaceX 2534013 Starlink Standard kit V4",
-  "price": 47000,
+  "price": 44000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0850049670302",
   "name": "SpaceX 02535001 Starlink Mini WiFiルーター内蔵 スターリンクミニ",
-  "price": 32000,
+  "price": 31000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
