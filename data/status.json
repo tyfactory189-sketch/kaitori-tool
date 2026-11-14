@@ -3,8 +3,8 @@
   "error": "2026-10-23T06:28+09:00 GET失敗 https://kadenkaitori.tokyo/category/: HTTP Error 403: "
  },
  "shouten": {
-  "count": 2625,
-  "updated": "2026-11-14T14:09+09:00",
+  "count": 2626,
+  "updated": "2026-11-14T19:30+09:00",
   "error": ""
  },
  "morimori": {
@@ -12,12 +12,12 @@
  },
  "kaikyo": {
   "count": 2184,
-  "updated": "2026-11-14T08:49+09:00",
-  "error": "2026-11-14T14:11+09:00 GET失敗 https://www.mobile-ichiban.com/Prod/1: Failed to perform, curl: (28) Connection timed out after 30001 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details."
+  "updated": "2026-11-14T19:32+09:00",
+  "error": ""
  },
  "earth": {
   "count": 5485,
-  "updated": "2026-11-14T14:16+09:00",
+  "updated": "2026-11-14T19:38+09:00",
   "error": ""
  }
 }
