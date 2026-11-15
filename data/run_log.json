@@ -1,9 +1,9 @@
 {
- "started": "2026-11-15T05:20+09:00",
+ "started": "2026-11-15T10:42+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1837,
+   "matched": 1835,
    "ambiguous": 0
   }
  },
@@ -28,32 +28,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 1473,
-  "done": 1473,
+  "targets": 2667,
+  "done": 2667,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2484,
+  "done": 2481,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 6694,
+  "skipped_not_due": 6583,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2364,
-  "changed": 17,
-  "failed": 1,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/tss/eb-1795f.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/shp_shar",
+  "checked": 3056,
+  "changed": 26,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-15T08:00+09:00",
- "items": 4721
+ "finished": "2026-11-15T13:22+09:00",
+ "items": 4717
 }
