@@ -1,18 +1,18 @@
 {
- "started": "2026-11-15T18:46+09:00",
+ "started": "2026-11-16T00:07+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1835,
+   "matched": 1836,
    "ambiguous": 0
   }
  },
  "x_hot": {
-  "posts": 1302,
-  "items": 22,
-  "updated": "2026-11-15T05:02:43.809Z",
+  "posts": 1313,
+  "items": 24,
+  "updated": "2026-11-15T11:02:45.060Z",
   "stats": {
-   "momonnusan": "初回 4件",
+   "momonnusan": "初回 5件",
    "MATCHANFIRE": "5件",
    "TKC_sedori": "初回 5件",
    "kitagawaKeikoji": "初回 5件",
@@ -21,39 +21,39 @@
   }
  },
  "amazon": {
-  "targets": 17203,
+  "targets": 17204,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 5189,
-  "done": 4230,
+  "targets": 9643,
+  "done": 4149,
   "failed": 0,
   "last_error": "",
   "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2488,
+  "done": 2474,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 5965,
+  "skipped_not_due": 5898,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2664,
-  "changed": 21,
+  "checked": 2623,
+  "changed": 17,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-15T21:26+09:00",
- "items": 4728
+ "finished": "2026-11-16T02:47+09:00",
+ "items": 4717
 }
