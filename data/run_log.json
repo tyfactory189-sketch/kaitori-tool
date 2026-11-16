@@ -1,5 +1,5 @@
 {
- "started": "2026-11-16T10:50+09:00",
+ "started": "2026-11-16T16:12+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
@@ -8,9 +8,9 @@
   }
  },
  "x_hot": {
-  "posts": 1313,
-  "items": 24,
-  "updated": "2026-11-15T11:02:45.060Z",
+  "posts": 1328,
+  "items": 25,
+  "updated": "2026-11-16T05:02:43.893Z",
   "stats": {
    "momonnusan": "初回 5件",
    "MATCHANFIRE": "5件",
@@ -28,32 +28,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 1330,
-  "done": 1330,
+  "targets": 2783,
+  "done": 2783,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2482,
+  "done": 3984,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 4636,
+  "skipped_not_due": 6083,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2835,
-  "changed": 18,
+  "checked": 1892,
+  "changed": 10,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-16T13:30+09:00",
- "items": 4653
+ "finished": "2026-11-16T18:52+09:00",
+ "items": 4623
 }
