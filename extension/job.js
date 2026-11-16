@@ -640,7 +640,7 @@ const KTS = (() => {
         } else notes.push('ウォッチ 変更なし');
       } catch (e) { notes.push('せどり管理シート 失敗：' + e.message); }
     }
-    if (sites.stores !== false) {
+    if (sites.stores !== false && !settings.storesInTab) {
       try {
         progress('家電量販店の価格を確認中…', 99);
         const wl = await g.readJson('docs/watchlist.json').catch(() => null);

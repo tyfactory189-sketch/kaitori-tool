@@ -120,6 +120,20 @@ async function ghRead(path) {
   const j = await r.json();
   return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g, '')), c => c.charCodeAt(0))));
 }
+// 別ウィンドウ（前面に出さない）で開く：裏のタブだとXが続きを読み込まないため
+async function openWorkTab(url) {
+  try {
+    const w = await chrome.windows.create({ url, focused: false, width: 1200, height: 900, type: 'normal' });
+    return { id: w.tabs[0].id, windowId: w.id };
+  } catch (e) {
+    const t = await chrome.tabs.create({ url, active: false });
+    return { id: t.id };
+  }
+}
+async function closeWorkTab(t) {
+  if (!t) return;
+  try { if (t.windowId) await chrome.windows.remove(t.windowId); else await chrome.tabs.remove(t.id); } catch (e) { /* noop */ }
+}
 function scrapeTimeline(scrolls) { // ページの中で動く（chrome.scripting で注入）
   return (async () => {
     const seen = new Map();
@@ -157,7 +171,7 @@ async function grabX() {
   for (const acct of accts) {
     let tab;
     try {
-      tab = await chrome.tabs.create({ url: 'https://x.com/' + acct, active: false });
+      tab = await openWorkTab('https://x.com/' + acct);
       await new Promise(r => setTimeout(r, 9000));
       // 初回（まだ投稿をあまり持っていないアカウント）は、過去の投稿までさかのぼって読む
       const have = [...byUrl.values()].filter(p => p.acct === acct).length;
@@ -167,7 +181,7 @@ async function grabX() {
       out.posts.forEach(p => byUrl.set(p.url, { ...p, acct }));
       stats[acct] = out.login ? (deep ? '初回 ' : '') + out.posts.length + '件' : 'ログインが必要';
     } catch (e) { stats[acct] = 'エラー: ' + String(e.message || e).slice(0, 80); }
-    finally { if (tab) try { await chrome.tabs.remove(tab.id); } catch (e) { /* noop */ } }
+    finally { await closeWorkTab(tab); }
   }
   // アカウントごとに新しい順2000件まで残す（過去の投稿のリスト用）
   const posts = [];
@@ -182,17 +196,103 @@ async function grabX() {
     for (const q of cfg.queries.slice(0, 10)) {
       let tab;
       try {
-        tab = await chrome.tabs.create({ url: 'https://x.com/search?f=live&q=' + encodeURIComponent(q), active: false });
+        tab = await openWorkTab('https://x.com/search?f=live&q=' + encodeURIComponent(q));
         await new Promise(r => setTimeout(r, 9000));
         const [res] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: scrapeTimeline, args: [12] });
         ((res && res.result && res.result.posts) || []).forEach(p => found.push({ ...p, q }));
       } catch (e) { /* 次の検索へ */ }
-      finally { if (tab) try { await chrome.tabs.remove(tab.id); } catch (e) { /* noop */ } }
+      finally { await closeWorkTab(tab); }
     }
     await ghWrite('data/x_search.json', { updated: new Date().toISOString(), posts: found }, 'Xの検索結果（アカウント探し）を更新');
     await chrome.storage.local.set({ xSearchAt: Date.now() });
     stats._search = found.length;
   }
+  return stats;
+}
+
+// ---------- 家電量販店：実際のタブを開き、そのページの中で検索する（ボット対策の確認を通ったまま読める） ----------
+function storeLookup(st, list, delay) { // ページの中で動く
+  return (async () => {
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const toNum = t => parseInt(String(t || '').replace(/[^\d]/g, ''), 10) || 0;
+    const SOLD = /在庫なし|売り切れ|完売|販売終了|販売を終了|取り扱い終了|入荷待ち/;
+    const sj = async u => { const r = await fetch(u, { cache: 'no-store' }); if (r.status === 202 || r.status === 403) throw new Error('blocked ' + r.status); return new TextDecoder('shift_jis').decode(await r.arrayBuffer()); };
+    const tx = async u => { const r = await fetch(u, { cache: 'no-store' }); if (r.status === 202 || r.status === 403) throw new Error('blocked ' + r.status); return r.text(); };
+    const nz = x => String(x || '').normalize('NFKC').replace(/[\s\-\/]/g, '').toUpperCase();
+    const out = {}; let blocked = 0;
+    for (const { jan, toks, bicId } of list) {
+      try {
+        let r = null;
+        if (st === 'kojima') {
+          const doc = new DOMParser().parseFromString(await tx(`/ec/prod_list.html?keyword=${jan}`), 'text/html');
+          const li = [...doc.querySelectorAll('li[mk2pcode]')].find(x => x.getAttribute('mk2pcode') === jan);
+          if (li) { const t = li.textContent; const a = li.querySelector('a[href*="prod_detail"]');
+            r = { p: toNum(li.getAttribute('mk2price')), pt: toNum((li.querySelector('.point .number') || {}).textContent), ng: SOLD.test(t) ? '在庫なし' : '', n: li.getAttribute('mk2pname') || '', u: location.origin + (a ? a.getAttribute('href') : '') }; }
+        } else if (st === 'nojima') {
+          const doc = new DOMParser().parseFromString(await tx(`/app/catalog/list/init?searchWord=${jan}`), 'text/html');
+          const li = [...doc.querySelectorAll('.commoditylistitem li')].find(x => x.querySelector(`a[href^="/commodity/1/${jan}/"]`));
+          if (li) { const t = li.textContent; const pr = li.querySelector('.price');
+            r = { p: toNum(pr && pr.firstChild && pr.firstChild.textContent), pt: toNum((li.querySelector('.pointKangen') || {}).textContent), cp: toNum((li.querySelector('.couponlistnebiki') || {}).textContent),
+              ng: SOLD.test(t) && !/在庫あり/.test(t) ? '在庫なし' : '', n: (li.querySelector('.textOverflowShohinmei span') || {}).textContent || '', u: `${location.origin}/commodity/1/${jan}/` }; }
+        } else if (st === 'bic') {
+          let cands = [];
+          for (const t of toks) {
+            const doc = new DOMParser().parseFromString(await sj(`/bc/category/?q=${encodeURIComponent(t)}`), 'text/html');
+            cands = [...doc.querySelectorAll('li.prod_box[data-item-id]')].map(li => ({ id: li.getAttribute('data-item-id'), n: li.getAttribute('data-item-name') || '',
+              p: toNum((li.querySelector('.bcs_price .val') || li.querySelector('.bcs_price') || {}).textContent), pt: toNum((li.querySelector('.bcs_point') || {}).textContent),
+              ng: SOLD.test((li.querySelector('.bcs_nouki') || li).textContent) ? '在庫なし' : '' }))
+              .filter(c => c.p > 0 && !/店舗のみ|海外仕様|ツーリスト|中古/.test(c.n) && nz(c.n).includes(nz(t)));
+            await sleep(delay);
+            if (cands.length) break;
+          }
+          if (bicId) cands = cands.filter(c => c.id === bicId);
+          for (const c of cands.slice(0, 3)) {
+            let cj = c.id === bicId ? jan : '';
+            if (!cj) { const ih = await sj(`/bc/item/${c.id}/`); cj = (ih.match(/"goodsStkNo"\s*:\s*"(\d{8,14})"/) || [])[1] || ''; await sleep(delay); }
+            if (cj === jan) { r = { p: c.p, pt: c.pt, ng: c.ng, n: c.n, u: `${location.origin}/bc/item/${c.id}/`, id: c.id }; break; }
+          }
+        }
+        out[jan] = r || { none: 1 };
+        blocked = 0;
+      } catch (e) { out[jan] = { err: String(e.message || e).slice(0, 60) }; if (++blocked >= 4) break; }
+      await sleep(delay);
+    }
+    return out;
+  })();
+}
+async function grabStoresInTabs() {
+  const settings = await getSettings();
+  const wl = (await ghRead('docs/watchlist.json').catch(() => null)) || { items: [] };
+  const prev = (await ghRead('data/stores.json').catch(() => null)) || {};
+  const items = { ...(prev.items || {}) }, bicMap = { ...(prev.bicMap || {}) }, stats = {};
+  const names = Object.fromEntries((wl.items || []).map(w => [String(w.jan), String(w.memo || '').replace(/\s*\[.*$/, '')]));
+  const toks = name => [...new Set((String(name || '').normalize('NFKC').match(/[A-Za-z0-9][A-Za-z0-9\-\/]{3,}/g) || [])
+    .filter(t => /[A-Za-z]/.test(t) && /\d/.test(t) && t.replace(/[-\/]/g, '').length >= 5 && !/^\d+(GB|TB|MM|ML|W|V|MAH)$/i.test(t)))].slice(0, 2);
+  const jans = Object.keys(names).filter(j => /^\d{8,14}$/.test(j));
+  const at = (j, st) => Date.parse(((items[j] || {})[st] || {}).at || 0) || 0;
+  const conf = { kojima: ['https://www.kojima.net/ec/index.html', 3000], nojima: ['https://online.nojima.co.jp/', 1800], bic: ['https://www.biccamera.com/', 2000] };
+  const per = settings.storesPer || 120;
+  await Promise.all(Object.entries(conf).map(async ([st, [url, delay]]) => {
+    let tab;
+    try {
+      const order = jans.filter(j => st !== 'bic' || toks(names[j]).length).sort((a, b) => at(a, st) - at(b, st)).slice(0, per);
+      tab = await openWorkTab(url);
+      await new Promise(r => setTimeout(r, 12000)); // 確認画面（ボット対策）が終わるのを待つ
+      const list = order.map(j => ({ jan: j, toks: toks(names[j]), bicId: Object.keys(bicMap).find(k => bicMap[k] === j) || '' }));
+      const [res] = await chrome.scripting.executeScript({ target: { tabId: tab.id }, func: storeLookup, args: [st, list, delay] });
+      const got = (res && res.result) || {};
+      let found = 0, err = 0;
+      for (const [j, r] of Object.entries(got)) {
+        if (r.err) { err++; continue; }
+        if (r.id) { bicMap[r.id] = j; delete r.id; }
+        if (!r.none) found++;
+        items[j] = { ...(items[j] || {}), [st]: { ...r, at: new Date().toISOString() } };
+      }
+      stats[st] = { checked: Object.keys(got).length - err, found, failed: err };
+    } catch (e) { stats[st] = { error: String(e.message || e).slice(0, 80) }; }
+    finally { await closeWorkTab(tab); }
+  }));
+  await ghWrite('data/stores.json', { updated: new Date().toISOString(), items, bicMap, stats }, '家電量販店の価格を更新');
   return stats;
 }
 
@@ -216,16 +316,6 @@ async function startJob(trigger) {
   }
   await setStatus({ running: true, startedAt: Date.now(), trigger, text: '開始しました', pct: 0 });
   report({ event: '開始（' + trigger + '）' });
-  // 家電量販店のボット対策（確認画面）の合格クッキーを、実際のタブで開いて取っておく
-  if ((await getSettings()).sites.stores !== false) {
-    for (const url of ['https://www.kojima.net/ec/prod_list.html?keyword=4902370553024', 'https://www.biccamera.com/bc/category/?q=MFHP4J%2FA']) {
-      try {
-        const tab = await chrome.tabs.create({ url, active: false });
-        await new Promise(r => setTimeout(r, 12000));
-        await chrome.tabs.remove(tab.id);
-      } catch (e) { /* 失敗しても続ける */ }
-    }
-  }
   if (settings.sites.x !== false && (settings.xAccounts || []).length) {
     try {
       await setStatus({ running: true, startedAt: Date.now(), trigger, text: 'Xの投稿を読み込み中…', pct: 1 });
@@ -233,8 +323,15 @@ async function startJob(trigger) {
       if (xs) await chrome.storage.local.set({ xStats: xs });
     } catch (e) { /* Xが読めなくても本体は続ける */ }
   }
+  if (settings.sites.stores !== false) {
+    try {
+      await setStatus({ running: true, startedAt: Date.now(), trigger, text: '家電量販店の価格を確認中…', pct: 2 });
+      const ss = await grabStoresInTabs();
+      await chrome.storage.local.set({ storeStats: ss });
+    } catch (e) { /* 量販店が読めなくても本体は続ける */ }
+  }
   await ensureOffscreen();
-  chrome.runtime.sendMessage({ target: 'offscreen', cmd: 'run', settings });
+  chrome.runtime.sendMessage({ target: 'offscreen', cmd: 'run', settings: { ...settings, storesInTab: true } });
   return { ok: true };
 }
 
