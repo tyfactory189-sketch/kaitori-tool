@@ -1,5 +1,5 @@
 {
- "started": "2026-11-17T10:56+09:00",
+ "started": "2026-11-17T13:37+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
@@ -8,52 +8,52 @@
   }
  },
  "x_hot": {
-  "posts": 1333,
+  "posts": 1341,
   "items": 25,
-  "updated": "2026-11-16T11:02:44.170Z",
+  "updated": "2026-11-17T02:02:27.853Z",
   "stats": {
-   "momonnusan": "初回 5件",
+   "momonnusan": "初回 7件",
    "MATCHANFIRE": "5件",
    "TKC_sedori": "初回 5件",
    "kitagawaKeikoji": "初回 5件",
    "mappy_fukugyo": "初回 6件",
-   "sedori_osaka": "初回 5件"
+   "sedori_osaka": "初回 4件"
   }
  },
  "amazon": {
-  "targets": 17199,
+  "targets": 17200,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 4479,
-  "done": 4184,
+  "targets": 1751,
+  "done": 1751,
   "failed": 0,
   "last_error": "",
-  "stopped": "時間切れ（残りは次回）"
+  "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2477,
+  "done": 2476,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 6852,
+  "skipped_not_due": 7422,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2813,
-  "changed": 20,
-  "failed": 0,
-  "last_error": "",
+  "checked": 1894,
+  "changed": 12,
+  "failed": 1,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/motona/92095100-1.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/shp",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-17T13:36+09:00",
- "items": 4650
+ "finished": "2026-11-17T16:17+09:00",
+ "items": 4647
 }
