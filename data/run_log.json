@@ -1,5 +1,5 @@
 {
- "started": "2026-11-18T00:23+09:00",
+ "started": "2026-11-18T03:04+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
@@ -28,32 +28,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 6761,
-  "done": 4286,
+  "targets": 5561,
+  "done": 4321,
   "failed": 0,
   "last_error": "",
   "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2519,
+  "done": 2532,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 6199,
+  "skipped_not_due": 5932,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2603,
-  "changed": 12,
-  "failed": 18,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/sake-premoa/4981325608415.html: HTTP 429 '<!DOCTYPE html>\\n<html lang=\"ja\">\\n<head>\\n    <meta charset=\"UTF-8\">\\n    <title>アクセス集中による混雑のお詫び</title>\\n    <meta ",
+  "checked": 2485,
+  "changed": 20,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-18T03:03+09:00",
- "items": 4652
+ "finished": "2026-11-18T05:44+09:00",
+ "items": 4658
 }
