@@ -3,8 +3,8 @@
   "error": "2026-10-23T06:28+09:00 GET失敗 https://kadenkaitori.tokyo/category/: HTTP Error 403: "
  },
  "shouten": {
-  "count": 2626,
-  "updated": "2026-11-17T17:10+09:00",
+  "count": 2496,
+  "updated": "2026-11-17T19:53+09:00",
   "error": ""
  },
  "morimori": {
@@ -12,12 +12,12 @@
  },
  "kaikyo": {
   "count": 2184,
-  "updated": "2026-11-17T17:12+09:00",
+  "updated": "2026-11-17T19:55+09:00",
   "error": ""
  },
  "earth": {
   "count": 5485,
-  "updated": "2026-11-17T17:18+09:00",
+  "updated": "2026-11-17T20:00+09:00",
   "error": ""
  }
 }
