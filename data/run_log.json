@@ -1,5 +1,5 @@
 {
- "started": "2026-11-17T21:43+09:00",
+ "started": "2026-11-18T00:23+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
@@ -21,39 +21,39 @@
   }
  },
  "amazon": {
-  "targets": 17216,
+  "targets": 17198,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 1058,
-  "done": 1058,
+  "targets": 6761,
+  "done": 4286,
   "failed": 0,
   "last_error": "",
-  "stopped": ""
+  "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 3976,
+  "done": 2519,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 6695,
+  "skipped_not_due": 6199,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1499,
-  "changed": 10,
-  "failed": 0,
-  "last_error": "",
+  "checked": 2603,
+  "changed": 12,
+  "failed": 18,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/sake-premoa/4981325608415.html: HTTP 429 '<!DOCTYPE html>\\n<html lang=\"ja\">\\n<head>\\n    <meta charset=\"UTF-8\">\\n    <title>アクセス集中による混雑のお詫び</title>\\n    <meta ",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-18T00:23+09:00",
- "items": 4644
+ "finished": "2026-11-18T03:03+09:00",
+ "items": 4652
 }
