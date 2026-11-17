@@ -163,7 +163,9 @@ async function grabX() {
   const settings = await getSettings();
   // 参考アカウントは「設定画面の欄」と「GitHubの data/x_config.json（ツール画面から追加できる）」を合わせたもの
   const cfg = (await ghRead('data/x_config.json').catch(() => null)) || {};
-  const accts = [...new Set([...(settings.xAccounts || []), ...(cfg.accounts || [])].map(a => String(a).replace(/^@/, '').trim()).filter(Boolean))];
+  // チェッカー画面で管理している一覧（data/x_config.json）があればそれを使う（画面で外したアカウントは読まない）
+  const base = Array.isArray(cfg.accounts) && cfg.accounts.length ? cfg.accounts : (settings.xAccounts || []);
+  const accts = [...new Set(base.map(a => String(a).replace(/^@/, '').trim()).filter(Boolean))];
   if (!accts.length) return null;
   const prev = (await ghRead('data/x_posts.json').catch(() => null)) || { posts: [] };
   const byUrl = new Map((prev.posts || []).map(p => [p.url, p]));
