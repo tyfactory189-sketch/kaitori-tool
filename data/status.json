@@ -4,20 +4,20 @@
  },
  "shouten": {
   "count": 2626,
-  "updated": "2026-11-17T09:08+09:00",
+  "updated": "2026-11-17T11:49+09:00",
   "error": ""
  },
  "morimori": {
   "error": "2026-10-23T07:24+09:00 GET失敗 https://www.morimori-kaitori.jp/: Failed to perform, curl: (28) Connection timed out after 30001 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details."
  },
  "kaikyo": {
-  "count": 2184,
-  "updated": "2026-11-17T03:49+09:00",
-  "error": "2026-11-17T09:10+09:00 GET失敗 https://www.mobile-ichiban.com/Prod/1: Failed to perform, curl: (28) Connection timed out after 30000 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details."
+  "count": 2182,
+  "updated": "2026-11-17T11:51+09:00",
+  "error": ""
  },
  "earth": {
   "count": 5485,
-  "updated": "2026-11-17T09:16+09:00",
+  "updated": "2026-11-17T11:56+09:00",
   "error": ""
  }
 }
