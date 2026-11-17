@@ -3338,7 +3338,7 @@
  {
   "jan": "4902370542929",
   "name": "Nintendo Switch Lite グレー",
-  "price": 26900,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3524,13 +3524,13 @@
  {
   "jan": "4902370542943",
   "name": "Nintendo Switch Lite ターコイズ",
-  "price": 26900,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370545302",
   "name": "Nintendo Switch Lite コーラル",
-  "price": 26900,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3680,13 +3680,13 @@
  {
   "jan": "4948872016490",
   "name": "PlayStation VR2 CFIJ-17000",
-  "price": 46000,
+  "price": 46300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872016612",
   "name": "PlayStation VR2 \"Horizon Call of the Mountain\" 同梱版 CFIJ-17001",
-  "price": 46000,
+  "price": 46300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3932,7 +3932,7 @@
  {
   "jan": "4549576247038",
   "name": "Xbox Series X デジタル エディション 1TB ロボット ホワイト　EP2-00708",
-  "price": 110000,
+  "price": 109500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4022,7 +4022,7 @@
  {
   "jan": "0815820024170",
   "name": "Meta Quest 3 512GB",
-  "price": 92300,
+  "price": 92400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5924,25 +5924,43 @@
  {
   "jan": "0840414689626",
   "name": "Amazon Kindle 16GB ウベパープル 2026年発売",
-  "price": 24000,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414601390",
   "name": "Amazon Kindle 16GB グラファイト 2026年発売",
-  "price": 24000,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414603783",
   "name": "Amazon Kindle 32GB アルペンスカイブルー 2026年発売",
-  "price": 27500,
+  "price": 29500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414659148",
   "name": "Amazon Kindle 32GB シーグラスグリーン 2026年発売",
-  "price": 27500,
+  "price": 29500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0840268907280",
+  "name": "Amazon Kindle Paperwhite 16GB グラファイト 2026年発売",
+  "price": 37000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0840414605930",
+  "name": "Amazon Kindle Paperwhite シグニチャーエディション 32GB シーグラスグリーン 2026年発売",
+  "price": 39000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0840080548203",
+  "name": "Amazon Kindle Paperwhite シグニチャーエディション 32GB グラファイト 2026年発売",
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {

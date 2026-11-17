@@ -1,16 +1,16 @@
 {
- "started": "2026-11-17T13:37+09:00",
+ "started": "2026-11-17T16:18+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1831,
+   "matched": 1832,
    "ambiguous": 0
   }
  },
  "x_hot": {
-  "posts": 1341,
+  "posts": 1347,
   "items": 25,
-  "updated": "2026-11-17T02:02:27.853Z",
+  "updated": "2026-11-17T05:02:26.037Z",
   "stats": {
    "momonnusan": "初回 7件",
    "MATCHANFIRE": "5件",
@@ -21,39 +21,39 @@
   }
  },
  "amazon": {
-  "targets": 17200,
+  "targets": 17204,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 1751,
-  "done": 1751,
+  "targets": 4118,
+  "done": 4118,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2476,
+  "done": 2486,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 7422,
+  "skipped_not_due": 7731,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 1894,
-  "changed": 12,
-  "failed": 1,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/motona/92095100-1.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images/shp",
+  "checked": 2533,
+  "changed": 11,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-17T16:17+09:00",
- "items": 4647
+ "finished": "2026-11-17T18:58+09:00",
+ "items": 4636
 }
