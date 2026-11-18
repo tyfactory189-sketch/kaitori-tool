@@ -3342,33 +3342,33 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4948872417419",
-  "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 50500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
   "price": 210000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "0815820025238",
-  "name": "Meta Quest 3S 128GB",
-  "price": 48300,
+  "jan": "4549576275383",
+  "name": "Xbox series x",
+  "price": 121800,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0815820024170",
+  "name": "Meta Quest 3 512GB",
+  "price": 92400,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "0814585022803",
+  "name": "Steam Controller",
+  "price": 22300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
   "price": 138800,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370554922",
-  "name": "ゼルダの伝説 時のオカリナ/Switch 2",
-  "price": 7200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3482,7 +3482,7 @@
  {
   "jan": "4902370550733",
   "name": "Nintendo Switch Joy-Con(L) ネオンブルー/(R) ネオンレッド　新型 HAD-S-KABAH",
-  "price": 38700,
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3624,9 +3624,15 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4948872417419",
+  "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
+  "price": 50500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4948872850599",
   "name": "PlayStation 5 デジタル・エディション 日本語専用 DualSense ダブルパック CFIJ-10032",
-  "price": 58600,
+  "price": 58000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3942,12 +3948,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4549576275383",
-  "name": "Xbox series x",
-  "price": 121800,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4549576215563",
   "name": "Xbox Series S 1TB  XXU-00015",
   "price": 89000,
@@ -4020,15 +4020,15 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "0815820025290",
-  "name": "Meta Quest 3S 256GB",
-  "price": 62300,
+  "jan": "0815820025238",
+  "name": "Meta Quest 3S 128GB",
+  "price": 48300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "0815820024170",
-  "name": "Meta Quest 3 512GB",
-  "price": 92400,
+  "jan": "0815820025290",
+  "name": "Meta Quest 3S 256GB",
+  "price": 62300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4053,12 +4053,6 @@
   "jan": "0814585023527",
   "name": "Steam Machine 2TB + Steam Controller",
   "price": 280000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "0814585022803",
-  "name": "Steam Controller",
-  "price": 22200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4095,6 +4089,12 @@
   "jan": "0197105662759",
   "name": "ROG Ally X RC72LA-Z1E24G1T ブラック",
   "price": 117000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4902370554922",
+  "name": "ゼルダの伝説 時のオカリナ/Switch 2",
+  "price": 7200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {

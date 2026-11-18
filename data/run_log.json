@@ -1,9 +1,9 @@
 {
- "started": "2026-11-18T16:26+09:00",
+ "started": "2026-11-18T19:07+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1838,
+   "matched": 1836,
    "ambiguous": 0
   }
  },
@@ -24,39 +24,39 @@
   }
  },
  "amazon": {
-  "targets": 17201,
+  "targets": 17189,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 4444,
-  "done": 4296,
+  "targets": 3113,
+  "done": 3113,
   "failed": 0,
   "last_error": "",
-  "stopped": "時間切れ（残りは次回）"
+  "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2533,
+  "done": 2558,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 6115,
+  "skipped_not_due": 5894,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2584,
-  "changed": 20,
+  "checked": 2582,
+  "changed": 29,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-18T19:07+09:00",
- "items": 4692
+ "finished": "2026-11-18T21:47+09:00",
+ "items": 4704
 }
