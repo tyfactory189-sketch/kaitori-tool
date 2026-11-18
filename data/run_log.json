@@ -1,9 +1,9 @@
 {
- "started": "2026-11-18T22:09+09:00",
+ "started": "2026-11-19T00:58+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1837,
+   "matched": 1839,
    "ambiguous": 0
   }
  },
@@ -31,32 +31,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 2370,
-  "done": 2370,
+  "targets": 2812,
+  "done": 2812,
   "failed": 0,
   "last_error": "",
   "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2563,
+  "done": 2567,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 5100,
+  "skipped_not_due": 4562,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2837,
-  "changed": 17,
+  "checked": 2440,
+  "changed": 20,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-19T00:50+09:00",
- "items": 4818
+ "finished": "2026-11-19T03:39+09:00",
+ "items": 4816
 }
