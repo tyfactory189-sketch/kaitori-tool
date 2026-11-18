@@ -20,7 +20,7 @@
  {
   "jan": "4549046155382",
   "name": "nubia S2 A504ZT Y!mobile [ブラック]",
-  "price": 14000,
+  "price": 13500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -944,13 +944,13 @@
  {
   "jan": "4942857242850",
   "name": "Galaxy A25 5G SC-53F 4G+64G docomo [ブラック]",
-  "price": 17000,
+  "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4942857242843",
   "name": "Galaxy A25 5G SC-53F 4G+64G docomo [ブルー]",
-  "price": 17000,
+  "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2714,13 +2714,13 @@
  {
   "jan": "4549046155375",
   "name": "nubia S2 A504ZT Y!mobile [ホワイト]",
-  "price": 14000,
+  "price": 13500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046155368",
   "name": "nubia S2 A504ZT Y!mobile [ラベンダー]",
-  "price": 14000,
+  "price": 13500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3368,7 +3368,7 @@
  {
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
-  "price": 7400,
+  "price": 7300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3992,7 +3992,7 @@
  {
   "jan": "4549576126906",
   "name": "Xbox Elite ワイヤレス コントローラー シリーズ 2 FST-00009",
-  "price": 19200,
+  "price": 19300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4100,7 +4100,7 @@
  {
   "jan": "4902370554892",
   "name": "Nintendo Switch Sports Resort/Switch 2",
-  "price": 5200,
+  "price": 5300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4434,6 +4434,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4571304479312",
+  "name": "グランド・セフト・オートVI /PS5",
+  "price": 7000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "8809459216602",
   "name": "007 ファースト・ライト/PS5",
   "price": 5800,
@@ -4472,7 +4478,7 @@
  {
   "jan": "4948872017305",
   "name": "Ghost of Yotei/PS5",
-  "price": 4800,
+  "price": 4600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5948,7 +5954,7 @@
  {
   "jan": "0840268907280",
   "name": "Amazon Kindle Paperwhite 16GB グラファイト 2026年発売",
-  "price": 37000,
+  "price": 36000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6216,12 +6222,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4974305221766",
-  "name": "象印 極め炊き NW-JY10",
-  "price": 26500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4974305230416",
   "name": "象印　炎舞炊き NW-NB10-WA [ホワイト]",
   "price": 61000,
@@ -6248,7 +6248,7 @@
  {
   "jan": "4974305230492",
   "name": "象印 豪熱大火力 NW-YC10-WA [ホワイト]",
-  "price": 26500,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9434,7 +9434,7 @@
  {
   "jan": "4548736156425",
   "name": "SONY ULT WEAR WH-ULT900N (B) ブラック",
-  "price": 16000,
+  "price": 15500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9734,7 +9734,7 @@
  {
   "jan": "0753759342463",
   "name": "ガーミン fenix 8 Sapphire AMOLED 47mm 010-02904-27 [Ti Carbon Gray DLC/Black]",
-  "price": 75000,
+  "price": 73000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9975,12 +9975,6 @@
   "jan": "4549873176796",
   "name": "日立 すごかるスティック PV-BS1L(W) [ホワイト]",
   "price": 19000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4549873185491",
-  "name": "日立 かるパックスティック PKV-BK50L(V) [ライトラベンダー]",
-  "price": 32500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10590,18 +10584,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4904710437698",
-  "name": "タイガー魔法瓶 炊きたて ご泡火炊き JPI-X100-WX [タルクホワイト]",
-  "price": 25000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4904710437681",
-  "name": "タイガー魔法瓶 炊きたて ご泡火炊き JPI-X100-KX [フォグブラック]",
-  "price": 26000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4974019190754",
   "name": "SHARP KN-HW16G-W [ホワイト系]",
   "price": 31000,
@@ -10614,45 +10596,9 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4549980706268",
-  "name": "Panasonic SR-AX1-W [ホワイト]",
-  "price": 25000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4974019190747",
   "name": "SHARP KN-HW16G-B [ブラック系]",
   "price": 35500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305227201",
-  "name": "象印 極め炊き NW-YB10-BZ [スレートブラック]",
-  "price": 26000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305227225",
-  "name": "象印 極め炊き NW-YB10-WA [ホワイト]",
-  "price": 22000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305227126",
-  "name": "象印 炎舞炊き NW-NA10-BZ [スレートブラック]",
-  "price": 56500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305224842",
-  "name": "象印 炎舞炊き NW-UT07-BZ [濃墨]",
-  "price": 61000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305224859",
-  "name": "象印 炎舞炊き NW-UT07-WZ [絹白]",
-  "price": 58000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10665,36 +10611,6 @@
   "jan": "4904710441091",
   "name": "タイガー魔法瓶 炊きたて ご泡火炊き JRI-A100-KM [マットブラック]",
   "price": 26000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4549873195681",
-  "name": "日立 沸騰鉄釜 ふっくら御膳 RZ-V100HM(W) [フロストホワイト]",
-  "price": 21000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4549873195698",
-  "name": "日立 沸騰鉄釜 ふっくら御膳 RZ-V100HM(K) [フロストブラック]",
-  "price": 22500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305226181",
-  "name": "象印 極め炊き NW-MB07-BZ [スレートブラック]",
-  "price": 34000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4904710441022",
-  "name": "タイガー魔法瓶 土鍋ご泡火炊き JRX-G100-KG [エボニーブラック]",
-  "price": 61000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4904710441046",
-  "name": "タイガー魔法瓶 土鍋ご泡火炊き JRX-G100-WG [アイボリーホワイト]",
-  "price": 61000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10740,12 +10656,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4974305227720",
-  "name": "象印 極め炊き NW-QA10-BA [ブラック]",
-  "price": 20000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4974305227157",
   "name": "象印 極め炊き NW-WA10-BZ [スレートブラック]",
   "price": 31500,
@@ -10761,24 +10671,6 @@
   "jan": "4902901972119",
   "name": "三菱電機 本炭釜 紬 NJ-BW10G-B [炭漆黒]",
   "price": 42000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305224170",
-  "name": "象印 極め炊き NW-JZ10-BA [ブラック]",
-  "price": 34000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305227119",
-  "name": "象印 炎舞炊き NW-FC18-WZ 絹白",
-  "price": 54000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4974305227096",
-  "name": "象印 炎舞炊き NW-FC18-BZ 濃墨",
-  "price": 59000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10836,18 +10728,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4904710441169",
-  "name": "タイガー魔法瓶 炊きたて JPV-S100-WO [オフホワイト]",
-  "price": 22500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4904710441152",
-  "name": "タイガー魔法瓶 炊きたて JPV-S100-KO [オフブラック]",
-  "price": 22500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4904530134340",
   "name": "東芝 真空圧力IH RC-10HGX(W) [グランホワイト]",
   "price": 21000,
@@ -10868,7 +10748,7 @@
  {
   "jan": "4549980963500",
   "name": "パナソニック おどり炊き SR-N510D-W [ホワイト]",
-  "price": 22000,
+  "price": 23000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10887,18 +10767,6 @@
   "jan": "4904710441084",
   "name": "タイガー魔法瓶 土鍋ご泡火炊き JPL-T100-KG [エボニーブラック]",
   "price": 45500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4549980857816",
-  "name": "パナソニック SR-H10B-K [ブラック]",
-  "price": 12000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4904710441145",
-  "name": "タイガー魔法瓶 炊きたて JRI-B100-W [ホワイト]",
-  "price": 25000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11252,7 +11120,7 @@
  {
   "jan": "4550719164518",
   "name": "パナソニック ビストロ SR-X910E-K [ブラック]",
-  "price": 60000,
+  "price": 73500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11348,7 +11216,7 @@
  {
   "jan": "4573637012877",
   "name": "三菱電機 備長炭 炭炊釜 NJ-VS10H-W [白亜麻]",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
