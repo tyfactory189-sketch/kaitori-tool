@@ -1124,13 +1124,13 @@
  {
   "jan": "4549046141828",
   "name": "Libero Flip A304ZT Y!mobile [ゴールド]",
-  "price": 21000,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046141835",
   "name": "Libero Flip A304ZT Y!mobile [ホワイト]",
-  "price": 21000,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1154,19 +1154,19 @@
  {
   "jan": "4549046149268",
   "name": "nubia Flip 2 A404ZT Y!mobile ブラック",
-  "price": 21000,
+  "price": 18500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046149251",
   "name": "nubia Flip 2 A404ZT Y!mobile ホワイト",
-  "price": 21000,
+  "price": 18500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4549046149275",
   "name": "nubia Flip 2 A404ZT Y!mobile ブルー",
-  "price": 21000,
+  "price": 18500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2666,7 +2666,7 @@
  {
   "jan": "4549046141842",
   "name": "Libero Flip A304ZT Y!mobile [ブルー]",
-  "price": 21000,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3344,7 +3344,7 @@
  {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
-  "price": 210000,
+  "price": 210700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3470,7 +3470,7 @@
  {
   "jan": "4902370548495",
   "name": "Nintendo Switch (有機ELモデル) ホワイト",
-  "price": 41500,
+  "price": 41700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3612,6 +3612,18 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4948872417501",
+  "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ホワイト リミテッドエディション CFI-ZCT2JZI",
+  "price": 11000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4948872417525",
+  "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ブラック リミテッドエディション CFI-ZCT2JZH",
+  "price": 11000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4948872850995",
   "name": "PlayStation 5 デジタル・エディション \"Marvel’s Wolverine\" バトルイエロー リミテッドエディション CFIJ-10033",
   "price": 108900,
@@ -3636,6 +3648,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4948872418249",
+  "name": "PlayStation 5 デジタル・エディション ミッドナイト ブラック 日本語専用 CFI-2200B02S",
+  "price": 48500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4948872850391",
   "name": "PlayStation 5 Ghost of Yoteiゴールド リミテッドエディション CFIJ-10029",
   "price": 118200,
@@ -3644,7 +3662,7 @@
  {
   "jan": "4948872416320",
   "name": "PlayStation 5 Pro CFI-7000B01 2TB",
-  "price": 210000,
+  "price": 210700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3656,6 +3674,12 @@
  {
   "jan": "4948872416030",
   "name": "PS5 ディスクドライブ(Slimモデル用) CFI-ZDD1J",
+  "price": 9000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4948872418256",
+  "name": "PS5 ディスクドライブ ミッドナイト ブラック CFI-ZDD1J01",
   "price": 9000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
@@ -4040,7 +4064,7 @@
  {
   "jan": "0814585023497",
   "name": "Steam Machine 512GB + Steam Controller",
-  "price": 175000,
+  "price": 180000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {

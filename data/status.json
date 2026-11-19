@@ -4,20 +4,20 @@
  },
  "shouten": {
   "count": 2427,
-  "updated": "2026-11-19T07:41+09:00",
+  "updated": "2026-11-19T10:57+09:00",
   "error": ""
  },
  "morimori": {
   "error": "2026-10-23T07:24+09:00 GET失敗 https://www.morimori-kaitori.jp/: Failed to perform, curl: (28) Connection timed out after 30001 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details."
  },
  "kaikyo": {
-  "count": 2162,
-  "updated": "2026-11-19T07:44+09:00",
+  "count": 2166,
+  "updated": "2026-11-19T11:00+09:00",
   "error": ""
  },
  "earth": {
   "count": 5485,
-  "updated": "2026-11-19T07:49+09:00",
+  "updated": "2026-11-19T11:05+09:00",
   "error": ""
  }
 }
