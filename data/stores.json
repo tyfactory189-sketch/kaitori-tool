@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-20T05:04:22.090Z",
+ "updated": "2026-11-20T11:04:07.592Z",
  "items": {
   "4547410377224": {
    "bic": {
@@ -4436,15 +4436,15 @@
    "found": 0,
    "failed": 0
   },
+  "nojima": {
+   "checked": 0,
+   "found": 0,
+   "failed": 0
+  },
   "kojima": {
    "checked": 0,
    "found": 0,
    "failed": 4
-  },
-  "nojima": {
-   "checked": 1,
-   "found": 0,
-   "failed": 5
   }
  }
 }
