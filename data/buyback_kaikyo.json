@@ -1,11 +1,5 @@
 [
  {
-  "jan": "0840353956209",
-  "name": "Google Pixel 11 256GB SIMフリー Frost",
-  "price": 105000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "4580038872511",
   "name": "OPPO A5 5G SIMフリー [ホワイト]",
   "price": 19000,
@@ -27,6 +21,12 @@
   "jan": "4549995560084",
   "name": "iPad 11インチ 第11世代 Wi-Fi 128GB MD4A4J/A [ブルー]",
   "price": 66200,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "0840353956209",
+  "name": "Google Pixel 11 256GB SIMフリー Frost",
+  "price": 105000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -182,13 +182,13 @@
  {
   "jan": "0840353957565",
   "name": "Google Pixel 11 Pro Fold 256GB SIMフリー Obsidian",
-  "price": 211000,
+  "price": 209000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "0840353957596",
   "name": "Google Pixel 11 Pro Fold 512GB SIMフリー Obsidian",
-  "price": 238000,
+  "price": 235000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3326,13 +3326,13 @@
  {
   "jan": "4902370554564",
   "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション ディスプレイスタンド付き",
-  "price": 13000,
+  "price": 12800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4902370553024",
   "name": "Nintendo Switch 2 国内版",
-  "price": 52800,
+  "price": 52900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3348,15 +3348,21 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4948872417525",
+  "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ブラック リミテッドエディション CFI-ZCT2JZH",
+  "price": 12800,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
-  "price": 212500,
+  "price": 212700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549576275383",
   "name": "Xbox series x",
-  "price": 121800,
+  "price": 122000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3374,7 +3380,7 @@
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 139000,
+  "price": 139100,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3630,12 +3636,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4948872417525",
-  "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ブラック リミテッドエディション CFI-ZCT2JZH",
-  "price": 12800,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4948872850995",
   "name": "PlayStation 5 デジタル・エディション \"Marvel’s Wolverine\" バトルイエロー リミテッドエディション CFIJ-10033",
   "price": 108900,
@@ -3674,7 +3674,7 @@
  {
   "jan": "4948872416320",
   "name": "PlayStation 5 Pro CFI-7000B01 2TB",
-  "price": 212500,
+  "price": 212700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3974,19 +3974,19 @@
  {
   "jan": "4549576246994",
   "name": "Xbox Series S 1TB ロボット ホワイト EP2-00650",
-  "price": 89000,
+  "price": 88500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549576247038",
   "name": "Xbox Series X デジタル エディション 1TB ロボット ホワイト　EP2-00708",
-  "price": 110300,
+  "price": 110500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549576215563",
   "name": "Xbox Series S 1TB  XXU-00015",
-  "price": 89000,
+  "price": 88500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4100,7 +4100,7 @@
  {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 164900,
+  "price": 165000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4440,12 +4440,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4988602176490",
-  "name": "桃太郎電鉄ワールド ～地球は希望でまわってる",
-  "price": 3100,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4902370551693",
   "name": "ポケットモンスター スカーレット+ゼロの秘宝",
   "price": 6200,
@@ -4670,13 +4664,13 @@
  {
   "jan": "4547410520088",
   "name": "instax mini Evo チェキ USB ブラック",
-  "price": 24700,
+  "price": 25500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410520125",
   "name": "instax mini Evo チェキ USB ブラウン",
-  "price": 26200,
+  "price": 26500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6794,7 +6788,7 @@
  {
   "jan": "4988602179231",
   "name": "桃太郎電鉄2 ～あなたの町も きっとある～ 東日本編+西日本編 /Switch 2",
-  "price": 5700,
+  "price": 5200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6849,36 +6843,6 @@
   "jan": "4902370546057",
   "name": "スーパーマリオ 3Dコレクション",
   "price": 5000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4571577970691",
-  "name": "太鼓の達人 ドンダフルフェスティバル",
-  "price": 3900,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4988601011143",
-  "name": "ドラゴンクエストX目覚めし五つの種族オフライン",
-  "price": 4600,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4571577977430",
-  "name": "釣りスピリッツ 釣って遊べる水族館",
-  "price": 3800,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4976219123976",
-  "name": "モンスターハンターライズ Best Price（再廉価版）",
-  "price": 1600,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370550825",
-  "name": "ファイアーエムブレム エンゲージ",
-  "price": 4300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10388,7 +10352,7 @@
  {
   "jan": "4974305227232",
   "name": "象印 極め炊き NW-VJ10-BA [ブラック]",
-  "price": 14000,
+  "price": 13000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -12122,7 +12086,7 @@
  {
   "jan": "4987176160720",
   "name": "ブラウン オーラルB iO10 iOM10442ADCB",
-  "price": 34000,
+  "price": 33000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
