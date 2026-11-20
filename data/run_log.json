@@ -1,5 +1,5 @@
 {
- "started": "2026-11-20T10:13+09:00",
+ "started": "2026-11-20T12:54+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
@@ -8,17 +8,17 @@
   }
  },
  "x_hot": {
-  "posts": 80,
-  "items": 17,
-  "updated": "2026-11-19T11:03:35.467Z",
+  "posts": 99,
+  "items": 23,
+  "updated": "2026-11-20T02:03:38.140Z",
   "stats": {
-   "momonnusan": "初回 5件",
+   "momonnusan": "初回 14件",
    "MATCHANFIRE": "初回 5件",
    "TKC_sedori": "初回 5件",
    "kitagawaKeikoji": "初回 5件",
    "mappy_fukugyo": "初回 6件",
    "sedori_osaka": "初回 4件",
-   "sutti_kun_01": "初回 5件",
+   "sutti_kun_01": "初回 4件",
    "okaidoku_77": "初回 4件",
    "pepusandeth": "初回 5件"
   }
@@ -31,32 +31,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 6470,
-  "done": 4349,
+  "targets": 5833,
+  "done": 4340,
   "failed": 0,
   "last_error": "",
   "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
-  "targets": 8571,
-  "done": 2551,
+  "targets": 8189,
+  "done": 2542,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 8714,
+  "skipped_not_due": 9096,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2652,
-  "changed": 23,
-  "failed": 0,
-  "last_error": "",
+  "checked": 2388,
+  "changed": 17,
+  "failed": 1,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/noahshoping/4902370536058.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/im",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-20T12:53+09:00",
- "items": 4702
+ "finished": "2026-11-20T15:34+09:00",
+ "items": 4698
 }
