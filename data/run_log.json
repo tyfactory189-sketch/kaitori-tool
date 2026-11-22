@@ -1,25 +1,25 @@
 {
- "started": "2026-11-22T15:30+09:00",
+ "started": "2026-11-22T20:04+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1857,
+   "matched": 1858,
    "ambiguous": 0
   }
  },
  "x_hot": {
-  "posts": 210,
-  "items": 46,
-  "updated": "2026-11-22T05:03:37.166Z",
+  "posts": 226,
+  "items": 51,
+  "updated": "2026-11-22T11:03:36.346Z",
   "stats": {
-   "momonnusan": "初回 15件",
+   "momonnusan": "初回 5件",
    "MATCHANFIRE": "初回 5件",
    "TKC_sedori": "初回 5件",
    "kitagawaKeikoji": "初回 5件",
-   "mappy_fukugyo": "初回 6件",
+   "mappy_fukugyo": "初回 5件",
    "sedori_osaka": "初回 5件",
-   "sutti_kun_01": "初回 5件",
-   "okaidoku_77": "初回 4件",
+   "sutti_kun_01": "初回 4件",
+   "okaidoku_77": "初回 5件",
    "pepusandeth": "初回 5件"
   }
  },
@@ -31,34 +31,32 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 1674,
-  "done": 1674,
+  "targets": 6352,
+  "done": 4345,
   "failed": 0,
   "last_error": "",
-  "stopped": ""
+  "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
-  "targets": 8517,
-  "done": 3971,
-  "failed": 1,
-  "errors": {
-   "HTTP 400": 1
-  },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "first_400": "10458977962789: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "targets": 9000,
+  "done": 2546,
+  "failed": 0,
+  "errors": {},
+  "last_error": "",
+  "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 8912,
+  "skipped_not_due": 6892,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2788,
-  "changed": 20,
-  "failed": 0,
-  "last_error": "",
+  "checked": 3128,
+  "changed": 23,
+  "failed": 1,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/thrift-webshop/a-044-a20426.html: HTTP 500 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-22T18:10+09:00",
- "items": 4799
+ "finished": "2026-11-22T22:44+09:00",
+ "items": 4783
 }
