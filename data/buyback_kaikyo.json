@@ -8,7 +8,7 @@
  {
   "jan": "4942857251746",
   "name": "arrows We3 F-52G 4G+64G docomo [ホワイト]",
-  "price": 21000,
+  "price": 21500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1046,7 +1046,7 @@
  {
   "jan": "4942857251739",
   "name": "arrows We3 F-52G 4G+64G docomo [ブラック]",
-  "price": 21000,
+  "price": 21500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2594,7 +2594,7 @@
  {
   "jan": "4942857251722",
   "name": "arrows We3 F-52G 4G+64G docomo [ライトブルー]",
-  "price": 21000,
+  "price": 21500,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3324,12 +3324,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "4902370554564",
-  "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション ディスプレイスタンド付き",
-  "price": 12200,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4902370553024",
   "name": "Nintendo Switch 2 国内版",
   "price": 52900,
@@ -3380,7 +3374,7 @@
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 139100,
+  "price": 139300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3411,6 +3405,12 @@
   "jan": "4902370554595",
   "name": "Nintendo Switch 2 ゼルダの伝説 40周年 アニバーサリーエディション 国内版",
   "price": 54500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4902370554564",
+  "name": "Nintendo Switch 2 Proコントローラー ゼルダの伝説 40周年 アニバーサリーエディション ディスプレイスタンド付き",
+  "price": 12000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3650,13 +3650,13 @@
  {
   "jan": "4948872417419",
   "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 49500,
+  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872850599",
   "name": "PlayStation 5 デジタル・エディション 日本語専用 DualSense ダブルパック CFIJ-10032",
-  "price": 58000,
+  "price": 57000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4100,7 +4100,7 @@
  {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 165000,
+  "price": 165300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4130,7 +4130,7 @@
  {
   "jan": "4902370554922",
   "name": "ゼルダの伝説 時のオカリナ/Switch 2",
-  "price": 7150,
+  "price": 7200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4460,7 +4460,7 @@
  {
   "jan": "4988602179248",
   "name": "桃太郎電鉄2 ～あなたの町も きっとある～ 東日本編+西日本編",
-  "price": 3800,
+  "price": 3400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4586,7 +4586,7 @@
  {
   "jan": "4547410377224",
   "name": "FUJIFILM チェキ用フィルム 10枚入 INSTAX MINI JP 1",
-  "price": 1250,
+  "price": 1240,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5054,7 +5054,7 @@
  {
   "jan": "4549292119008",
   "name": "CANON PowerShot SX740 HS ブラック",
-  "price": 80000,
+  "price": 79500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6218,7 +6218,7 @@
  {
   "jan": "4974305230447",
   "name": "象印 豪熱大火力 NW-BB10-BZ [スレートブラック]",
-  "price": 30000,
+  "price": 29000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9272,13 +9272,13 @@
  {
   "jan": "0753759329990",
   "name": "ガーミン　vivoactive 5 010-02862-42 [Blue/Blue Met]",
-  "price": 21000,
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0753759329983",
   "name": "ガーミン vivoactive 5 010-02862-41 [Ivory/Cream Gold]",
-  "price": 21000,
+  "price": 20000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10124,13 +10124,13 @@
  {
   "jan": "4904710441107",
   "name": "タイガー魔法瓶 炊きたて ご泡火炊き JRI-A100-WM [マットホワイト]",
-  "price": 25000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4904710441091",
   "name": "タイガー魔法瓶 炊きたて ご泡火炊き JRI-A100-KM [マットブラック]",
-  "price": 25000,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10988,7 +10988,7 @@
  {
   "jan": "4549980852361",
   "name": "パナソニック ラムダッシュPRO 6 ES-L690U-K [クラフトブラック]",
-  "price": 53000,
+  "price": 52000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -12062,7 +12062,7 @@
  {
   "jan": "4975514066858",
   "name": "ケンウッド DMX7509XS",
-  "price": 60500,
+  "price": 60000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
