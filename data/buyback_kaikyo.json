@@ -1,11 +1,5 @@
 [
  {
-  "jan": "4580038872511",
-  "name": "OPPO A5 5G SIMフリー [ホワイト]",
-  "price": 19000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "4942857251746",
   "name": "arrows We3 F-52G 4G+64G docomo [ホワイト]",
   "price": 21500,
@@ -15,6 +9,18 @@
   "jan": "4549046155382",
   "name": "nubia S2 A504ZT Y!mobile [ブラック]",
   "price": 14000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4549995662009",
+  "name": "iPad Air 11インチ Wi-Fi 128GB 第8世代 MH314J/A ブルー",
+  "price": 102000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4549995695557",
+  "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 128GB MJ6J4J/A スターライト",
+  "price": 105000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -188,7 +194,7 @@
  {
   "jan": "0840353957596",
   "name": "Google Pixel 11 Pro Fold 512GB SIMフリー Obsidian",
-  "price": 228000,
+  "price": 225000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -435,6 +441,12 @@
   "jan": "4580038872061",
   "name": "OPPO Reno13 A SIMフリー アイスブルー",
   "price": 31000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4580038872511",
+  "name": "OPPO A5 5G SIMフリー [ホワイト]",
+  "price": 19000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1230,12 +1242,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "4549995662009",
-  "name": "iPad Air 11インチ Wi-Fi 128GB 第8世代 MH314J/A ブルー",
-  "price": 102000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "4549995555233",
   "name": "iPad Air 11インチ Wi-Fi 128GB 第7世代 MC9W4J/A スペースグレイ",
   "price": 77000,
@@ -1287,12 +1293,6 @@
   "jan": "4549995556339",
   "name": "iPad Air 13インチ Wi-Fi 128GB 第7世代 MCNK4J/A スターライト",
   "price": 94000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
-  "jan": "4549995695557",
-  "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 128GB MJ6J4J/A スターライト",
-  "price": 105000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1364,7 +1364,7 @@
  {
   "jan": "0840353957824",
   "name": "Google Pixel 11 Pro XL 1TB SIMフリー Obsidian",
-  "price": 210000,
+  "price": 208000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3326,7 +3326,13 @@
  {
   "jan": "4902370553024",
   "name": "Nintendo Switch 2 国内版",
-  "price": 52900,
+  "price": 53000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4902370552843",
+  "name": "Nintendo Switch 2 Proコントローラー",
+  "price": 8600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3336,27 +3342,39 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4902370548495",
+  "name": "Nintendo Switch (有機ELモデル) ホワイト",
+  "price": 42200,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4902370542929",
   "name": "Nintendo Switch Lite グレー",
-  "price": 27400,
+  "price": 27500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872417525",
   "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ブラック リミテッドエディション CFI-ZCT2JZH",
-  "price": 12800,
+  "price": 13200,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4948872417419",
+  "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
+  "price": 49500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
-  "price": 213700,
+  "price": 215200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549576275383",
   "name": "Xbox series x",
-  "price": 122000,
+  "price": 122300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3368,37 +3386,19 @@
  {
   "jan": "0814585022803",
   "name": "Steam Controller",
-  "price": 20500,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0814585022254",
   "name": "Steam Deck OLED 512GB",
-  "price": 139300,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370553291",
-  "name": "ゼルダの伝説 ブレス オブ ザ ワイルド/Switch 2",
-  "price": 6900,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370553901",
-  "name": "あつまれ どうぶつの森 /Switch 2",
-  "price": 5500,
+  "price": 139500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4547410550955",
   "name": "FUJIFILM 写ルンです シンプルエース 27枚撮り 2025版",
-  "price": 2580,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4549292137743",
-  "name": "CANON PowerShot G7 X Mark III ブラック",
-  "price": 168000,
+  "price": 2590,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3444,12 +3444,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4902370552843",
-  "name": "Nintendo Switch 2 Proコントローラー",
-  "price": 8600,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4902370554205",
   "name": "Nintendo Switch Joy-Con 2 (L)/(R)  ブルー/ライトイエロー BEE-A-JACAC",
   "price": 8200,
@@ -3486,9 +3480,9 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4902370548495",
-  "name": "Nintendo Switch (有機ELモデル) ホワイト",
-  "price": 42000,
+  "jan": "4902370555257",
+  "name": "Nintendo Switch 2（日本語・国内専用）選べるソフト セット",
+  "price": 56000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3548,7 +3542,7 @@
  {
   "jan": "4902370542943",
   "name": "Nintendo Switch Lite ターコイズ",
-  "price": 27400,
+  "price": 27500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3620,7 +3614,7 @@
  {
   "jan": "4902370535730",
   "name": "Nintendo Switch Proコントローラー",
-  "price": 6100,
+  "price": 6200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3632,7 +3626,7 @@
  {
   "jan": "4948872417501",
   "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ホワイト リミテッドエディション CFI-ZCT2JZI",
-  "price": 12800,
+  "price": 13200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3645,12 +3639,6 @@
   "jan": "4948872417877",
   "name": "PS5 ワイヤレスコントローラー \"Marvel’s Wolverine\" バトルイエロー リミテッドエディション CFI-ZCT2JZJ",
   "price": 11800,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4948872417419",
-  "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 49000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3674,13 +3662,13 @@
  {
   "jan": "4948872416320",
   "name": "PlayStation 5 Pro CFI-7000B01 2TB",
-  "price": 213700,
+  "price": 215200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872415934",
   "name": "PlayStation 5 slim CFI-2000A01",
-  "price": 118200,
+  "price": 118400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3698,7 +3686,7 @@
  {
   "jan": "4948872415910",
   "name": "PlayStation 5 デジタル・エディション slim CFI-2000B01",
-  "price": 108000,
+  "price": 108200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3980,7 +3968,7 @@
  {
   "jan": "4549576247038",
   "name": "Xbox Series X デジタル エディション 1TB ロボット ホワイト　EP2-00708",
-  "price": 110500,
+  "price": 110800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4064,7 +4052,7 @@
  {
   "jan": "0815820025290",
   "name": "Meta Quest 3S 256GB",
-  "price": 62400,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4076,7 +4064,7 @@
  {
   "jan": "0814585023497",
   "name": "Steam Machine 512GB + Steam Controller",
-  "price": 180000,
+  "price": 180500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4100,7 +4088,7 @@
  {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 165300,
+  "price": 165500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4172,7 +4160,7 @@
  {
   "jan": "4902370554380",
   "name": "ゼノブレイド ディフィニティブエディション/Switch 2",
-  "price": 5700,
+  "price": 5500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4200,6 +4188,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4902370553291",
+  "name": "ゼルダの伝説 ブレス オブ ザ ワイルド/Switch 2",
+  "price": 6900,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4938833024800",
   "name": "Split Fiction/Switch 2",
   "price": 3500,
@@ -4221,6 +4215,12 @@
   "jan": "4988615211102",
   "name": "ゼルダ無双 封印戦記/Switch 2",
   "price": 6750,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4902370553901",
+  "name": "あつまれ どうぶつの森 /Switch 2",
+  "price": 5500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4250,7 +4250,7 @@
  {
   "jan": "4902370554243",
   "name": "ゼノブレイドクロス ディフィニティブエディション/Switch 2",
-  "price": 6000,
+  "price": 5700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4274,7 +4274,7 @@
  {
   "jan": "4902370553611",
   "name": "スーパーマリオギャラクシー+スーパーマリオギャラクシー 2",
-  "price": 5000,
+  "price": 4800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4466,7 +4466,7 @@
  {
   "jan": "4571304479312",
   "name": "グランド・セフト・オートVI /PS5",
-  "price": 7000,
+  "price": 7500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5004,6 +5004,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4549292137743",
+  "name": "CANON PowerShot G7 X Mark III ブラック",
+  "price": 168000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4549292137804",
   "name": "CANON PowerShot G7 X Mark III シルバー",
   "price": 151000,
@@ -5450,7 +5456,7 @@
  {
   "jan": "0840353970458",
   "name": "Google Fitbit Air Sleepy Blue",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5498,25 +5504,25 @@
  {
   "jan": "0840353943339",
   "name": "Google Fitbit Air Obsidian",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353943353",
   "name": "Google Fitbit Air Lavender",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353963986",
   "name": "Google Fitbit Air Berry",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840353943384",
   "name": "Google Fitbit Air Fog",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5888,13 +5894,13 @@
  {
   "jan": "0840414689626",
   "name": "Amazon Kindle 16GB ウベパープル 2026年発売",
-  "price": 24500,
+  "price": 24700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414601390",
   "name": "Amazon Kindle 16GB グラファイト 2026年発売",
-  "price": 24500,
+  "price": 25000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5942,7 +5948,7 @@
  {
   "jan": "0840268942847",
   "name": "New Kindle Paperwhite 16GB ブラック 2024年発売",
-  "price": 24600,
+  "price": 24800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -6206,13 +6212,13 @@
  {
   "jan": "4974305230478",
   "name": "象印 豪熱大火力 NW-YC10-BZ [スレートブラック]",
-  "price": 28000,
+  "price": 27000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4974305230492",
   "name": "象印 豪熱大火力 NW-YC10-WA [ホワイト]",
-  "price": 24000,
+  "price": 22500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -7104,18 +7110,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "4548736121683",
-  "name": "SONY α7C ILCE-7CL ズームレンズキット [シルバー]",
-  "price": 168000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4548736121676",
-  "name": "SONY α7C ILCE-7CL ズームレンズキット  [ブラック]",
-  "price": 175000,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "4548736074033",
   "name": "SONY サイバーショット DSC-RX10M4",
   "price": 163000,
@@ -7802,115 +7796,115 @@
  {
   "jan": "4549995737073",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJED4X/A [ライトゴールド・サンドスポーツバンド S/M]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737080",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEE4X/A [ライトゴールド・サンドスポーツバンド M/L]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737059",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEA4X/A [ブラック・ブラックスポーツバンド S/M]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737066",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEC4X/A [ブラック・ブラックスポーツバンド M/L]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737035",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJE74X/A [スペースグレイ・ネイビーブルースポーツバンド S/M]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737042",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJE94X/A [スペースグレイ・ネイビーブルースポーツバンド M/L]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737097",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEF4X/A [ダークブロンズ・オリーブスポーツバンド S/M]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737103",
   "name": "Apple Watch Series 12 GPSモデル 42mm MJEG4X/A [ダークブロンズ・オリーブスポーツバンド M/L]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737875",
   "name": "Apple Watch Series 12 GPSモデル 42mm MKDC4X/A [ダークブロンズ・ダークブロンズミラネーゼループ]",
-  "price": 59500,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737158",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEN4X/A [ライトゴールド・サンドスポーツバンド S/M]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737165",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEP4X/A [ライトゴールド・サンドスポーツバンド M/L]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737134",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEK4X/A [ブラック・ブラックスポーツバンド S/M]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737141",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEL4X/A [ブラック・ブラックスポーツバンド M/L]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737110",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEH4X/A [スペースグレイ・ネイビーブルースポーツバンド S/M]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737127",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEJ4X/A [スペースグレイ・ネイビーブルースポーツバンド M/L]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737172",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEQ4X/A [ダークブロンズ・オリーブスポーツバンド S/M]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737189",
   "name": "Apple Watch Series 12 GPSモデル 46mm MJEU4X/A [ダークブロンズ・オリーブスポーツバンド M/L]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737851",
   "name": "Apple Watch Series 12 GPSモデル 46mm MKD74X/A [ダークブロンズ・ダークブロンズミラネーゼループ S/M]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549995737868",
   "name": "Apple Watch Series 12 GPSモデル 46mm MKD84X/A [ダークブロンズ・ダークブロンズミラネーゼループ M/L]",
-  "price": 66500,
+  "price": 62500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10574,13 +10568,13 @@
  {
   "jan": "4904710451816",
   "name": "タイガー魔法瓶 土鍋ご泡火炊き JRT-A100-KS [墨黒]",
-  "price": 89000,
+  "price": 87000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4904710451823",
   "name": "タイガー魔法瓶 土鍋ご泡火炊き JRT-A100-WG [月白]",
-  "price": 88000,
+  "price": 84000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
