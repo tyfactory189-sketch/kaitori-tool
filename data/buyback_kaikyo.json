@@ -18,12 +18,6 @@
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
-  "jan": "4549995695557",
-  "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 128GB MJ6J4J/A スターライト",
-  "price": 105000,
-  "url": "https://www.mobile-ichiban.com/Prod/1"
- },
- {
   "jan": "4549995560084",
   "name": "iPad 11インチ 第11世代 Wi-Fi 128GB MD4A4J/A [ブルー]",
   "price": 66200,
@@ -134,25 +128,25 @@
  {
   "jan": "0840353958241",
   "name": "Google Pixel 11 Pro XL 256GB SIMフリー Canyon",
-  "price": 144000,
+  "price": 143000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "0840353958197",
   "name": "Google Pixel 11 Pro XL 256GB SIMフリー Olive",
-  "price": 144000,
+  "price": 143000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "0840353958142",
   "name": "Google Pixel 11 Pro XL 256GB SIMフリー Fog",
-  "price": 144000,
+  "price": 143000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "0840353957640",
   "name": "Google Pixel 11 Pro XL 256GB SIMフリー Obsidian",
-  "price": 144000,
+  "price": 143000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1293,6 +1287,12 @@
   "jan": "4549995556339",
   "name": "iPad Air 13インチ Wi-Fi 128GB 第7世代 MCNK4J/A スターライト",
   "price": 94000,
+  "url": "https://www.mobile-ichiban.com/Prod/1"
+ },
+ {
+  "jan": "4549995695557",
+  "name": "iPad mini 8.5インチ 第8世代 Wi-Fi 128GB MJ6J4J/A スターライト",
+  "price": 105000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3348,6 +3348,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4902370552195",
+  "name": "Nintendo Switch ニンテンドーサウンドクロック Alarmo",
+  "price": 10600,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4902370542929",
   "name": "Nintendo Switch Lite グレー",
   "price": 27600,
@@ -3372,27 +3378,21 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4948872416030",
+  "name": "PS5 ディスクドライブ(Slimモデル用) CFI-ZDD1J",
+  "price": 9300,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4549576275383",
   "name": "Xbox series x",
   "price": 123000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
-  "jan": "0815820024170",
-  "name": "Meta Quest 3 512GB",
-  "price": 92500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
   "jan": "0814585022803",
   "name": "Steam Controller",
   "price": 21500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "0814585022254",
-  "name": "Steam Deck OLED 512GB",
-  "price": 139800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3513,12 +3513,6 @@
   "jan": "4902370550504",
   "name": "Nintendo Switch Proコントローラー ゼルダの伝説 ティアーズ オブ ザ キングダムエディション",
   "price": 7100,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370552195",
-  "name": "Nintendo Switch ニンテンドーサウンドクロック Alarmo",
-  "price": 10600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3669,12 +3663,6 @@
   "jan": "4948872415934",
   "name": "PlayStation 5 slim CFI-2000A01",
   "price": 119500,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4948872416030",
-  "name": "PS5 ディスクドライブ(Slimモデル用) CFI-ZDD1J",
-  "price": 9300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4056,6 +4044,12 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "0815820024170",
+  "name": "Meta Quest 3 512GB",
+  "price": 92500,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "0814585023510",
   "name": "Steam Machine 512GB",
   "price": 160000,
@@ -4086,9 +4080,15 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "0814585022254",
+  "name": "Steam Deck OLED 512GB",
+  "price": 138800,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "0814585022308",
   "name": "Steam Deck OLED 1TB",
-  "price": 165800,
+  "price": 164800,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -7484,13 +7484,13 @@
  {
   "jan": "4549980857717",
   "name": "パナソニック HC-VX3-W [パールホワイト]",
-  "price": 89000,
+  "price": 85000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549980857700",
   "name": "パナソニック HC-VX3-K [レザーブラック]",
-  "price": 89000,
+  "price": 85000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
