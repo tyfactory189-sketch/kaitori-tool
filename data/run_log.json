@@ -1,62 +1,62 @@
 {
- "started": "2026-11-25T17:15+09:00",
+ "started": "2026-11-25T20:54+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1857,
+   "matched": 1846,
    "ambiguous": 0
   }
  },
  "x_hot": {
-  "posts": 6467,
-  "items": 526,
-  "updated": "2026-11-25T02:36:27.113Z",
+  "posts": 43,
+  "items": 8,
+  "updated": "2026-11-25T11:03:40.359Z",
   "stats": {
-   "momonnusan": "初回 1207件",
-   "MATCHANFIRE": "初回 1148件",
-   "TKC_sedori": "初回 0件",
-   "kitagawaKeikoji": "初回 548件",
-   "mappy_fukugyo": "初回 899件",
-   "sedori_osaka": "初回 335件",
-   "sutti_kun_01": "初回 688件",
-   "okaidoku_77": "初回 847件",
-   "pepusandeth": "初回 795件"
+   "momonnusan": "初回 5件",
+   "MATCHANFIRE": "初回 5件",
+   "TKC_sedori": "初回 5件",
+   "kitagawaKeikoji": "初回 5件",
+   "mappy_fukugyo": "初回 5件",
+   "sedori_osaka": "初回 4件",
+   "sutti_kun_01": "初回 6件",
+   "okaidoku_77": "初回 3件",
+   "pepusandeth": "初回 5件"
   }
  },
  "amazon": {
-  "targets": 17400,
+  "targets": 17246,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 16221,
-  "done": 4374,
+  "targets": 12506,
+  "done": 6824,
   "failed": 0,
   "last_error": "",
   "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2556,
+  "done": 3976,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 33,
+  "skipped_not_due": 1784,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 4034,
-  "changed": 28,
-  "failed": 2,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/ksdenki/4550556178815.html: HTTP 404 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images",
+  "checked": 1317,
+  "changed": 18,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-25T19:55+09:00",
- "items": 4778
+ "finished": "2026-11-25T23:34+09:00",
+ "items": 4702
 }
