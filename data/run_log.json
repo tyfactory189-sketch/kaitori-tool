@@ -1,5 +1,5 @@
 {
- "started": "2026-11-25T08:50+09:00",
+ "started": "2026-11-25T17:15+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
@@ -8,19 +8,19 @@
   }
  },
  "x_hot": {
-  "posts": 7234,
-  "items": 535,
-  "updated": "2026-11-24T11:40:47.960Z",
+  "posts": 6467,
+  "items": 526,
+  "updated": "2026-11-25T02:36:27.113Z",
   "stats": {
-   "momonnusan": "初回 1227件",
+   "momonnusan": "初回 1207件",
    "MATCHANFIRE": "初回 1148件",
-   "TKC_sedori": "初回 718件",
-   "kitagawaKeikoji": "初回 567件",
-   "mappy_fukugyo": "初回 898件",
-   "sedori_osaka": "初回 334件",
-   "sutti_kun_01": "初回 694件",
-   "okaidoku_77": "初回 846件",
-   "pepusandeth": "初回 802件"
+   "TKC_sedori": "初回 0件",
+   "kitagawaKeikoji": "初回 548件",
+   "mappy_fukugyo": "初回 899件",
+   "sedori_osaka": "初回 335件",
+   "sutti_kun_01": "初回 688件",
+   "okaidoku_77": "初回 847件",
+   "pepusandeth": "初回 795件"
   }
  },
  "amazon": {
@@ -31,15 +31,15 @@
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 16260,
-  "done": 4340,
+  "targets": 16221,
+  "done": 4374,
   "failed": 0,
   "last_error": "",
   "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2557,
+  "done": 2556,
   "failed": 0,
   "errors": {},
   "last_error": "",
@@ -50,13 +50,13 @@
   "first_429": ""
  },
  "item_check": {
-  "checked": 4016,
-  "changed": 33,
-  "failed": 0,
-  "last_error": "",
+  "checked": 4034,
+  "changed": 28,
+  "failed": 2,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/ksdenki/4550556178815.html: HTTP 404 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/images",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-25T11:30+09:00",
- "items": 4767
+ "finished": "2026-11-25T19:55+09:00",
+ "items": 4778
 }
