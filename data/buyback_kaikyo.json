@@ -3326,7 +3326,7 @@
  {
   "jan": "4902370553024",
   "name": "Nintendo Switch 2 国内版",
-  "price": 54200,
+  "price": 54300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3344,7 +3344,7 @@
  {
   "jan": "4902370548495",
   "name": "Nintendo Switch (有機ELモデル) ホワイト",
-  "price": 42200,
+  "price": 42400,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3362,19 +3362,19 @@
  {
   "jan": "4948872417525",
   "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ブラック リミテッドエディション CFI-ZCT2JZH",
-  "price": 14200,
+  "price": 14500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872417419",
   "name": "PlayStation 5 デジタル・エディション 日本語専用 CFI-2200B01 [825GB]",
-  "price": 50000,
+  "price": 50200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872417075",
   "name": "PlayStation 5 Pro CFI-7100B01 2TB 2025版",
-  "price": 222000,
+  "price": 223000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3620,7 +3620,7 @@
  {
   "jan": "4948872417501",
   "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ホワイト リミテッドエディション CFI-ZCT2JZI",
-  "price": 14200,
+  "price": 14500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3650,19 +3650,19 @@
  {
   "jan": "4948872850391",
   "name": "PlayStation 5 Ghost of Yoteiゴールド リミテッドエディション CFIJ-10029",
-  "price": 119700,
+  "price": 120200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872416320",
   "name": "PlayStation 5 Pro CFI-7000B01 2TB",
-  "price": 222000,
+  "price": 223000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872415934",
   "name": "PlayStation 5 slim CFI-2000A01",
-  "price": 119700,
+  "price": 120200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3674,7 +3674,7 @@
  {
   "jan": "4948872415910",
   "name": "PlayStation 5 デジタル・エディション slim CFI-2000B01",
-  "price": 109500,
+  "price": 110200,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3686,13 +3686,13 @@
  {
   "jan": "4948872016940",
   "name": "PlayStation 5 DualSense  slim ダブルパック CFIJ-10018",
-  "price": 122000,
+  "price": 122500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872016957",
   "name": "PlayStation 5 デジタル・エディション DualSense  slim CFIJ-10019 ダブルパック",
-  "price": 111500,
+  "price": 112500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4194,6 +4194,18 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4902370553413",
+  "name": "ドンキーコング バナンザ /Switch 2",
+  "price": 6900,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4595057030378",
+  "name": "Lies of P：コンプリート エディション /Switch２",
+  "price": 5600,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4938833024800",
   "name": "Split Fiction/Switch 2",
   "price": 3500,
@@ -4203,12 +4215,6 @@
   "jan": "4974365870584",
   "name": "龍が如く０ 誓いの場所 Director’s Cut/Switch 2",
   "price": 3200,
-  "url": "https://www.mobile-ichiban.com/Prod/2"
- },
- {
-  "jan": "4902370553413",
-  "name": "ドンキーコング バナンザ /Switch 2",
-  "price": 6900,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4982,7 +4988,7 @@
  {
   "jan": "4549292119060",
   "name": "Canon PowerShot SX740 HS シルバー",
-  "price": 70500,
+  "price": 70000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5000,7 +5006,7 @@
  {
   "jan": "4549292119008",
   "name": "CANON PowerShot SX740 HS ブラック",
-  "price": 76500,
+  "price": 76000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5348,7 +5354,7 @@
  {
   "jan": "6977644762387",
   "name": "Insta360 X5 ブラック",
-  "price": 58000,
+  "price": 55000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {

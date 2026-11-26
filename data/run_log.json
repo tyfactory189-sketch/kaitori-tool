@@ -1,9 +1,9 @@
 {
- "started": "2026-11-26T20:56+09:00",
+ "started": "2026-11-27T01:45+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1848,
+   "matched": 1850,
    "ambiguous": 0
   }
  },
@@ -24,39 +24,39 @@
   }
  },
  "amazon": {
-  "targets": 17235,
+  "targets": 17234,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "rakuten": {
-  "targets": 3298,
-  "done": 3298,
+  "targets": 8917,
+  "done": 4386,
   "failed": 0,
   "last_error": "",
-  "stopped": ""
+  "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 3970,
+  "done": 2573,
   "failed": 0,
   "errors": {},
   "last_error": "",
   "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 6366,
+  "skipped_not_due": 6155,
   "limited_429": 0,
   "first_429": ""
  },
  "item_check": {
-  "checked": 2135,
-  "changed": 14,
-  "failed": 0,
-  "last_error": "",
+  "checked": 3606,
+  "changed": 29,
+  "failed": 1,
+  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/y-kojima/0840414659148.html: HTTP 404 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/image",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-26T23:36+09:00",
- "items": 4697
+ "finished": "2026-11-27T04:25+09:00",
+ "items": 4754
 }
