@@ -11,7 +11,7 @@
 
 環境変数:
   YAHOO_APPID       Yahoo!デベロッパーのClient ID（必須）
-  MIN_BUY           Yahoo照合する最低買取価格（既定 2000）
+  MIN_BUY           Yahoo照合する最低買取価格（既定 800。500円券タブの少額商品用）
   YAHOO_BUDGET_MIN  1回の実行でYahoo照合に使う最大分数（既定 240）
 """
 import argparse
@@ -407,12 +407,16 @@ def load_watch():
     return {str(w["jan"]): w for w in items if str(w.get("jan", "")).isdigit()}
 
 
+# 少額の商品は500円券などの固定額で逆転するので、その分（円）は高くても残しておく
+KEEP_SLACK = int(os.environ.get("KEEP_SLACK", "600"))
+
+
 def trim_offers(offers, buy, watched=False):
     """利益の見込みがない出品を落とし、上位だけ残す（ウォッチ商品は価格に関係なく残す）。"""
     if watched or buy <= 0:
         return [o for o in offers if not yahoo.EXCLUDE.search(o.get("n", "")) and not yahoo.SKIP_ITEM.search(o.get("n", ""))][:KEEP_OFFERS]
     keep = [o for o in offers
-            if o["p"] - o.get("pt", 0) <= buy * KEEP_RATIO and not yahoo.EXCLUDE.search(o.get("n", "")) and not yahoo.SKIP_ITEM.search(o.get("n", ""))]
+            if o["p"] - o.get("pt", 0) <= buy * KEEP_RATIO + KEEP_SLACK and not yahoo.EXCLUDE.search(o.get("n", "")) and not yahoo.SKIP_ITEM.search(o.get("n", ""))]
     return keep[:KEEP_OFFERS]
 
 
@@ -477,7 +481,7 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     for jan, rec in by_jan.items():
         top = top_buy(rec)
         car = is_car(rec)
-        if top < (1000 if car else min_buy) or jan in watch:
+        if top < (min(800, min_buy) if car else min_buy) or jan in watch:
             continue
         e = cache.get(jan, {})
         if len(jan) == 12 and e.get("r") == 9.9 and not e.get("o"):
@@ -589,7 +593,7 @@ def update_rakuten(by_jan, cache, app_id, access_key, min_buy, watch):
     for jan, rec in by_jan.items():
         top = top_buy(rec)
         car = is_car(rec)
-        if top < (1000 if car else min_buy) or jan in watch:
+        if top < (min(800, min_buy) if car else min_buy) or jan in watch:
             continue
         e = cache.get(jan, {})
         try:
@@ -828,7 +832,7 @@ def main():
         import threading as _th
         def _az():
             try:
-                az_box["c"] = update_amazon(by_jan, acache, (az[0], az[1], az[2] or "3.3", az[3]), int(os.environ.get("MIN_BUY", "2000")), watch)
+                az_box["c"] = update_amazon(by_jan, acache, (az[0], az[1], az[2] or "3.3", az[3]), int(os.environ.get("MIN_BUY", "800")), watch)
             except Exception as e:  # noqa: BLE001
                 log(f"[amazon] エラー: {e}")
                 RUN_LOG["amazon"] = {"error": str(e)[:300]}
@@ -839,7 +843,7 @@ def main():
         import threading
         def _rk():
             try:
-                rk_box["c"] = update_rakuten(by_jan, rcache, rk_id, rk_key, int(os.environ.get("MIN_BUY", "2000")), watch)
+                rk_box["c"] = update_rakuten(by_jan, rcache, rk_id, rk_key, int(os.environ.get("MIN_BUY", "800")), watch)
             except Exception as e:  # noqa: BLE001
                 log(f"[rakuten] エラー: {e}")
                 RUN_LOG["rakuten"] = {"error": str(e)[:300]}
@@ -858,7 +862,7 @@ def main():
             log(f"[model] エラー: {e}")
         cache = update_yahoo(
             by_jan, cache, appid,
-            int(os.environ.get("MIN_BUY", "2000")),
+            int(os.environ.get("MIN_BUY", "800")),
             int(os.environ.get("YAHOO_BUDGET_MIN", "160")),
             watch,
         )

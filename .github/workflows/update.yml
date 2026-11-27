@@ -53,7 +53,7 @@ jobs:
           AMAZON_CREDENTIAL_SECRET: ${{ secrets.AMAZON_CREDENTIAL_SECRET }}
           AMAZON_CREDENTIAL_VERSION: ${{ secrets.AMAZON_CREDENTIAL_VERSION }}
           AMAZON_PARTNER_TAG: ${{ secrets.AMAZON_PARTNER_TAG }}
-          MIN_BUY: ${{ vars.MIN_BUY || '2000' }}
+          MIN_BUY: ${{ vars.MIN_BUY || '800' }}
           YAHOO_BUDGET_MIN: ${{ vars.YAHOO_BUDGET_MIN || '300' }}
         run: |
           if [ "${{ inputs.skip_buyback }}" = "true" ]; then

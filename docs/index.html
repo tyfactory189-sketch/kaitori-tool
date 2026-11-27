@@ -84,6 +84,7 @@ td:first-child,th:first-child{text-align:left;white-space:normal}
 .budget-login{padding:16px}.budget-login form{margin-top:10px}.budget-login input{font:inherit;padding:6px 8px}
 .budget-ctl{margin-bottom:10px;padding:8px 12px;font-size:13px}.budget-ctl button{margin-right:4px}
 .chip.st{background:#0b6e4f;color:#fff;border-color:#0b6e4f;font-size:11px;padding:0 6px}
+.k5bar{padding:8px 12px;margin-bottom:8px;font-size:13px}.k5bar input{width:80px;font:inherit;padding:2px 6px}
 .xaddrow{margin-top:8px;display:flex;gap:6px;align-items:center;flex-wrap:wrap}.xaddrow input{font:inherit;padding:4px 8px;min-width:220px}.xdel{border:0;background:none;color:#fff;cursor:pointer;padding:0 0 0 2px;font-size:11px}
 .xcand{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}.xcand td,.xcand th{border-top:1px solid var(--line,#ddd);padding:4px 6px;text-align:left;vertical-align:top}
 .chip.xc{background:#111;color:#fff;border-color:#111;font-size:11px;padding:0 6px;text-decoration:none}
@@ -179,12 +180,14 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 </aside>
 <section>
   <div class="toolbar">
+    <div class="panel k5bar" id="k5Bar" hidden>🎫 <b>500円券タブ</b>：券 <input type="number" id="k5Amt" step="100" min="0"> 円 ／ 使える購入額 <input type="number" id="k5Min" step="100" min="0"> 円以上 ／ 商品価格 <input type="number" id="k5Max" step="500" min="0"> 円まで ／ 利益 <input type="number" id="k5Profit" step="50"> 円以上 <span class="calc">（Yahoo!ショッピングの出品だけ。券の金額を差し引いて計算）</span></div>
     <div class="btns" id="mktBtns" style="margin-bottom:6px"><button data-mkt="yahoo">Yahoo!ショッピング</button><button data-mkt="rakuten">楽天市場</button><button data-mkt="amazon">Amazon</button><button data-mkt="store">家電量販店</button></div>
     <div class="btns" id="sortBtns">
       <button data-sort="profit" class="on">お得額順</button>
       <button data-sort="rate">お得率順</button>
       <button data-sort="buy">買取価格順</button>
       <span class="btns" id="sizeBtns"><button data-size="all">全部</button><button data-size="normal">通常</button><button data-size="large">大型</button><button data-size="tool">電動工具</button><button data-size="car">カー用品</button></span>
+      <button class="wbtn" id="k5Btn" title="Yahooの500円券を使う前提で、少額の商品を探す">🎫 500円券</button>
       <button class="wbtn" id="xOnly" title="Xの参考アカウントが取り上げた商品だけ表示。参考アカウントの追加・削除もここで">𝕏 話題</button>
       <button class="wbtn" id="watchOnly" title="ウォッチリストの商品だけ表示（差益がマイナスでも表示）">★ ウォッチのみ</button>
       <button class="wbtn" id="budgetView" title="残高シートの金額ごとに、その金額で買える利益の出る商品を表示">💴 残高別</button>
@@ -203,7 +206,7 @@ button.wbtn.on{background:#e0a000;border-color:#e0a000;color:#1d1d1b}
 const SCANNER='https://hikaku-342505.firebaseapp.com/search/';
 // 新品以外・別物の出品を除外（yahoo.py の EXCLUDE と同じ。データ更新前でもすぐ効くように画面側でも適用）
 const EXCLUDE=/フラストレーション|\bFFP\b|ＦＦＰ|簡易箱|簡易パッケージ|簡易パック|白箱|バルク|キットばらし|キットバラシ|キットばらし品|キット分解|キットから|ばらし品|バラし品|片方|[LRＬＲ]\s?のみ|左のみ|右のみ|L\s?or\s?R|左右選べる|左右どちらか|バンドのみ|ベルトのみ|専用バンド|替えバンド|交換バンド|交換ベルト|ストラップのみ|リモコンのみ|セットばらし|セットバラシ|セットバラ|本体同梱品|左または右|左右どちらか|福袋|オリパ|(?<!レビュー)くじ|ガチャ|中身ランダム|ランダム発送|ランダム封入|PSA\s?\d+|鑑定品|延長申込|延長申し込み|延長料金|延長プラン|無制限プラン|料金プラン|専用ページ|\d+\s*(?:日|日間|ヶ月|ケ月|カ月|か月|ヵ月)(?:間)?(?:レンタル|プラン|延長|利用)|貸出|貸し出し|サブスク|保証開始|箱不良|箱痛み|箱傷み|箱ダメージ|シュリンク破れ|保証期間開始|印付|印あり|印有り?|捺印|押印済|[SABCDJＳＡＢＣＤＪ][+＋]?ランク|ランク[:：]?\s?[SABCDJＳＡＢＣＤＪ](?![a-z])|[SABCDＳＡＢＣＤ]級品|[SABCDＳＡＢＣＤ]品(?=】|\]|）|\))|[SABCDＳＡＢＣＤ][+＋]?グレード|グレード[SABCDＳＡＢＣＤ]|ほぼ新品|ほぼ未使用|新品同様|新同品|未使用に近い|極美品|超美品|美品|良品|使用感|傷あり|キズあり|難あり|パーツ|部品|ドラグノブ|替刃|替え刃|交換用|保護フィルム|互換|替えブラシ|替ブラシ|中古|ユーズド|USED|訳あり|わけあり|アウトレット|展示品|(?<!未)開封|ジャンク|レンタル|外箱傷|箱傷|箱つぶれ|箱潰れ|再生新品|再生品|お預かり再生|整備済|整備品|リファービッシュ|リファビッシュ|Renewed|リサイクル|海外版|並行輸入|オリジナルセット|独自セット|在庫なし|在庫切れ|取り寄せ|取寄せ|入荷待ち|入荷次第|受注生産|左耳|右耳|片耳|バラ売り|ケースのみ|充電ケース単品|箱のみ|空箱|付属品のみ/i;
-const DEFAULTS={stCoupon:false,azRate:0,market:'yahoo',rkRate:3,mOn:false,mShops:10,mCap:7000,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
+const DEFAULTS={k5:false,k5Amt:500,k5Min:1000,k5Max:5000,k5Profit:300,stCoupon:false,azRate:0,market:'yahoo',rkRate:3,mOn:false,mShops:10,mCap:7000,budgetHide:'an3,an4,an5,an6',useUser:true,step:8,extra:0,premium:true,ptval:100,cpType:'none',cpVal:0,cpMin:0,cpCap:0,
   shipAdd:800,sendCost:0,sendCostL:0,sendCostT:0,sendCostC:0,carWords:'カー用品|カーナビ|ポータブルナビ|彩速ナビ|楽ナビ|サイバーナビ|ストラーダ|カロッツェリア|carrozzeria|ドライブレコーダー|ドラレコ|レーダー探知|レーザー探知|ETC(?:2\\.0|車載器|-|\\d)|カーオーディオ|ディスプレイオーディオ|カースピーカー|カーステレオ|車載|リアビジョン|ビッグX|オットキャスト|Ottocast|OttoAibox|CarPlay|バックカメラ|ジャンプスターター|カーメイト|コムテック|COMTEC|セルスター|CELLSTAR|ALPINE(?!\\s?LOOP)|アルパイン(?!ループ)|MDV-|AVIC-|DMH-|DEH-|MVH-|DPX-|DRV-|(?<!自転)車用',toolWords:'マキタ|makita|HiKOKI|ハイコーキ|日立工機|BOSCH|ボッシュ|Milwaukee|ミルウォーキー|DEWALT|デウォルト|京セラ インダストリアル|RYOBI|リョービ|インパクトドライバ|インパクトレンチ|ドリルドライバ|振動ドリル|ハンマドリル|ハンマードリル|丸ノコ|丸のこ|マルノコ|グラインダ|サンダ|ジグソー|レシプロソー|チェーンソー|チェンソー|草刈機|刈払機|ヘッジトリマ|ブロワ|マルチツール|高圧洗浄機|工進|KOSHIN|高儀|プロ用',largeWords:'食洗機|食洗器|食器洗い|電子レンジ|オーブンレンジ|スチームオーブン|オーブン|冷蔵庫|冷凍庫|洗濯機|衣類乾燥機|エアコン|テレビ|空気清浄機|除湿機|ファンヒーター|ストーブ|マッサージチェア|ウォーターサーバー',size:'all',q:'',minProfit:0,minBuy:0,freeOnly:false,noProof:false,noMulti:true,noMismatch:true,sort:'profit',srcOff:[]};
 const store={get(){try{return JSON.parse(localStorage.getItem('kts')||'{}')}catch(e){return {}}},
   set(v){try{localStorage.setItem('kts',JSON.stringify(v))}catch(e){}}};
@@ -215,7 +218,7 @@ const $=id=>document.getElementById(id);
 const yen=n=>(n<0?'-':'')+'¥'+Math.abs(Math.round(n)).toLocaleString('ja-JP');
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-const NUMS=['azRate','rkRate','mShops','mCap','step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','sendCostL','sendCostT','sendCostC','minProfit','minBuy'];
+const NUMS=['k5Amt','k5Min','k5Max','k5Profit','azRate','rkRate','mShops','mCap','step','extra','ptval','cpVal','cpMin','cpCap','shipAdd','sendCost','sendCostL','sendCostT','sendCostC','minProfit','minBuy'];
 let LARGE_RE=null,TOOL_RE=null,CAR_RE=null;
 const mkRe=w=>{try{return w&&w.trim()?new RegExp(w.trim().replace(/[｜,、]/g,'|').replace(/^\|+|\|+$/g,''),'i'):null}catch(e){return null}};
 function largeRe(){LARGE_RE=mkRe(S.largeWords);TOOL_RE=mkRe(S.toolWords);CAR_RE=mkRe(S.carWords)}
@@ -232,6 +235,7 @@ function syncForm(){
   document.querySelectorAll('#sortBtns button[data-sort]').forEach(b=>b.classList.toggle('on',b.dataset.sort===S.sort));
   $('watchOnly').classList.toggle('on',!!S.watchOnly);
   $('xOnly').classList.toggle('on',!!S.xOnly);
+  $('k5Btn').classList.toggle('on',!!S.k5);$('k5Bar').hidden=!S.k5;
   $('budgetView').classList.toggle('on',!!S.budget);
   $('budgetView').hidden=(S.market||'yahoo')!=='yahoo';
   document.querySelectorAll('#mktBtns button').forEach(b=>b.classList.toggle('on',b.dataset.mkt===(S.market||'yahoo')));
@@ -285,7 +289,9 @@ function shipOf(o,base){
 }
 // 1つの出品について実質価格を計算
 // 選んでいる仕入先（Yahoo・楽天・Amazon）の出品か
-const inMarket=o=>({rakuten:o.src==='r',amazon:o.src==='a',store:o.src==='s'})[S.market]??(!o.src||o.src==='y');
+const inMarket=o=>S.k5?(!o.src||o.src==='y'):({rakuten:o.src==='r',amazon:o.src==='a',store:o.src==='s'})[S.market]??(!o.src||o.src==='y');
+// 「500円券」タブ：Yahooの出品に金券（固定額）を当てる（使える最低購入額以上のとき。通常クーポンとは大きい方）
+const k5=(base,cp)=>S.k5&&base>=(S.k5Min||0)?Math.max(cp,Math.min(S.k5Amt||0,base)):cp;
 function evalOffer(o){
   if(o.src==='s'){ // 家電量販店：お店のポイント（1P=1円で評価）。クーポンは設定で差し引くか選ぶ
     const base=o.p,cp=S.stCoupon?(o.cp||0):0,paid=base-cp,ship=0,pts=o.pt||0;
@@ -307,6 +313,7 @@ function evalOffer(o){
   if(S.useUser&&o.yu){ // ログイン状態で確認した価格・ポイント
     const base=o.yu.p;let cp=0;
     if(S.cpType!=='none'&&base>=S.cpMin){cp=S.cpType==='pct'?Math.floor(base*S.cpVal/100):S.cpVal;if(S.cpCap>0)cp=Math.min(cp,S.cpCap)}
+    cp=k5(base,cp);
     const paid=base-cp,sh=shipOf(o,base),ship=sh.ship;
     const pts=Math.round(o.yu.pt*(base?paid/base:1))+Math.floor(paid/1.1*S.extra/100);
     return {o,base,cp,paid,ship,shipEst:sh.est,shipCond:sh.cond,storePt:0,userPt:pts,pts,eff:paid+ship-pts*S.ptval/100,user:true};
@@ -317,6 +324,7 @@ function evalOffer(o){
     cp=S.cpType==='pct'?Math.floor(base*S.cpVal/100):S.cpVal;
     if(S.cpCap>0)cp=Math.min(cp,S.cpCap);
   }
+  cp=k5(base,cp);
   const paid=base-cp;
   const sh=shipOf(o,base),ship=sh.ship;
   const storePt=(S.premium&&o.ptp>0)?o.ptp:o.pt;
@@ -355,7 +363,10 @@ function compute(){
     const kind=kindOf(it),lg=kind;
     if(S.size!=='all'&&S.size!==kind)continue;
     const profit=best.p-top.eff-sendCostOf(it);
-    if(!W&&profit<S.minProfit)continue;
+    if(S.k5){ // 500円券タブ：少額の商品だけ・利益は「お得額（券あり）」で判定
+      if(top.base>(S.k5Max||Infinity)||top.base<(S.k5Min||0))continue;
+      if(!W&&profit<(S.k5Profit||0))continue;
+    }else if(!W&&profit<S.minProfit)continue;
     if(q&&!(it.name.toLowerCase().includes(q)||it.jan.includes(q)||offers.some(e=>e.o.s.toLowerCase().includes(q)||e.o.n.toLowerCase().includes(q))))continue;
     rows.push({it,buys,best,offers,top,profit,rate:profit/(top.paid+top.ship),multi,lg});
   }
@@ -509,11 +520,12 @@ function renderMeta(){
   $('srcBoxes').innerHTML=Object.entries(DATA.sources).map(([k,s])=>`<label><input type="checkbox" value="${k}"> ${esc(s.label)}</label>`).join('');
 }
 
-document.addEventListener('input',e=>{if(e.target.closest('#settings'))readForm()});
-document.addEventListener('change',e=>{if(e.target.closest('#settings'))readForm()});
+document.addEventListener('input',e=>{if(e.target.closest('#settings')||e.target.closest('#k5Bar'))readForm()});
+document.addEventListener('change',e=>{if(e.target.closest('#settings')||e.target.closest('#k5Bar'))readForm()});
 $('sortBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-sort]');if(!b)return;S.sort=b.dataset.sort;store.set(S);syncForm();shown=100;render()});
 $('more').onclick=()=>{shown+=100;render()};
 $('sizeBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-size]');if(!b)return;S.size=b.dataset.size;store.set(S);syncForm();shown=100;render()});
+$('k5Btn').onclick=()=>{S.k5=!S.k5;if(S.k5)S.market='yahoo';store.set(S);syncForm();shown=100;render()};
 $('xOnly').onclick=()=>{S.xOnly=!S.xOnly;store.set(S);syncForm();shown=100;render()};
 $('watchOnly').onclick=()=>{S.watchOnly=!S.watchOnly;store.set(S);syncForm();shown=100;render()};
 $('mktBtns').addEventListener('click',e=>{const b=e.target.closest('button[data-mkt]');if(!b)return;S.market=b.dataset.mkt;store.set(S);syncForm();shown=100;render()});
