@@ -3,21 +3,21 @@
   "error": "2026-10-23T06:28+09:00 GET失敗 https://kadenkaitori.tokyo/category/: HTTP Error 403: "
  },
  "shouten": {
-  "count": 2431,
-  "updated": "2026-11-27T11:30+09:00",
+  "count": 2436,
+  "updated": "2026-11-28T00:18+09:00",
   "error": ""
  },
  "morimori": {
   "error": "2026-10-23T07:24+09:00 GET失敗 https://www.morimori-kaitori.jp/: Failed to perform, curl: (28) Connection timed out after 30001 milliseconds. See https://curl.se/libcurl/c/libcurl-errors.html first for more details."
  },
  "kaikyo": {
-  "count": 2058,
-  "updated": "2026-11-27T11:32+09:00",
+  "count": 2059,
+  "updated": "2026-11-28T00:20+09:00",
   "error": ""
  },
  "earth": {
   "count": 5485,
-  "updated": "2026-11-27T11:37+09:00",
+  "updated": "2026-11-28T00:25+09:00",
   "error": ""
  }
 }
