@@ -1,28 +1,28 @@
 {
- "started": "2026-11-27T10:40+09:00",
+ "started": "2026-11-27T13:20+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1871,
-   "by_yahoo": 22,
+   "matched": 1876,
+   "by_yahoo": 27,
    "ambiguous": 0,
-   "unmatched": 2667
+   "unmatched": 2662
   }
  },
  "x_hot": {
-  "posts": 82,
-  "items": 15,
-  "updated": "2026-11-26T11:03:37.439Z",
+  "posts": 110,
+  "items": 18,
+  "updated": "2026-11-27T02:03:35.927Z",
   "stats": {
    "momonnusan": "初回 5件",
    "MATCHANFIRE": "初回 5件",
    "TKC_sedori": "初回 5件",
    "kitagawaKeikoji": "初回 5件",
-   "mappy_fukugyo": "初回 5件",
-   "sedori_osaka": "初回 5件",
-   "sutti_kun_01": "初回 6件",
-   "okaidoku_77": "初回 3件",
-   "pepusandeth": "初回 5件"
+   "mappy_fukugyo": "初回 6件",
+   "sedori_osaka": "初回 4件",
+   "sutti_kun_01": "初回 4件",
+   "okaidoku_77": "初回 4件",
+   "pepusandeth": "初回 6件"
   }
  },
  "amazon": {
@@ -34,38 +34,36 @@
  },
  "model_lookup": {
   "todo": 2513,
-  "searched": 30,
-  "found": 21
+  "searched": 35,
+  "found": 26
  },
  "rakuten": {
-  "targets": 9837,
-  "done": 4373,
+  "targets": 5890,
+  "done": 5890,
   "failed": 0,
   "last_error": "",
-  "stopped": "時間切れ（残りは次回）"
+  "stopped": ""
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2511,
-  "failed": 1,
-  "errors": {
-   "HTTP 400": 1
-  },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "first_400": "10458977962789: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "done": 3921,
+  "failed": 0,
+  "errors": {},
+  "last_error": "",
+  "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 2771,
+  "skipped_not_due": 4612,
   "limited_429": 1,
   "first_429": "0件目のあと（開始から5秒）"
  },
  "item_check": {
-  "checked": 2339,
-  "changed": 14,
-  "failed": 1,
-  "last_error": "GET失敗 https://store.shopping.yahoo.co.jp/saedaonline/4549292119060.html: HTTP 404 '<!DOCTYPE html><html><head><meta charSet=\"utf-8\" data-next-head=\"\"/><link rel=\"stylesheet\" href=\"https://s.yimg.jp/im",
+  "checked": 2433,
+  "changed": 23,
+  "failed": 0,
+  "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-27T13:20+09:00",
- "items": 4823
+ "finished": "2026-11-27T16:01+09:00",
+ "items": 5179
 }
