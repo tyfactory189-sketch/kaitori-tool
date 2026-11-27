@@ -452,13 +452,13 @@
  {
   "jan": "4580038873099",
   "name": "OPPO Reno15 A 128GB SIMフリー [トワイライトネイビー]",
-  "price": 43000,
+  "price": 42000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4580038873082",
   "name": "OPPO Reno15 A 128GB SIMフリー [オーロラブルー]",
-  "price": 43000,
+  "price": 42000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -644,7 +644,7 @@
  {
   "jan": "4986773256652",
   "name": "Galaxy S26 256GB SIMフリー [ブラック]",
-  "price": 120000,
+  "price": 110000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -1346,7 +1346,7 @@
  {
   "jan": "4549995504460",
   "name": "Apple Pencil Pro MX2D3ZA/A",
-  "price": 17500,
+  "price": 17000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -2120,19 +2120,19 @@
  {
   "jan": "4986773256690",
   "name": "Galaxy S26 256GB SIMフリー [コバルトバイオレット]",
-  "price": 120000,
+  "price": 110000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4986773256676",
   "name": "Galaxy S26 256GB SIMフリー [スカイブルー]",
-  "price": 120000,
+  "price": 110000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
   "jan": "4986773256713",
   "name": "Galaxy S26 256GB SIMフリー [ホワイト]",
-  "price": 120000,
+  "price": 110000,
   "url": "https://www.mobile-ichiban.com/Prod/1"
  },
  {
@@ -3362,7 +3362,7 @@
  {
   "jan": "4948872417525",
   "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ブラック リミテッドエディション CFI-ZCT2JZH",
-  "price": 14500,
+  "price": 14600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3386,7 +3386,7 @@
  {
   "jan": "4549576275383",
   "name": "Xbox series x",
-  "price": 123000,
+  "price": 123300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3620,7 +3620,7 @@
  {
   "jan": "4948872417501",
   "name": "PS5 ワイヤレスコントローラー “グランド・セフト・オートVI” ホワイト リミテッドエディション CFI-ZCT2JZI",
-  "price": 14500,
+  "price": 14600,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3704,13 +3704,13 @@
  {
   "jan": "4948872016490",
   "name": "PlayStation VR2 CFIJ-17000",
-  "price": 46500,
+  "price": 46700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4948872016612",
   "name": "PlayStation VR2 \"Horizon Call of the Mountain\" 同梱版 CFIJ-17001",
-  "price": 46500,
+  "price": 46700,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -3956,7 +3956,7 @@
  {
   "jan": "4549576247038",
   "name": "Xbox Series X デジタル エディション 1TB ロボット ホワイト　EP2-00708",
-  "price": 111800,
+  "price": 112300,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4280,7 +4280,7 @@
  {
   "jan": "4902370553611",
   "name": "スーパーマリオギャラクシー+スーパーマリオギャラクシー 2",
-  "price": 4800,
+  "price": 4500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4598,7 +4598,7 @@
  {
   "jan": "4547410370003",
   "name": "FUJIFILM チェキスクエア用 フィルム 20枚 WW2",
-  "price": 2450,
+  "price": 2430,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4952,13 +4952,13 @@
  {
   "jan": "4549292137743",
   "name": "CANON PowerShot G7 X Mark III ブラック",
-  "price": 168000,
+  "price": 169000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4549292137804",
   "name": "CANON PowerShot G7 X Mark III シルバー",
-  "price": 149000,
+  "price": 147000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -4988,7 +4988,7 @@
  {
   "jan": "4549292119060",
   "name": "Canon PowerShot SX740 HS シルバー",
-  "price": 70000,
+  "price": 68000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5006,7 +5006,7 @@
  {
   "jan": "4549292119008",
   "name": "CANON PowerShot SX740 HS ブラック",
-  "price": 76000,
+  "price": 74000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5622,6 +5622,18 @@
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
+  "jan": "4549576249797",
+  "name": "Microsoft Office Home & Business 2024",
+  "price": 32000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
+  "jan": "4549576250618",
+  "name": "Microsoft Office Home 2024 POSA",
+  "price": 31000,
+  "url": "https://www.mobile-ichiban.com/Prod/2"
+ },
+ {
   "jan": "4573626005101",
   "name": "NEC LAVIE Tab Lite TL103/KAL PC-TL103KAL [ポーラブルー]",
   "price": 21000,
@@ -5696,31 +5708,31 @@
  {
   "jan": "4548736171763",
   "name": "SONY WF-1000XM6 BZ ブラック",
-  "price": 33800,
+  "price": 33500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4548736171817",
   "name": "SONY WF-1000XM6 SZ プラチナシルバー",
-  "price": 33800,
+  "price": 33500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4548736143470",
   "name": "SONY WF-1000XM5 [ブラック]",
-  "price": 22500,
+  "price": 20500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4548736143531",
   "name": "SONY WF-1000XM5 [プラチナシルバー]",
-  "price": 22300,
+  "price": 20500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4548736163614",
   "name": "SONY WF-1000XM5 (P) [スモーキーピンク]",
-  "price": 22300,
+  "price": 20500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5816,13 +5828,13 @@
  {
   "jan": "0840414689626",
   "name": "Amazon Kindle 16GB ウベパープル 2026年発売",
-  "price": 25000,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414601390",
   "name": "Amazon Kindle 16GB グラファイト 2026年発売",
-  "price": 25000,
+  "price": 24500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5858,31 +5870,31 @@
  {
   "jan": "0840414673731",
   "name": "New Kindle 16GB マッチャ(2024年発売)",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414617858",
   "name": "New Kindle 16GB ブラック(2024年発売)",
-  "price": 16500,
+  "price": 16000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840268942847",
   "name": "New Kindle Paperwhite 16GB ブラック 2024年発売",
-  "price": 24800,
+  "price": 21000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840268918132",
   "name": "New Kindle Paperwhite シグニチャーエディション 32GB メタリックジェード 2024年発売",
-  "price": 30200,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "0840414610231",
   "name": "New Amazon Kindle Colorsoft シグニチャーエディション 16GB",
-  "price": 28500,
+  "price": 26500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -5894,7 +5906,7 @@
  {
   "jan": "0753759325855",
   "name": "ガーミン Approach S70 47mm [Black]",
-  "price": 66500,
+  "price": 66000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -8864,13 +8876,13 @@
  {
   "jan": "4548736156470",
   "name": "SONY LinkBuds Open WF-L910BZ ブラック",
-  "price": 10000,
+  "price": 5000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4548736156524",
   "name": "SONY LinkBuds OPEN WF-L910WZ ホワイト",
-  "price": 10000,
+  "price": 5000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9044,7 +9056,7 @@
  {
   "jan": "0840268929282",
   "name": "New Kindle Paperwhite シグニチャーエディション 32GB メタリックブラック 2024年発売",
-  "price": 30200,
+  "price": 24000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9458,7 +9470,7 @@
  {
   "jan": "5025155139349",
   "name": "Dyson V12 Detect Slim Fluffy SV46 FF2 [シルバー]",
-  "price": 41000,
+  "price": 39000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9734,7 +9746,7 @@
  {
   "jan": "4549980973974",
   "name": "パナソニック イオニティ EH-NE8N-H [モダングレー]",
-  "price": 12500,
+  "price": 11500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -9752,7 +9764,7 @@
  {
   "jan": "4549980973981",
   "name": "パナソニック イオニティ EH-NE8N-W [モダンホワイト]",
-  "price": 12500,
+  "price": 11500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -10982,13 +10994,13 @@
  {
   "jan": "4550719178416",
   "name": "パナソニック ラムダッシュ パームイン PRO ES-P650U-K [マーブルブラック]",
-  "price": 41000,
+  "price": 40000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
   "jan": "4550719178409",
   "name": "パナソニック ラムダッシュ パームイン PRO ES-P650U-W [マーブルホワイト]",
-  "price": 42500,
+  "price": 41000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11600,7 +11612,7 @@
  {
   "jan": "4550556164030",
   "name": "シャープ CV-T71-W [ホワイト系]",
-  "price": 17000,
+  "price": 16500,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
@@ -11822,7 +11834,7 @@
  {
   "jan": "4549980657249",
   "name": "Panasonic ストラーダ CN-HE02WD",
-  "price": 60000,
+  "price": 58000,
   "url": "https://www.mobile-ichiban.com/Prod/2"
  },
  {
