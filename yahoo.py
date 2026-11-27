@@ -4,6 +4,7 @@
 """
 import os
 import re
+import unicodedata
 
 from scrapers.http import Client
 
@@ -71,6 +72,21 @@ def search_jan(client: Client, appid: str, jan: str, buy_price: int, keep: int =
         offers.append(o)
     offers.sort(key=lambda o: o["p"] - o["pt"])
     return offers[:keep]
+
+
+def search_model(client: Client, appid: str, model: str, results: int = 30):
+    """型番で検索して、出品のJANを数える（JANの無い買取サイトの商品にJANを付けるため）。"""
+    data = client.get(API, params={"appid": appid, "query": model, "condition": "new", "results": results}, as_json=True)
+    norm = lambda t: re.sub(r"[\s\-_/・]", "", unicodedata.normalize("NFKC", t or "")).upper()  # noqa: E731
+    want = norm(model)
+    counts = {}
+    for hit in data.get("hits", []):
+        code = (hit.get("janCode") or "").strip()
+        if not re.fullmatch(r"\d{8,14}", code) or want not in norm(hit.get("name") or ""):
+            continue
+        code = code.zfill(13) if len(code) == 12 else code
+        counts[code] = counts.get(code, 0) + 1
+    return counts
 
 
 # ---------- 商品ページで「仕様選択」による価格差を確認 ----------

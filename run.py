@@ -18,6 +18,7 @@ import argparse
 import json
 import os
 import re
+import unicodedata
 import sys
 import time
 from datetime import datetime, timezone, timedelta
@@ -195,6 +196,48 @@ def _norm_model(t: str) -> str:
     return re.sub(r"[\s\-_/・]", "", unicodedata.normalize("NFKC", t or "")).upper()
 
 
+UNMATCHED: list = []
+
+
+def resolve_models(appid, limit=None):
+    """JANの分からない型番を、Yahooで型番検索して出品のJANから決める（カー用品を先に、高い順）。
+    結果は data/model_jan.json に保存し、次の集計から使う。見つからない型番も30日は再検索しない。"""
+    limit = int(os.environ.get("MODEL_LOOKUP_MAX", "250")) if limit is None else limit
+    mj = load(DATA / "model_jan.json", {})
+    now = datetime.now(JST)
+    def fresh(t):
+        try:
+            return (now - datetime.fromisoformat(mj[t]["at"])).days < 30
+        except (KeyError, ValueError, TypeError):
+            return False
+    todo, seen = [], set()
+    for u in sorted(UNMATCHED, key=lambda u: (0 if (u["cat"].startswith("カー用品") or CAR_RE.search(u["name"] + " " + u["cat"])) else 1, -u["price"])):
+        t = u["tok"]
+        if t in seen or fresh(t) or len(t) < 5:
+            continue
+        seen.add(t)
+        todo.append(u)
+    client = Client(delay=1.5, retries=1, backoff=5)
+    found = done = 0
+    for u in todo[:limit]:
+        try:
+            counts = yahoo.search_model(client, appid, u["q"])
+        except Exception as e:  # noqa: BLE001
+            if "limit count" in str(e):
+                break
+            continue
+        done += 1
+        best = sorted(counts.items(), key=lambda kv: -kv[1])
+        # 一番多いJANが他より明らかに多い（または1種類だけ）ときだけ採用
+        j = best[0][0] if best and (len(best) == 1 or best[0][1] >= 2 * best[1][1]) else ""
+        mj[u["tok"]] = {"j": j, "at": now_iso(), "n": u["name"][:60]}
+        found += bool(j)
+    save(DATA / "model_jan.json", mj)
+    RUN_LOG["model_lookup"] = {"todo": len(todo), "searched": done, "found": found}
+    log(f"[model] 型番→JAN 検索 {done}件 / 見つかった {found}件（残り {max(0, len(todo) - done)}件）")
+    return found
+
+
 def match_by_model(by_jan):
     """JANの無い買取サイト（爆速買取のアースなど）を、型番でJANに結び付ける。
     他の買取サイトの商品名とYahooの出品名から「型番→JAN」の対応表を作り、
@@ -206,11 +249,13 @@ def match_by_model(by_jan):
         for t in yahoo._model_tokens(names):
             idx.setdefault(t, set()).add(jan)
     stats = {}
+    mj = load(DATA / "model_jan.json", {})  # Yahooで型番検索して見つけたJAN（resolve_models）
+    UNMATCHED.clear()
     for key, mod in SCRAPERS.items():
         if not getattr(mod, "NEEDS_JAN_MATCH", False):
             continue
         items, _ = load_buyback(key)
-        hit = amb = 0
+        hit = amb = byy = 0
         for it in items:
             toks = yahoo._model_tokens([it.get("name", "")])
             jans = set()
@@ -218,16 +263,31 @@ def match_by_model(by_jan):
                 c = idx.get(t)
                 if c and len(c) == 1:
                     jans |= c
+            if not jans:
+                for t in toks:
+                    j = (mj.get(t) or {}).get("j")
+                    if j:
+                        jans.add(j)
+                if len(jans) == 1:
+                    byy += 1
             if len(jans) != 1:
                 amb += bool(jans)
+                if not jans and toks:
+                    tk = max(toks, key=len)
+                    raw = [w for w in re.findall(r"[A-Za-z0-9][A-Za-z0-9\-/]{3,}", unicodedata.normalize("NFKC", it.get("name", ""))) if _norm_model(w) == tk]
+                    UNMATCHED.append({"key": key, "tok": tk, "q": raw[0] if raw else tk, "name": it.get("name", ""),
+                                      "maker": it.get("maker", ""), "cat": it.get("cat", ""), "price": it.get("price", 0)})
                 continue
             jan = jans.pop()
+            if jan not in by_jan:  # 他の買取サイトに無い商品：このサイトの買取価格だけで載せる
+                nm = (it.get("maker", "") + " " + it.get("name", "")).strip()
+                by_jan[jan] = {"jan": jan, "name": nm, "names": {nm}, "buys": {}}
             rec = by_jan[jan]
             cur = rec["buys"].get(key)
             if not cur or it["price"] > cur["p"]:
                 rec["buys"][key] = {"p": int(it["price"]), "u": it.get("url", ""), "note": "型番で照合"}
             hit += 1
-        stats[key] = {"items": len(items), "matched": hit, "ambiguous": amb}
+        stats[key] = {"items": len(items), "matched": hit, "by_yahoo": byy, "ambiguous": amb, "unmatched": sum(1 for u in UNMATCHED if u["key"] == key)}
     RUN_LOG["model_match"] = stats
     return stats
 
@@ -377,6 +437,14 @@ def check_variants(client, offers, jan, buy, watched, chk, names=()):
     offers.sort(key=lambda o: o["p"] - o["pt"])
 
 
+# カー用品（画面の「カー用品」と同じ言葉）。照合を優先し、間隔も短くする
+CAR_RE = re.compile(r"カー用品|カーナビ|ポータブルナビ|彩速ナビ|楽ナビ|サイバーナビ|ストラーダ|カロッツェリア|carrozzeria|ドライブレコーダー|ドラレコ|レーダー探知|レーザー探知|ETC(?:2\.0|車載器|-|\d)|カーオーディオ|ディスプレイオーディオ|カースピーカー|カーステレオ|車載|リアビジョン|ビッグX|オットキャスト|Ottocast|OttoAibox|CarPlay|バックカメラ|ジャンプスターター|カーメイト|コムテック|COMTEC|セルスター|CELLSTAR|ALPINE(?!\s?LOOP)|アルパイン(?!ループ)|MDV-|AVIC-|DMH-|DEH-|MVH-|DPX-|DRV-|(?<!自転)車用", re.I)
+
+
+def is_car(rec) -> bool:
+    return any(CAR_RE.search(n or "") for n in (rec.get("names") or [rec.get("name", "")]))
+
+
 def due_hours(entry):
     """前回の照合結果から、次に照合するまでの間隔（時間）を決める。
     Yahoo API は1日の利用回数に上限があるので、利益の見込みが薄い商品はたまにしか調べない。"""
@@ -408,7 +476,8 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
     skipped = 0
     for jan, rec in by_jan.items():
         top = top_buy(rec)
-        if top < min_buy or jan in watch:
+        car = is_car(rec)
+        if top < (1000 if car else min_buy) or jan in watch:
             continue
         e = cache.get(jan, {})
         if len(jan) == 12 and e.get("r") == 9.9 and not e.get("o"):
@@ -417,10 +486,10 @@ def update_yahoo(by_jan, cache, appid, min_buy, budget_min, watch):
             age = (now - datetime.fromisoformat(e["at"])).total_seconds() / 3600
         except (KeyError, ValueError):
             age = 1e9  # 未照合
-        if age < due_hours(e):
+        if age < due_hours(e) / (2 if car else 1):  # カー用品は2倍の頻度で見直す
             skipped += 1
             continue
-        targets.append((1, e.get("r", 0.0) if e else -1, e.get("at", ""), jan, top))
+        targets.append((0.5 if car else 1, e.get("r", 0.0) if e else -1, e.get("at", ""), jan, top))
     targets.sort()
     targets = [(t[2], 0, t[3], t[4]) for t in targets][:max_req]
     log(f"[yahoo] 今回の照合対象 {len(targets)}件（時期が来ていない {skipped}件は省略）")
@@ -519,16 +588,17 @@ def update_rakuten(by_jan, cache, app_id, access_key, min_buy, watch):
             targets.append((0, -int(watch[jan].get("n") or 0), jan, top_buy(by_jan[jan])))
     for jan, rec in by_jan.items():
         top = top_buy(rec)
-        if top < min_buy or jan in watch:
+        car = is_car(rec)
+        if top < (1000 if car else min_buy) or jan in watch:
             continue
         e = cache.get(jan, {})
         try:
             age = (now - datetime.fromisoformat(e["at"])).total_seconds() / 3600
         except (KeyError, ValueError):
             age = 1e9
-        if age < due_hours(e):
+        if age < due_hours(e) / (2 if car else 1):
             continue
-        targets.append((1, e.get("r", -1) if e else -1, jan, top))
+        targets.append((0.5 if car else 1, e.get("r", -1) if e else -1, jan, top))
     targets.sort()
     client = Client(delay=float(os.environ.get("RAKUTEN_DELAY", "1.2")), retries=2, backoff=10)
     deadline = STARTED + (JOB_MAX_MIN - 12) * 60
@@ -781,6 +851,11 @@ def main():
             build(by_jan, cache, watch, rcache, acache)
             sys.exit("★エラー: YAHOO_APPID が設定されていません。"
                      "Settings → Secrets and variables → Actions に登録してください")
+        try:
+            if resolve_models(appid):
+                by_jan = merged_buyback()  # 見つかった分をすぐ反映
+        except Exception as e:  # noqa: BLE001
+            log(f"[model] エラー: {e}")
         cache = update_yahoo(
             by_jan, cache, appid,
             int(os.environ.get("MIN_BUY", "2000")),
