@@ -1,10 +1,10 @@
 {
  "version": "1.12.1",
- "reportedAt": "2026-11-28T06:57:30.619Z",
- "running": false,
- "text": "前回の実行は Chrome の終了で中断されました",
+ "reportedAt": "2026-11-28T06:57:30.515Z",
+ "running": true,
+ "text": "開始しました",
  "trigger": "定時（11:00）",
- "startedAt": "2026-11-28T06:57:30.401Z",
+ "startedAt": "2026-11-28T06:57:30.266Z",
  "last": {
   "at": "2026-11-27T11:47:54.899Z",
   "ok": true,
@@ -100,5 +100,5 @@
   "x": true
  },
  "next": "2026-11-28T11:00:00.000Z",
- "event": "Chrome起動"
+ "event": "開始（定時（14:00））"
 }
