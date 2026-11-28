@@ -1,71 +1,69 @@
 {
- "started": "2026-11-28T12:14+09:00",
+ "started": "2026-11-28T17:03+09:00",
  "model_match": {
   "earth": {
    "items": 5485,
-   "matched": 1978,
-   "by_yahoo": 127,
+   "matched": 2007,
+   "by_yahoo": 156,
    "ambiguous": 0,
-   "unmatched": 2560
+   "unmatched": 2531
   }
  },
  "x_hot": {
-  "posts": 140,
-  "items": 27,
-  "updated": "2026-11-27T11:03:35.350Z",
+  "posts": 681,
+  "items": 37,
+  "updated": "2026-11-28T07:05:21.503Z",
   "stats": {
-   "momonnusan": "初回 5件",
-   "MATCHANFIRE": "初回 5件",
-   "TKC_sedori": "初回 5件",
-   "kitagawaKeikoji": "初回 5件",
+   "momonnusan": "初回 2件",
+   "MATCHANFIRE": "初回 29件",
+   "TKC_sedori": "初回 28件",
+   "kitagawaKeikoji": "初回 2件",
    "mappy_fukugyo": "初回 6件",
-   "sedori_osaka": "初回 4件",
-   "sutti_kun_01": "初回 6件",
-   "okaidoku_77": "初回 3件",
-   "pepusandeth": "初回 5件"
+   "sedori_osaka": "初回 5件",
+   "sutti_kun_01": "初回 513件",
+   "okaidoku_77": "初回 2件",
+   "pepusandeth": "初回 6件"
   }
  },
  "amazon": {
-  "targets": 17804,
+  "targets": 17836,
   "done": 0,
   "failed": 1,
   "last_error": "Amazon 403（{\"message\":\"Your account does not currently meet the eligibility requirements.\",\"reason\":\"AssociateNotEligible\",\"type\":\"AccessDeniedException\"}）",
   "stopped": "Amazon APIの利用資格がありません（403）"
  },
  "model_lookup": {
-  "todo": 2391,
+  "todo": 2363,
   "searched": 30,
   "found": 30
  },
  "rakuten": {
-  "targets": 4938,
-  "done": 4395,
+  "targets": 8277,
+  "done": 6845,
   "failed": 0,
   "last_error": "",
   "stopped": "時間切れ（残りは次回）"
  },
  "yahoo": {
   "targets": 9000,
-  "done": 2504,
-  "failed": 1,
-  "errors": {
-   "HTTP 400": 1
-  },
-  "last_error": "GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
-  "first_400": "10458977962789: GET失敗 https://shopping.yahooapis.jp/ShoppingWebService/V3/itemSearch: HTTP 400 '{\"Error\":{\"Code\":500,\"Message\":\"\\\\\"Request failed with status code 400\\\\\"\"}}'",
+  "done": 3918,
+  "failed": 0,
+  "errors": {},
+  "last_error": "",
+  "first_400": "",
   "stopped": "時間切れ（残りは次回）",
-  "skipped_not_due": 1943,
+  "skipped_not_due": 1925,
   "limited_429": 1,
   "first_429": "0件目のあと（開始から5秒）"
  },
  "item_check": {
-  "checked": 2302,
-  "changed": 16,
+  "checked": 3708,
+  "changed": 23,
   "failed": 0,
   "last_error": "",
   "disabled": false
  },
  "variants_fixed": 7,
- "finished": "2026-11-28T14:54+09:00",
+ "finished": "2026-11-28T19:43+09:00",
  "items": 5618
 }
